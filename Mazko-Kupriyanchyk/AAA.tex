@@ -1,0 +1,23 @@
+\documentclass[10pt,twoside]{article}
+\usepackage{IMATH}
+%\usepackage{cmbright}
+%\usepackage[T1]{fontenc}
+
+%\newcommand{\pbf}[1]{\mbox{\mathversion{bold}$#1$}}
+
+\begin{document}
+
+\let\oldenddocument\enddocument
+\let\document\begingroup
+\def\enddoc{\endgroup\setcounter{equation}{0}\setcounter{footnote}{0}
+\vspace{0pt plus 1fil}}
+\let\enddocument=\enddoc
+\def\documentclass[#1]#2{\relax}
+\def\usepackage#1{\relax}
+
+\setcounter{page}{1}
+
+\input{Mazko-Kupriyanchyk}
+
+\def\enddocument{\oldenddocument}
+\end{document}

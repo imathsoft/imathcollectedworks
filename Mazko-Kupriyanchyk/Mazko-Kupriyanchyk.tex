@@ -1,0 +1,1133 @@
+% !TeX encoding = windows-1251
+\begin{document}
+%%% Начало редактирования
+\selectlanguage{ukrainian}
+
+%\renewcommand{\ehkol}{О.Г.~Мазко, Л.В. Купріянчик}
+%\renewcommand{\ohkol}{Системи стабілізації з невизначеними коефіцієнтами \dots}
+%\aftergroup\clearpage
+%\renewcommand{\thefootnote}{}
+%\footnote {$^*$ Робота виконана за частковою підтримкою НДР
+%№~0112U001015} \footnote{\hfill\copyright \ \ {\bf О.Г.~Мазко, Л.В. Купріянчик, 2014}}
+%
+%\UDC{УДК 517.935;519.718}
+%%%% 517.9 - Дифференциальные, интегральные и другие функциональные уравнения. Конечные разности. Вариационное исчисление. Функциональный анализ;
+%%%% 517.925 - Системы и аналитическая теория обыкновенных дифференциальных уравнений;
+%%%% 517.925.51 -  Устойчивость и асимптотическое поведение решений;
+%%%% 517.93 - Специальные дифференциальные уравнения и системы аналитической механики, автоматического управления, операторные и динамические системы;
+%%%% 517.935 - Уравнения систем автоматического управления;
+%%%% 517.983.27 - Линейные операторы в полуупорядоченных пространствах;
+%%%% 519.71 - Теория управляющих систем (математические вопросы);
+%%%% 519.711 - Общие вопросы теории управляющих систем;
+%%%% 519.715 - Вопросы анализа в теории управляющих систем;
+%%%% 519.718 - Устойчивость, надежность и контроль;
+%
+%\vspace*{-3mm}
+%\Title{Системи стабілізації з невизначеними коефіцієнтами та динамічним зворотним зв'язком\,$^*$}
+%%\label{Mazko-Kupriyanchyk:FirstPage}}
+%
+%\Author{\large О.Г.~Мазко, Л.В. Купріянчик}
+%\Address{Інститут математики НАН України, Київ;  mazko@imath.kiev.ua}
+%\medskip
+%
+%\AbsEng{The work is devoted to working out of new methods for analysis of robust stability,
+%stabilization and optimization of the equilibrium states of nonlinear dynamic  output feedback control systems. It is shown that stabilization and optimization problems with dynamic output feedback are reduced to analogical problems with static output feedback. Sufficient stability conditions of the zero solution are formulated with the joint quadratic Lyapunov function for a family of nonlinear systems with uncertain coefficient matrices and a measured output feedback. The solution of general problem of robust stabilization and evaluation of the quadratic performance criterion for the family of nonlinear systems are proposed. Applying the results reduces to solving the finite systems of linear matrix inequalities.}
+%\AbsRus{Работа посвящена разработке новых методов анализа робастной устойчивости, стабилизации и оптимизации состояний равновесия нелинейных систем управления с динамической обратной связью по измеряемому выходу. Показано, что задачи стабилизации и оптимизации с динамической обратной связью сводятся к аналогичным задачам со статической обратной связью. Для семейства нелинейных систем с неопределенными матрицами коэффициентов и обратной связи по измеряемому выходу формулируются достаточные условия устойчивости нулевого состояния с общей квадратичной функцией Ляпунова. Предлагается решение общей задачи робастной стабилизации и оценки квадратичного критерия качества семейства нелинейных систем. Применение полученных результатов сводится к решению конечных систем линейных матричных неравенств.}
+%
+\udc{517.935;519.718}
+\title[Системи стабілізації з невизначеними коефіцієнтами та динамічним зворотним зв'язком]{Системи стабілізації з невизначеними коефіцієнтами та динамічним зворотним зв'язком%}
+\thanks{Робота виконана за частковою підтримкою НДР №~0112U001015}}
+%\label{Mazko-Kupriyanchyk:FirstPage}}
+
+\author{О.Г.~Мазко, Л.В. Купріянчик}
+\address{Інститут математики НАН України, Київ;  mazko@imath.kiev.ua}
+
+\abstractru{Работа посвящена разработке новых методов анализа робастной устойчивости, стабилизации и оптимизации состояний равновесия нелинейных систем управления с динамической обратной связью по измеряемому выходу. Показано, что задачи стабилизации и оптимизации с динамической обратной связью сводятся к аналогичным задачам со статической обратной связью. Для семейства нелинейных систем с неопределенными матрицами коэффициентов и обратной связи по измеряемому выходу формулируются достаточные условия устойчивости нулевого состояния с общей квадратичной функцией Ляпунова. Предлагается решение общей задачи робастной стабилизации и оценки квадратичного критерия качества семейства нелинейных систем. Применение полученных результатов сводится к решению конечных систем линейных матричных неравенств.}
+
+\abstracten{The work is devoted to working out of new methods for analysis of robust stability,
+	stabilization and optimization of the equilibrium states of nonlinear dynamic  output feedback control systems. It is shown that stabilization and optimization problems with dynamic output feedback are reduced to analogical problems with static output feedback. Sufficient stability conditions of the zero solution are formulated with the joint quadratic Lyapunov function for a family of nonlinear systems with uncertain coefficient matrices and a measured output feedback. The solution of general problem of robust stabilization and evaluation of the quadratic performance criterion for the family of nonlinear systems are proposed. Applying the results reduces to solving the finite systems of linear matrix inequalities.}
+ 
+%\footnote{\hfill\copyright \ \ {\bf О.Г.~Мазко, Л.В. Купріянчик, 2014}}
+\maketitle
+
+%\setcounter{page}{100}
+\section{Вступ}
+При проектуванні транспортних, космічних та інших керованих об'єктів виникають проблеми стійкості стаціонарних режимів та якості систем, які описують їх рух. Розвиток високих технологій в різних галузях обумовлює неперервне зростання вимог до сучасних систем керування. Однак, в реальних об'єктах неминуче присутні невизначеності різних типів та неповнота інформації про їх стан. Якщо це не враховувати при побудові відповідних  математичних моделей, то система керування такими об'єктами в реальних умовах може не забезпечувати високих показників якості і, зокрема, стійкості.
+Невизначеності в неперервних та дискретних математичних моделях керованих систем описуються інтервалами, політопами, афінними та еліпсоїдальними сім'ями матриць тощо (див., наприклад, \cite{Polyak-Scherbakov,Zhou-Doyle-Glover,Kuncevich,Polyak-Scherbakov-1,Aliev-Larin}). Для опису невизначеності систем в напівупорядкованих просторах можна використовувати конусні нерівності та інтервали \cite{Mazko-2008, Mazko-2011}.
+
+Нульовий стан $x\equiv 0$ нелінійної диференціальної системи керування з параметричною невизначеністю
+\begin{equation}\label{f1-1}
+\dot{x}=f(x,p,t)+B(x,p,t)\,u,\quad f(0,p,t)\equiv 0,\quad u=K x,\quad x\in {\mathbb R}^n,
+\end{equation}
+де $f(\cdot)$ і $B(\cdot)$ --- відповідно векторна та матрична функції, називається \emph{робастно стійким} відносно заданих множин параметрів ${\mathcal P}\subseteq {\mathbb R}^\nu$ та коефіцієнтів матриці підсилення зворотного зв'язку ${\mathcal K}\subset {\mathbb R}^{m\times n}$, якщо він асимптотично стійкий за Ляпуновим при всіх фіксованих $p\in{\mathcal P}$ і $K\in {\mathcal K}$. Векторно-матричні системи керування типу (\ref{f1-1}) іноді називають афінними. Якщо $f(x,p,t)=A(x,p,t)\,x$, де $A(\cdot)$ --- матрична функція, то при дослідженні задач робастної стійкості та стабілізації системи (\ref{f1-1}) досить зручно використовувати методи квадратичних функцій Ляпунова $v(x,t)=x^TX(t)x$ з симетричною додатно визначеною матрицею $X(t)$.
+
+ В чисельних роботах в термінах лінійних матричних нерівностей (ЛМН) отримано достатні умови стійкості лінійних керованих систем з невизначеними матрицями коефіцієнтів і зворотного зв'язку по вимірюваному виходу. З оглядом задач і відомих методів аналізу робастної стійкості й стабілізації систем керування зі зворотним зв'язком можна познайомитися в роботах \cite{Polyak-Scherbakov-1,Aliev-Larin}.
+
+Дана робота присвячена розробці нових методів аналізу робастної стійкості, стабілізації та оптимізації станів рівноваги класу нелінійних багатовимірних систем керування з динамічним зворотним зв'язком по вимірюваному виходу, що містить компоненти як фазових змінних, так і керування. Показано, що задачі стабілізації та оптимізації з динамічним зворотним зв'язком (ДЗЗ) зводяться до аналогічних задач зі статичним зворотним зв'язком (СЗЗ). Використовуючи і розвиваючи результати робіт \cite{Balandin-Kogan,Maz-Shram-2011,Mazko-2011-IM,Maz-Bog-2012}, формулюються достатні умови стійкості нульового стану сім'ї систем керування з невизначеними матрицями коефіцієнтів і ДЗЗ по вимірюваному виходу. Також будуються спільна функція Ляпунова і верхня оцінка квадратичного функціоналу якості. В результаті пропонуються нові методи
+оптимізації даної сім'ї систем. Практичне застосування отриманих результатів зводиться до знаходження розв'язків систем диференціальних або алгебраїчних ЛМН. Для розв'язання ЛМН зі сталими матрицями може бути використана досить ефективна процедура в системі {\sc Matlab} \cite{Gu-Petkov-Konstantinov}.
+
+Будемо використовувати такі позначення: $I_n$ --- одинична матриця порядку $n$;
+$0_{n\times m}$ --- нульова матриця розмірів $n\times m$;
+ $X=X^T>0$ $(\ge 0)$ --- додатно (невід'ємно) визначена симетрична матриця $X$;
+$i(X)=\{i_+,i_-,i_0\}$ --- інерція ермітової матриці $X$, яку утворюють кількості її додатних, від'ємних і нульових власних значень, враховуючи кратності;
+$\lambda_{\max}(X)$ ($\lambda_{\min}(X)$) --- максимальне (мінімальне) власне значення ермітової матриці $X$;
+ $\rho(A)$ --- спектральний радіус матриці $A$;
+$\|x\|$ --- евклідова норма вектора $x$;
+${\rm Co}\{A_1,\dots,A_\nu\}$ --- опуклий многогранник (політоп) з вершинами $A_1,\dots,A_\nu$ у просторі матриць вигляду
+$${\rm Co}\{A_1,\dots,A_\nu\}=\Big\{A=\sum_{i=1}^\nu \alpha_i A_i:\>\>\alpha_i \ge 0,\>i=\overline{1,\nu},\>\sum_{i=1}^\nu \alpha_i=1\Big\}.$$
+
+\section{Стабілізація лінійних систем керування\\ з динамічним регулятором}
+
+ Розглянемо систему керування
+\begin{equation}\label{s1-1}
+\dot{x}=Ax+Bu,\quad y=Cx+Du,
+\end{equation}
+де $x\in {\mathbb R}^{n}$, $u\in {\mathbb R}^{m}$ і $y\in {\mathbb R}^{l}$ --- вектори відповідно стану, керування та спостереження об'єкта, $A$, $B$, $C$ і $D$ --- матриці відповідних розмірів $n\times n$, $n\times m$, $l\times n$ і $l\times m$, причому, $\rm rank\,B=m$ і $\rm rank\,C=l$.
+Побудуємо динамічний регулятор у вигляді ДЗЗ
+\begin{equation}\label{s1-2}
+\begin{cases}
+\dot{z}=Zz+Vy, \\
+u=Uz+Ky,
+\end{cases}
+\end{equation}
+де $z\in {\mathbb R}^{r}$ --- вектор стану регулятора, $Z$, $V$, $U$ і $K$ --- невідомі матриці відповідних розмірів $r\times r$, $r\times l$, $m\times r$ і $m\times l$. В окремому випадку $r=0$ маємо статичний регулятор $u=Ky$. При $r\neq0$ співвідношення (\ref{s1-1}) і (\ref{s1-2}) можна записати у компактному вигляді:
+\begin{equation}\label{s1-3}
+\dot{\widehat{x}}=\widehat{A}\widehat{x}+\widehat{B}\widehat{u},\quad \widehat{y}=\widehat{C}\widehat{x}+\widehat{D}\widehat{u},\quad  \widehat{u}=\widehat{K}\widehat{y},
+\end{equation}
+де
+$$
+\widehat{x}=\left[\!\begin{array}{c}
+              x \\
+              z
+              \end{array}
+               \!\right],\quad
+\widehat{y}=\left[\!\begin{array}{c}
+              z \\
+              y
+              \end{array}
+               \!\right],\quad
+\widehat{u}=\left[\!\begin{array}{c}
+              \dot{z} \\
+              u
+              \end{array}
+               \!\right],
+               \quad
+\widehat{K}=\left[\!\begin{array}{cc}
+                            Z & V \\
+                            U & K
+                            \end{array}
+                            \!\right],
+               $$$$
+\widehat{A}=\left[\!\begin{array}{cc}
+              A & 0_{n\times r} \\
+              0_{r\times n} & 0_{r\times r}
+              \end{array}
+               \!\right],\quad
+\widehat{B}=\left[\!\begin{array}{cc}
+              0_{n\times r} & B \\
+              I_r & 0_{r\times m}
+              \end{array}
+               \!\right],
+$$
+$$
+\widehat{C}=\left[\!\begin{array}{cc}
+              0_{r\times n} & I_r \\
+              C & 0_{l\times r}
+              \end{array}
+               \!\right],\quad
+\widehat{D}=\left[\!\begin{array}{cc}
+              0_{r\times r} & 0_{r\times m} \\
+              0_{l\times r} & D
+              \end{array}
+               \!\right],
+$$
+причому, ${\rm rank}\,\widehat{B}=r+m$ і ${\rm rank}\,\widehat{C}=r+l$.
+З іншого боку, якщо покласти $u=Uz+Ky$, то, враховуючи структуру блочних матриць в (\ref{s1-3}), отримаємо всі співвідношення (\ref{s1-1}) і (\ref{s1-2}).
+\begin{lemma}\label{lem:1}
+Система керування {\rm (\ref{s1-1})} з динамічним регулятором {\rm (\ref{s1-2})} порядку $r\ne 0$ еквівалентна системі керування зі СЗЗ {\rm (\ref{s1-3})}.
+\end{lemma}
+
+Таким чином, задачі керування і, зокрема, стабілізації системи (\ref{s1-1}) з ДЗЗ (\ref{s1-2}), зводяться до аналогічних задач керування для системи (\ref{s1-3}) зі СЗЗ.
+
+Введемо на множині матриць ${\mathcal K}_{\widehat{D}}=\{\widehat{K}:\det(I_{r+m}-\widehat{K}\widehat{D})\ne 0\}$ нелінійний оператор
+$$
+\mathcal{\widehat{D}}:\,{\mathbb R}^{(r+m)\times (r+l)}\rightarrow{\mathbb R}^{(r+m)\times (r+l)},\quad \mathcal{\widehat{D}}(\widehat{K})= (I_{r+m}-\widehat{K}\widehat{D})^{-1}\widehat{K},$$
+або у блочному вигляді
+$$\mathcal{\widehat{D}}(\widehat{K})=
+ \left[\begin{array}{c|c}
+                        Z+VD(I_m-KD)^{-1}U & V(I_l-DK)^{-1} \\
+                        \hline
+                        (I_m-KD)^{-1}U & \mathcal{D}(K)
+                        \end{array}
+                        \right],$$
+ де $\mathcal{D}(K)=(I_m-KD)^{-1}K$,\,\, $K\in {\mathcal K}_D=\{K:\det(I_m-KD)\ne 0\}$.
+
+Для кожної матриці зворотного зв'язку $\widehat{K}\in {\mathcal K}_{\widehat{D}}$ замкнена система (\ref{s1-3}) має вигляд
+\begin{equation}\label{s1-4}
+\widehat{\dot{x}}=\widehat{M}\,\widehat{x},\quad \widehat{M}=\widehat{A}+\widehat{B}\mathcal{\widehat{D}}(\widehat{K})\widehat{C},
+\end{equation}
+де
+$$\widehat{M}\!=\!
+ \left[\begin{array}{c|c}
+                        M & B(I_m-KD)^{-1}U \\
+                        \hline
+                        V(I_l-DK)^{-1}C & Z+VD(I_m-KD)^{-1}U
+                        \end{array}
+                        \right],\> M\!=\!A+B\mathcal{D}(K)C.$$
+
+Оператор $\mathcal{\widehat{D}}$ має такі властивості:\\[2mm]
+\noindent $\bullet$ якщо $\widehat{K}\in{\mathcal K}_{\widehat{D}}$, то $\mathcal{\widehat{D}}(\widehat{K})\equiv\widehat{K}(I_{r+l}-\widehat{D}\widehat{K})^{-1}
+\equiv
+\widehat{K}[I_{r+l}+\widehat{D}\mathcal{\widehat{D}}(\widehat{K})]$,
+$
+I_{r+l}+\widehat{D}\mathcal{\widehat{D}}(\widehat{K})\equiv (I_{r+l}-\widehat{D}\widehat{K})^{-1};
+$
+
+\noindent $\bullet$ якщо $K_1\in{\mathcal K}_{\widehat{D}}$, $K_2\in{\mathcal K}_{\widehat{D}_1}$, то $K_3=(I_{r+m}-K_1\widehat{D})^{-1}K_2\in{\mathcal K}_{\widehat{D}}$, $K_1+K_2\in{\mathcal K}_{\widehat{D}}$ і
+\begin{equation}\label{s1-6}
+\begin{array}{c}
+  \widehat{{\mathcal D}}(K_1+K_2)= \widehat{{\mathcal D}}(K_1)+\widehat{{\mathcal D}}(K_3)\,(I_l-\widehat{D}K_1)^{-1}, \\[2mm]
+  \widehat{{\mathcal D}}(K_3)=(I_m-K_1\widehat{D})^{-1}\widehat{{\mathcal D}}_1(K_2),
+\end{array}
+\end{equation}
+де $\widehat{D}_1=(I_l-\widehat{D}K_1)^{-1}\widehat{D}$,\,\, $\widehat{{\mathcal D}}_1(K_2)=(I_m-K_2\widehat{D}_1)^{-1}K_2$;
+
+\noindent $\bullet$ якщо $\widehat{K}\in{\mathcal K}_{\widehat{D}}$, то $\widehat{K}_*=-\mathcal{\widehat{D}}(\widehat{K})\in {\mathcal K}_{\widehat{D}}$ і
+\begin{equation}\label{s1-7}
+ \mathcal{\widehat{D}}(\widehat{K}_*)= - \widehat{K}.
+\end{equation}
+
+Згідно з (\ref{s1-7}), для досягнення бажаних властивостей і, зокрема, стійкості системи (\ref{s1-4}) достатньо забезпечити ці властивості системі
+\begin{equation}\label{s1-4-1}
+\widehat{\dot{x}}=\widehat{M}\,\widehat{x},\quad \widehat{M}=\widehat{A}-\widehat{B}\widehat{K}\widehat{C},
+\end{equation}
+при умові $\widehat{K}\in{\mathcal K}_{\widehat{D}}$.
+Для матриць повного рангу $\widehat{B}$ і $\widehat{C}$ позначимо ортогональні доповнення і псевдообернені матриці:
+$$\widehat{B}^{\bot}=\left[\!\begin{array} {c}
+                        B^{\bot}\\
+                        0_{r\times(n-m)}
+                        \end{array}
+                        \!\right],\quad
+\widehat{B}^+=(\widehat{B}^T\widehat{B})^{-1}\widehat{B}^T=\left[\!\begin{array}{cc}
+                                                 0_{r\times n} & I_r \\
+                                                B^+ & 0_{m\times r}
+                                                \end{array}
+                                                 \!\right],$$
+$$\widehat{C}^{\bot}=\left[C^{\bot}, 0_{(n-l)\times r}\right],\quad
+\widehat{C}^+=\widehat{C}^T (\widehat{C} \widehat{C}^T)^{-1}=\left[\!\begin{array}{cc}
+                                                0_{n\times r} & C^+ \\
+                                                 I_r & 0_{r\times l}
+                                                  \end{array}
+                                               \!\right],$$
+де $\det\big[\widehat{B},\widehat{B}^{\bot}\big]\ne 0$, $\widehat{B}^T\widehat{B}^{\bot}=0$,
+$\det \big[\widehat{C}^T,\widehat{C}^{\bot T}\big] \neq 0$, $\widehat{C}\widehat{C}^{\bot T}=0$.
+
+Наступне твердження дає методику розподілу спектра системи (\ref{s1-4-1}) з бажаними властивостями відносно прямої ${\rm Re}\,\lambda =\alpha$, $\lambda\in {\mathbb C}^1$.
+
+\begin{lemma}\label{lem:2} Існує матриця $\widehat{K}$, для якої спектр системи (\ref{s1-4-1}) складається із $p$ і $q$ точок у відповідних напівплощинах ${\rm Re}\,\lambda <\alpha$ і ${\rm Re}\,\lambda >\alpha$, тоді і лише тоді, коли сумісна відносно
+$\widehat{X}=\widehat{X}^T$
+система співвідношень
+\begin{equation}\label{s1-8}
+S=B^{\bot T}LB^{\bot}<0,\quad i(\widehat{X})=\{p,q,0\},\quad
+i(\widehat{H})=\{r+l,r+m,0\},
+\end{equation}
+де
+$$L=AX+XA^T-2\alpha X,\quad \widehat{X}=\left[\!\begin{array}{cc}
+                        X & X_1^T \\
+                        X_1 & X_2
+                        \end{array}
+                        \!\right],\>\>\widehat{H}=\left[\begin{array}{cc}
+      \widehat{H}_0 & \widehat{H}_1^T \\
+     \widehat{H}_1 & \widehat{H}_2
+       \end{array}\right],$$
+$$ \widehat{H}_0=
+         \left[ \begin{array}{c|c}
+                        -2\alpha X_2-X_1A_\alpha^T RA_\alpha X_1^T & X_1A_\alpha^T(I_n-RL)B^{+T} \\
+                        \hline
+                        B^+(I_n-LR)A_\alpha X_1^T & H_0
+                        \end{array}
+                         \right],$$
+$$\widehat{H}_1=
+       \left[ \begin{array}{c|c}
+                        X_2-X_1RA_\alpha X_1^T & X_1(I_n-RL)B^{+T} \\
+                        \hline
+                        C(I_n-XRA_\alpha)X_1^T & H_1
+                        \end{array}
+                         \right],$$
+$$\widehat{H}_2=
+       \left[ \begin{array}{c|c}
+                        -X_1RX_1^T & -X_1RXC^T \\
+                        \hline
+                        -CXRX_1^T & H_2
+                        \end{array}
+                         \right],$$
+$$H_0=B^+(L-LRL)B^{+T},\>\>\> H_1=CX(I_n-RL)B^{+T},\>\>\> H_2=-CXRXC^T,$$
+$$R=B^{\bot}S^{-1}B^{\bot T},\quad  A_\alpha=A-2\alpha I_n.$$
+
+За умов {\rm (\ref{s1-8})} матриця $\widehat{K}$ може бути знайдена як розв'язок однієї із еквівалентних матричних нерівностей
+\begin{equation}\label{s1-9}
+\widehat{H}_0-\widehat{K}\widehat{H}_1-\widehat{H}_1^T\widehat{K}^T+\widehat{K}\widehat{H}_2\widehat{K}^T<0,
+\end{equation}
+\begin{equation}\label{s1-10}
+\widehat{A}\widehat{X}+\widehat{X}\widehat{A}^T-2\alpha \widehat{X}<\widehat{B}\widehat{K}\widehat{C}\widehat{X}+\widehat{X}\widehat{C}^T\widehat{K}^T\widehat{B}^T.
+\end{equation}
+Зокрема, якщо в співвідношеннях {\rm (\ref{s1-8})} і {\rm (\ref{s1-9})} $\widehat{X}=\widehat{X}^T>0$, $\alpha\le 0$, то система (\ref{s1-4-1}) асимптотично стійка.
+\end{lemma}
+
+Дана лема випливає із вище наведених співвідношень і аналогічного твердження, встановленого в \cite{Maz-Bog-2012} для статичних регуляторів. Зауважимо, що лінійна відносно $\widehat{K}$ нерівність (\ref{s1-10}) виконується, якщо
+$$
+\widehat{K}=\widehat{B}^T\widehat{X}^{-1}\widehat{C}^+,\>
+\widehat{A}\widehat{X}+\widehat{X}\widehat{A}^T-2\alpha \widehat{X}< 2\,\widehat{B}\widehat{B}^T,\> (\widehat{C}^+\widehat{C}-I_{r+n})\widehat{X}^{-1}\widehat{B}=0,
+$$
+а для виконання квадратичної відносно $\widehat{K}$ нерівності (\ref{s1-9}) достатньо
+\begin{equation}\label{s1-12}
+\widehat{K}= \gamma\, \widehat{B}^T\widehat{X}^{-1}\widehat{C}^+, \quad \gamma > \lambda_{\max}(\widehat{H}_0)/2,\quad \widehat{C}^{\bot}\widehat{X}^{-1}\widehat{B}=0,
+\end{equation}
+причому, останні рівності в наведених співвідношеннях еквівалентні.
+
+Враховуючи (\ref{s1-7}) і (\ref{s1-12}), при $\alpha\le 0$ маємо достатні умови, які гарантують асимптотичну стійкість системи (\ref{s1-4}) зі спектральним запасом, не меншим, ніж $|\alpha|$:
+$$
+  \widehat{X}=\widehat{X}^T>0, \quad  \widehat{B}^{\bot T}(\widehat{A}\widehat{X}+\widehat{X}\widehat{A}^T-2\alpha \widehat{X})\,\widehat{B}^{\bot}<0,\quad \widehat{C}^{\bot}\widehat{X}^{-1}\widehat{B}=0,
+$$
+\begin{equation}\label{s1-13}
+  \widehat{K}=-\mathcal{\widehat{D}}(\widehat{K}_*),\quad  \widehat{K}_*=\gamma\, \widehat{B}^T\widehat{X}^{-1}\widehat{C}^+\in \mathcal{K}_{\widehat{D}},\quad \gamma >  \lambda_{\max}(\widehat{H}_0)/2.
+\end{equation}
+
+Для системи (\ref{s1-3}) у випадоку $D=0$ виконуються наступні твердження. Існує матриця статичного зворотного зв'язку $\widehat{K}$ така, що замкнена система (\ref{s1-4}) асимптотично стійка, тоді і лише тоді, коли сумісна відносно $\widehat{X}=\widehat{X}^T>0$ система матричних нерівностей \cite{El-Ghaoui-Gahinet-1993}
+\begin{equation}\label{s1-14}
+\widehat{B}^{\bot}(\widehat{A}\widehat{X}+\widehat{X}\widehat{A}^T)\widehat{B}^{{\bot}T}<0,\>\>\>
+\widehat{C}^{{\bot}T}(\widehat{A}^T\widehat{X}^{-1}+\widehat{X}^{-1}\widehat{A})\widehat{C}^{\bot}<0.
+\end{equation}
+При цьому $\widehat{K}$ можна знайти як розв'язок ЛМН
+$$
+\widehat{A}\widehat{X}+\widehat{X}\widehat{A}^T+\widehat{C}\widehat{K}\widehat{B}\widehat{X}+
+\widehat{X}\widehat{B}^T\widehat{K}^T\widehat{C}^T<0.
+$$
+Використовуючи структуру і властивості блочних матриць в (\ref{s1-14}), встановлено, що існує динамічний регулятор (\ref{s1-2}) порядку $r\le n$, що забезпечує асимптотичну стійкість системі (\ref{s1-1}), тоді і лише тоді, коли сумісна відносно $X=X^T>0$ і $Y=Y^T>0$ система ЛМН
+$$
+B^{\bot}(AX+XA^T)B^{{\bot}T}<0,\>\>\>
+C^{{\bot}T}(A^TY+YA)C^{\bot}<0,\>\>\>
+W=\left[\!\begin{array}{cc}
+        X & I_n \\
+        I_n & Y
+      \end{array}
+\!\right]\ge 0,
+$$
+причому, ${\rm rank}\,W\le n+r$. Останнє обмеження еквівалентне нерівності ${\rm rank}(I_n-YX)\le r$ і завжди виконується у випадку динамічного регулятора повного порядку $r=n$ (див. також \cite{Balandin-Kogan}).
+\begin{lemma}\label{lem:3}
+Нехай $(A,B)$ і $(A,C)$ --- відповідно стабілізовна і детектовна пари матриць. Тоді існує динамічний регулятор (\ref{s1-2}) на основі спостережника повного порядку $r=n$, що забезпечує асимптотичну стійкість системі (\ref{s1-1}).
+\end{lemma}
+\begin{proof}
+Покладемо в (\ref{s1-2})
+\begin{equation}\label{s1-15}
+Z=A-FC+(B-FD)U,\quad V=F+(B-FD)K,
+\end{equation}
+де $K\in {\mathcal K}_D$, $U\in {\mathbb R}^{m\times n}$ і $F\in {\mathbb R}^{n\times l}$ --- деякі матриці. Тоді перше рівняння описує динаміку спостережника
+\begin{equation}\label{s1-16}
+\dot{z}=Az+Bu+F(y-Cz-Du),
+\end{equation}
+ а замкнену систему (\ref{s1-1}), (\ref{s1-2}) можна подати у еквівалентному вигляді
+\begin{equation}\label{s1-17}
+\dot{\widetilde{x}}=\widetilde{M}\widetilde{x},\quad
+\widetilde{M}=\left[\begin{array}{c|c}
+            M_0 & B(I_m-KD)^{-1}U \\ \hline
+           0_{n\times n} & M_1
+  \end{array}\right],\quad \widetilde{x}=\left[\begin{array}{c}
+                                                 x \\
+                                                 e
+                                               \end{array}
+  \right],
+\end{equation}
+де $M_0=A+B\mathcal{D}(K)C+B(I_m-KD)^{-1}U$, $M_1=A-FC$, $e=z-x$. Зокрема, якщо $K=0$, то $M_0=A+BU$. Отже, за припущеннями існують матриці $K$, $U$ і $F$ такі, що дійсні частини всіх власних значень матриць $M_0$ і $M_1$ від'ємні і система (\ref{s1-17}) асимптотично стійка. При цьому $e(t)\rightarrow 0$ при $t\rightarrow \infty$, тобто (\ref{s1-16}) є асимптотичним спостережником системи (\ref{s1-1}). Шукані матриці стабілізуючого динамічного регулятора (\ref{s1-2}) можна знайти за допомогою співвідношень (\ref{s1-15}) і
+\begin{equation}\label{s1-18}
+ U=-KC-(I_m-KD)B^TX^{-1},\quad F=Y^{-1}C^T,
+\end{equation}
+де $K\in {\mathcal K}_D$ --- довільна матриця, а $X=X^T>0$ і $Y=Y^T>0$ є розв'язками відповідних ЛМН
+\begin{equation}\label{s1-19}
+AX+XA^T<2\,BB^T,\quad A^TY+YA<2\,C^TC.
+\end{equation}
+
+Лема доведена.
+\end{proof}
+
+\section{Робастна стабілізація нелінійних систем}
+
+Розглянемо систему керування і динамічний регулятор, які представлені у векторно-матричній формі
+\begin{equation}\label{s2-1}
+  \dot{x}=A(\cdot)x+B(\cdot)u,\quad y=C(\cdot)x+D(\cdot)u,
+ \end{equation}
+\begin{equation}\label{s2-2}
+ \dot{z}=Z(\cdot)z+V(\cdot)y, \quad u=U(\cdot)z+K(\cdot)y,
+\end{equation}
+де $x\in {\mathbb R}^{n}$, $u\in {\mathbb R}^{m}$ і $y\in {\mathbb R}^{l}$ --- вектори відповідно стану, керування та спостереження об'єкта, $z\in {\mathbb R}^{r}$ --- вектор стану регулятора, а матричні коефіцієнти відповідних розмірів можуть залежити від $x$, $z$ і $t$.
+За лемою \ref{lem:1} при $r\ne 0$ співвідношення (\ref{s2-1}) і (\ref{s2-2}) можна подати у вигляді системи керування зі СЗЗ:
+\begin{equation}\label{s2-3}
+\dot{\widehat{x}}=\widehat{A}(\widehat{x},t)\,\widehat{x}+\widehat{B}(\widehat{x},t)\,\widehat{u},\>\>\> \widehat{y}=\widehat{C}(\widehat{x},t)\,\widehat{x}+\widehat{D}(\widehat{x},t)\,\widehat{u},\>\>\> \widehat{u}=\widehat{K}(\widehat{x},t)\,\widehat{y},
+\end{equation}
+де $\widehat{x}\in {\mathbb R}^{n+r}$, $\widehat{u}\in {\mathbb R}^{m+r}$ і $\widehat{y}\in {\mathbb R}^{l+r}$, а матричні коефіцієнти мають структуру, наведену в (\ref{s1-3}).
+
+Побудуємо множину матриць стабілізуючих керувань у вигляді
+\begin{equation}\label{s2-4}
+\widehat{K}=\widehat{K}_*+\widetilde{K}=\left[\!\begin{array}{cc}
+                            Z & V \\
+                            U & K
+                            \end{array}
+                            \!\right],\quad \widetilde{K}\in {\mathcal K}=\big\{\widetilde{K}:\,\widetilde{K}^T\widehat{P}\widetilde{K}\le \widehat{Q}\big\},
+\end{equation}
+де ${\mathcal K}$ --- еліпсоїдальна множина матриць у просторі ${\mathbb R}^{(r+m)\times (r+l)}$, яку визначають симетричні додатно визначені матриці $\widehat{P}$ і $\widehat{Q}$ відповідних розмірів $(r+m)\times(r+m)$ і $(r+l)\times(r+l)$.
+Залежність матриць $\widehat{A}$, $\widehat{B}$, $\widehat{C}$, $\widehat{D}$, $\widehat{K}$, $\widehat{K}_*$ і $\widetilde{K}$ від $\widehat{x}$ і $t$ вважаємо неперервною і для спрощення виразів не позначаємо. Матриці $\widehat{P}$ і $\widehat{Q}$ сталі, хоча в подальших викладках вони також можуть бути неперервними функціями від $\widehat{x}$ і $t$.
+
+Згідно з (\ref{s2-3}) і (\ref{s2-4}), повинна виконуватись нерівність
+$$
+[\widehat{x}^T, \widehat{u}^T]
+\left[
+\begin{array}{c|c}
+ \widehat{C}^T\widehat{Q}\widehat{C}-\widehat{C}^T\widehat{K}_*^T\widehat{P}\widehat{K}_*\widehat{C} & \widehat{C}^T\widehat{Q}\widehat{D}+\widehat{C}^T\widehat{K}_*^T\widehat{P}\widehat{G}\\ \hline
+  \widehat{D}^T\widehat{Q}\widehat{C}+\widehat{G}^T\widehat{P}\widehat{K}_*\widehat{C} & \Delta\\
+  \end{array}
+   \right]\left[
+       \begin{array}{c}
+      \widehat{x} \\
+       \widehat{u} \\
+      \end{array}
+      \right]\geq 0,
+$$
+де $\Delta=\widehat{D}^T\widehat{Q}\widehat{D}-\widehat{G}^T\widehat{P}\widehat{G}$, $\widehat{G}=I_{r+m}-\widehat{K}_*\widehat{D}$. Припустимо, що
+\begin{equation}\label{s2-5}
+\Delta(\widehat{x},t)<0,\quad \widehat{x}\in {\mathcal S}_0,\>\> t\ge 0,
+\end{equation}
+де ${\mathcal S}_0=\{\widehat{x}\in {\mathbb R}^{r+n}:\|\widehat{x}\|\le h\}$ --- окіл точки $\widehat{x}=0$.
+Тоді із $\widehat{x}~=~0$ випливає $\widehat{u}=0$ і $\widehat{x}\equiv0$ є станом рівноваги системи. Нехай цей стан рівноваги ізольований, тобто окіл ${\mathcal S}_0$ не містить інших станів рівноваги системи.
+
+Задача полягає в побудові умов, за якими нульовий стан замкненої системи керування (\ref{s2-1}), (\ref{s2-2}) асимптотично стійкий за Ляпуновим для кожної матриці $\widetilde{K}\in {\mathcal K}$. Матриця $\widehat{K}_*$ шукається з метою стабілізації, наприклад, у випадку, коли нульовий стан системи без керування ($\widehat{u}=0$) нестійкий. При знаходженні матриці $\widehat{K}_*$ для класу лінійних автономних систем (\ref{s1-1}) можна застосовувати лему \ref{lem:2}, зокрема, співвідношення (\ref{s1-13}) (див. також \cite{Balandin-Kogan,Polyak-Scherbakov-1,Aliev-Larin,Petersen}).
+
+Умова (\ref{s2-5}) забезпечує невиродженість матриці $\widehat{G}$ та існування значення оператора $\mathcal{\widehat{D}}(\widehat{K}_*)=(I_{r+m}-\widehat{K}_*\widehat{D})^{-1}\widehat{K}_*$ при любих $\widehat{x}\in {\mathcal S}_0$ і $t\ge 0$. Якщо $\widetilde{K}\in {\mathcal K}$, то існують також значення $\mathcal{\widehat{D}}(\widehat{K})$ і $\mathcal{\widehat{D}}(\widehat{K}_1)$, де $\widehat{K}_1=\widehat{G}^{-1}\widetilde{K}$. Дійсно, за умов (\ref{s2-3}) і (\ref{s2-4}) маємо $$\widehat{D}^T\widetilde{K}^T\widehat{P}\widetilde{K}\widehat{D}\le \widehat{D}^T\widehat{Q}\widehat{D} <\widehat{G}^T\widehat{P}\widehat{G},\quad \widehat{F}^T\widehat{P}\widehat{F}<\widehat{P},$$
+де $\widehat{F}=\widetilde{K}\widehat{D}\widehat{G}^{-1}$ і $\widehat{P}>0$. Тому $\rho(\widehat{F})<1$ і матриця $I_{r+m}-\widehat{F}$ невироджена, а разом з нею невироджені матриці $I_{r+m}-\widehat{K}\widehat{D}=(I_{r+m}-\widehat{F})\widehat{G}$ і $I_{r+m}-\widehat{K}_1\widehat{D}=\widehat{G}^{-1}(I_{r+m}-\widehat{K}\widehat{D})$.
+
+Отже, замкнена система (\ref{s2-1}), (\ref{s2-2}) при обмеженні (\ref{s2-5}) представляється у вигляді
+\begin{equation}\label{s2-6}
+\dot{\widehat{x}}=\widehat{M}(\widehat{x},t) \widehat{x}, \quad \widehat{M}(\widehat{x},t)= \widehat{A}+\widehat{B}\mathcal{\widehat{D}}(\widehat{K})\widehat{C}.
+\end{equation}
+ Будемо вважати, що  нульовий стан даної системи при $\widehat{K}\equiv \widehat{K}_*$ асимптотично стійкий.
+
+Розв'яжемо поставлену задачу для системи (\ref{s2-6}) за допомогою квадратичної функції Ляпунова $v(\widehat{x},t)=\widehat{x}^T\widehat{X}(t)\widehat{x}$, де $\widehat{X}(t)$ --- неперервно-диференційовна симетрична матриця така, що
+\begin{equation}\label{s2-7}
+\varepsilon_1 I_{r+n}\le \widehat{X}(t)\le \varepsilon_2 I_{r+n},\quad t\ge 0.
+\end{equation}
+
+\begin{theorem}\label{the:1}
+Нехай для деяких $\varepsilon_i>0$ $(i=0,1,2)$ при $\widehat{x}=0$ і $ t\ge 0$ виконуються матричні нерівності {\rm (\ref{s2-5})}, {\rm (\ref{s2-7})} і
+\begin{equation}\label{s2-8}
+    \Omega(t)=\left[\!\begin{array}{ccc}
+            \dot{\widehat{X}}+\widehat{M}_*^T\widehat{X}+\widehat{X}\widehat{M}_*+\varepsilon_0 I_{r+n} & \widehat{X}\widehat{B} & \widehat{C}^T_* \\
+            \widehat{B}^T\widehat{X} & \!\!-\widehat{G}^T\widehat{P}\widehat{G}\!\! & \widehat{D}^T\\
+            \widehat{C}_* & \widehat{D} & -\widehat{Q}^{-1}
+          \end{array}
+    \!\right]\le 0,
+\end{equation}
+де $\widehat{M}_*=\widehat{A}+\widehat{B}\mathcal{\widehat{D}}(\widehat{K}_*)\widehat{C}$, $\widehat{C}_*=\widehat{C}+\widehat{D}\mathcal{\widehat{D}}(\widehat{K}_*)\widehat{C}$.
+Тоді кожний динамічний регулятор {\rm(\ref{s2-2})}, {\rm(\ref{s2-4})} забезпечує асимптотичну стійкість нульового стану замкненої системи {\rm(\ref{s2-1})}, {\rm(\ref{s2-2})} і спільну функцію Ляпунова $v(\widehat{x},t)=\widehat{x}^T\widehat{X}(t)\,\widehat{x}$.
+\end{theorem}
+
+Дана теорема випливає з аналогічного твердження, встановленого в \cite{Maz-Bog-2012}  для статичних регуляторів.
+
+\medskip
+ Зауважимо, що (\ref{s2-5}) є наслідком строгої нерівності (\ref{s2-8}), а матриці $\widehat{P}$ і $\widehat{Q}_1=\widehat{Q}^{-1}$ входять у вираз (\ref{s2-8}) лінійно. Тому їх разом з $\widehat{X}$ можна вважати невідомими і шукати за допомогою ефективної процедури системи {\sc Matlab}. Це збільшує можливості методики квадратичної стабілізації \cite{Balandin-Kogan} навіть для класу систем (\ref{s1-1}).
+
+\medskip
+
+Припустимо, що система (\ref{s2-1}) в околі нульового стану рівноваги при $t\ge 0$ має невизначені коефіцієнти:
+\begin{equation}\label{s2-9}
+A\in{\rm Co}\{A_1,\dots,A_{\nu_a}\!\},\, B\in{\rm Co}\{B_1,\dots,B_{\nu_b}\!\},\,
+C\in{\rm Co}\{C_1,\dots,C_{\nu_c}\!\},
+\end{equation}
+де набори сталих матриць $A_i$, $B_j$ і $C_k$ є вершинами заданих політопів у відповідних просторах ${\mathbb R}^{n\times n}$, ${\mathbb R}^{n\times m}$ і ${\mathbb R}^{l\times n}$. Тоді матрична нерівність (\ref{s2-8}), в силу лінійної залежності блочного виразу $\Omega$ від даних коефіцієнтів, випливає із системи аналогічних нерівностей
+\begin{equation}\label{s2-10}
+ \left[\begin{array}{ccc}
+            \dot{\widehat{X}}+\widehat{M}^T_{ijk}\widehat{X}+\widehat{X}\widehat{M}_{ijk}+\varepsilon_0 I_{r+n} & \widehat{X}\widehat{B}_j & \widehat{C}^T_{k*} \\
+            \widehat{B}^T_j\widehat{X} & -\widehat{G}^T\widehat{P}\widehat{G} & \widehat{D}^T \\
+            \widehat{C}_{k*} & \widehat{D} & -\widehat{Q}^{-1}
+          \end{array}
+    \right]\le 0,
+\end{equation}
+де $\widehat{M}_{ijk}=\widehat{A}_i+\widehat{B}_j\mathcal {\widehat{D}}(\widehat{K}_{*})\widehat{C}_k$, $\widehat{C}_{k*}=\widehat{C}_k+\widehat{D}\mathcal{\widehat{D}}(\widehat{K}_{*})\widehat{C}_k$, $i=\overline{1,\nu_a}$,\; $j=\overline{1,\nu_b}$,\; $k=\overline{1,\nu_c}$,\; $\widehat{x}=0$,\; $t~\ge~0$.
+
+Нехай разом з (\ref{s2-9}) виконуються умови
+\begin{equation}\label{s2-11}
+\widehat{K}_*\equiv 0,\quad D\in{\rm Co}\{D_1,\dots,D_{\nu_d}\},\quad \widehat{x}=0,\>\>\> t\ge 0,
+\end{equation}
+Сформулюємо наслідок теореми  \ref{the:1} при більш сильних припущеннях.
+\begin{corollary}\label{cor:1}
+Нехай сумісна система ЛМН зі сталими матрицями
+\begin{equation}\label{s2-12}
+  \left[\begin{array}{ccc}
+            \widehat{A}^T_i\widehat{X}+\widehat{X}\widehat{A}_i & \widehat{X}\widehat{B}_j & \widehat{C}^T_k \\
+            \widehat{B}^T_j\widehat{X} & -\widehat{P} & \widehat{D}^T_s \\
+            \widehat{C}_k & \widehat{D}_s & -\widehat{Q}^{-1}
+          \end{array}
+    \right]< 0,\quad \widehat{X}=\widehat{X}^T>0,
+\end{equation}
+де $i=\overline{1,\nu_a}$, $j=\overline{1,\nu_b}$, $k=\overline{1,\nu_c}$, $s=\overline{1,\nu_d}.$
+Тоді кожний динамічний регулятор {\rm(\ref{s2-2})}, {\rm(\ref{s2-4})} забезпечує асимптотичну стійкість нульового стану сім'ї систем {\rm(\ref{s2-1})}, {\rm(\ref{s2-2})}, {\rm(\ref{s2-9})}, {\rm(\ref{s2-11})} і спільну квадратичну функцію Ляпунова $v(\widehat{x})=\widehat{x}^T\widehat{X}\widehat{x}$.
+\end{corollary}
+
+Зазначимо, що в формулах (\ref{s2-10}) і (\ref{s2-12}) використовуються такі блочні матриці
+\begin{equation}\label{s2-13}
+\begin{array}{cc}
+  \widehat{A}_i=\left[\!\begin{array}{cc}
+              A_i & 0_{n\times r} \\
+              0_{r\times n} & 0_{r\times r}
+              \end{array}
+               \!\right], & \widehat{B}_j=\left[\!\begin{array}{cc}
+              0_{n\times r} & B_j \\
+              I_r & 0_{r\times m}
+              \end{array}
+               \!\right], \\[5mm]
+  \widehat{C}_k=\left[\!\begin{array}{cc}
+              0_{r\times n} & I_r \\
+              C_k & 0_{l\times r}
+              \end{array}
+               \!\right], & \widehat{D}_s=\left[\!\begin{array}{cc}
+              0_{r\times r} & 0_{r\times m} \\
+              0_{l\times r} & D_s
+              \end{array}
+               \!\right],
+\end{array}
+\end{equation}
+які за умов (\ref{s2-9}) і (\ref{s2-11}) є вершинами деяких політопів у відповідних просторах ${\mathbb R}^{(n+r)\times (n+r)}$, ${\mathbb R}^{(n+r)\times (m+r)}$, ${\mathbb R}^{(l+r)\times (n+r)}$ і ${\mathbb R}^{(l+r)\times (m+r)}$.
+
+Системи матричних нерівностей (\ref{s2-10}) і (\ref{s2-12}) можна використовувати при розв'язанні обернених задач робастної стабілізації. Наприклад, для заданої матриці $\widehat{X}>0$ за умов наслідку \ref{cor:1} побудувати сім'ю систем стабілізації, яка описується деякими політопами матричних коефіцієнтів (\ref{s2-9}) і (\ref{s2-11}), а також еліпсоїдом матриць зворотного зв'язку ${\mathcal K}$ в (\ref{s2-4}). В цій задачі невідомими будуть вершини політопів $A_i$, $B_j$, $C_k$ і $D_s$, а також додатно визначені матриці $\widehat{P}$ і $\widehat{Q}$, що описують шуканий еліпсоїд.
+
+Слід відмітити, що ролі об'єкта та динамічного регулятора в системі (\ref{s2-1}), (\ref{s2-2}) формально можна поміняти місцями. А саме, за об'єкт керування можна вважати систему (\ref{s2-2}) з векторами стану $z$, спостереження $u$ і керування $y$. При цьому $x$ буде вектором стану динамічного регулятора (\ref{s2-1}).
+
+
+\section{Квадратична оптимізація сім'ї систем}
+
+Розглянемо систему керування (\ref{s2-1}) з динамічним регулятором (\ref{s2-2}) та квадратичним функціоналом якості
+\begin{equation}\label{s3-1}
+    J(\widehat{u},\widehat{x}_0)=\int_0^\infty \varphi(\widehat{x},\widehat{u},t)\, dt,
+\end{equation}
+де $$\widehat{x}_0=\widehat{x}(0),\quad
+\varphi(\widehat{x},\widehat{u},t)=\left[\widehat{x}^T, \widehat{u}^T\right]\widehat{\Phi}(t) \left[\!\begin{array}{c} \widehat{x} \\ \widehat{u} \end{array}\!\right],\>\>\> \widehat{\Phi}(t) =\left[\!\begin{array}{cc}
+              \widehat{S} & \widehat{N} \\
+              \widehat{N}^T & \widehat{R}
+            \end{array} \!\right],
+$$
+а блоки симетричної матриці $\widehat{\Phi}(t)$ при деякому $\delta>0$ задовольняють умови
+\begin{equation}\label{s3-2}
+\widehat{S}\geq \widehat{N}\widehat{R}^{-1}\widehat{N}^T+\delta \,I_{r+n},\quad \widehat{R}>0,\quad t\geq 0.
+\end{equation}
+Наприклад, якщо покласти
+\begin{equation}\label{s3-2-1}
+\widehat{S}=\left[\!\begin{array}{cc}
+              S & 0_{n\times r} \\
+              0_{r\times n} & I_r
+            \end{array} \!\right]\!,
+\widehat{R}=\left[\!\begin{array}{cc}
+              I_r & 0_{r\times m} \\
+              0_{m\times r} & R
+            \end{array} \!\right]\!,
+\widehat{N}=\left[\!\begin{array}{cc}
+              0_{n\times r} & N \\
+              0_{r\times r} & 0_{r\times m}
+            \end{array} \!\right]\!,
+\end{equation}
+то $\varphi(\widehat{x},\widehat{u},t)=x^TSx+2x^TNu+u^TRu+\|z\|^2+\|\dot{z}\|^2$, а умови (\ref{s3-2}) виконуються, якщо $S\geq NR^{-1}N^T+\delta \,I_n$, $ R>0$, $t\geq 0$ і $0<\delta\le 1$.
+
+Потрібно описати множину динамічних регуляторів (\ref{s2-3}), що забезпечують асимптотичну стійкість нульового стану замкненої системи (\ref{s2-1}), (\ref{s2-2}) і оцінку фінкціонала
+\begin{equation}\label{s3-3}
+J(\widehat{u},\widehat{x}_0)\le \omega,
+\end{equation}
+де $\omega$ --- деяке максимально допустиме значення функціоналу. Для розв'язання даної задачі, як і раніше, використовуємо функцію Ляпунова $v(\widehat{x},t)=\widehat{x}^T\widehat{X}(t)\widehat{x}$  з неперервно-диференційовною матрицею $\widehat{X}(t)$, що задовольняє умови
+\begin{equation}\label{s3-4}
+\widehat{x}_0^T\widehat{X}(0)\,\widehat{x}_0\le \omega,\quad \varepsilon_1 I_{r+n}\le \widehat{X}(t)\le \varepsilon_2 I_{r+n},\quad t\ge 0,
+\end{equation}
+При умовах (\ref{s2-4}) і (\ref{s2-5}) існують значення оператора $\mathcal{\widehat{D}}(\widehat{K})$, $\mathcal {\widehat{D}}(\widehat{K}_*)$ і $\mathcal{\widehat{D}}(\widehat{K}_1)$, де  $\widehat{K}_1=\widehat{G}^{-1}\widetilde{K}$ (див. п. 3). При цьому замкнена система представляється у вигляді (\ref{s2-6}), а похідна функції $v(\widehat{x},t)$ в силу системи (\ref{s2-6}) і підінтегральний вираз в (\ref{s3-1}) мають вигляд
+$$
+\dot{v}(\widehat{x},t)=\widehat{x}^T(\dot{\widehat{X}}+\widehat{M}^T\widehat{X}+\widehat{X}\widehat{M})\,x,\quad \varphi(\widehat{x},\widehat{u},t)=\widehat{x}^T\widehat{L}^T\widehat{\Phi} \widehat{L}\,\widehat{x},
+$$
+де $\widehat{M}= \widehat{A}+\widehat{B}\mathcal{\widehat{D}}(\widehat{K})\widehat{C}$, $\widehat{L}^T=[I_{r+n},\widehat{C}^T\mathcal{\widehat{D}}^T(\widehat{K})]$, $\widehat{K}=\widehat{K}_*+\widetilde{K}$.
+
+Використовуючи вищенаведені припущення та викладки, а також властивості оператора $\mathcal{\widehat{D}}(\widehat{K})$, згідно з \cite{Maz-Bog-2012} маємо наступний результат.
+\begin{theorem}\label{the:2}
+Нехай для деяких $\varepsilon_i>0$ $(i=0,1,2)$ при $\widehat{x}=0$ і $t\ge 0$ виконується система матричних нерівностей {\rm(\ref{s3-4})} і
+\begin{equation}\label{s3-5}
+    \widehat{G}^T\widehat{P}\widehat{G}-\widehat{D}^T\widehat{Q}\widehat{D}>\widehat{R},
+\end{equation}
+\begin{equation}\label{s3-6}
+    \left[\!\begin{array}{ccc}
+            \dot{\widehat{X}}+\widehat{M}_*^T\widehat{X}+\widehat{X}\widehat{M}_*+\widehat{\Phi}_*+\varepsilon_0 I_{r+n} & \widehat{B}_*^T & \widehat{C}_*^T \\
+            \widehat{B}_* & \widehat{R}-\widehat{G}^T\widehat{P}\widehat{G} & \widehat{D}^T \\
+            \widehat{C}_* & \widehat{D} & \!-\widehat{Q}^{-1}
+          \end{array}
+    \!\right]\le 0,
+\end{equation}
+де
+$\widehat{\Phi}_*=\widehat{L}^T_*\widehat{\Phi}\widehat{L}_*$, $\widehat{B}_*=\widehat{B}^T\widehat{X}+\widehat{N}^T+\widehat{R}\mathcal{\widehat{D}}(\widehat{K}_*)\widehat{C}$, $\widehat{C}_*=\widehat{C}+\widehat{D}\mathcal{\widehat{D}}(\widehat{K}_*)\widehat{C}$, $\widehat{L}_*^T=[I_{r+n},\widehat{C}^T\mathcal{\widehat{D}}(\widehat{K}_*)].$
+Тоді кожний динамічний регулятор {\rm(\ref{s2-2})}, {\rm(\ref{s2-4})} забезпечує асимптотичну стійкість нульового стану замкненої системи {\rm(\ref{s2-1})}, {\rm(\ref{s2-2})}, спільну функцію Ляпунова $v(\widehat{x},t)=\widehat{x}^T\widehat{X}(t)\,\widehat{x}$ і оцінку функціонала {\rm(\ref{s3-3})}.
+\end{theorem}
+
+Твердження теореми \ref{the:2} виконується для сім'ї систем (\ref{s2-1}), (\ref{s2-2}), (\ref{s2-9}), якщо замість (\ref{s3-6}) використати систему матричних нерівностей
+\begin{equation}\label{s3-7}
+  \left[\!\begin{array}{ccc}
+            \dot{\widehat{X}}+\widehat{M}_{ijk}^T\widehat{X}+\widehat{X}\widehat{M}_{ijk}+ \widehat{\Phi}_k+\varepsilon_0 I_{r+n} & \widehat{B}_{*jk}^T & \widehat{C}_{*k}^T \\
+            \widehat{B}_{*jk} & \widehat{R}-\widehat{G}^T\widehat{P}\widehat{G} & \widehat{D}^T \\
+            \widehat{C}_{*k} & \widehat{D} & \!\!-\widehat{Q}^{-1}
+          \end{array}
+    \!\right]\le 0,
+\end{equation}
+де $\widehat{M}_{ijk}=\widehat{A}_i+\widehat{B}_j\mathcal{\widehat{D}}(\widehat{K}_*)\widehat{C}_k$, $\widehat{\Phi}_k=\widehat{L}_k^T\widehat{\Phi} \widehat{L}_k$, $\widehat{L}_k^T=[I_{r+n},\widehat{C}_k^T \mathcal{\widehat{D}}^T(\widehat{K}_*)]$, $\widehat{B}_{*jk}=\widehat{B}_j^T\widehat{X}+\widehat{N}^T+\widehat{R}\mathcal{\widehat{D}}(\widehat{K}_*)\widehat{C}_k$, $\widehat{C}_{*k}=\widehat{C}_k+\widehat{D}\mathcal{\widehat{D}}(\widehat{K}_*)\,\widehat{C}_k$,
+$i=\overline{1,\nu_a}$, $j=\overline{1,\nu_b}$, $k=\overline{1,\nu_c}$, $\widehat{x}=0$, $t\ge 0$. Тут і в наступному твердженні при більш сильних припущеннях використовуються блочні матриці (\ref{s2-13}).
+
+\begin{corollary}\label{cor:4}
+Нехай сумісна система ЛМН зі сталими матрицями
+\begin{equation}\label{s3-8}
+    \left[\!\begin{array}{ccc}
+           \widehat{A}_i^T\widehat{X}+\widehat{X}\widehat{A}_i+\widehat{S} & \widehat{X}\widehat{B}_j+\widehat{N} & \widehat{C}_{k}^T \\
+            \widehat{B}_j^T\widehat{X}+\widehat{N}^T & \widehat{R}-\widehat{P} & \widehat{D}_s^T \\
+            \widehat{C}_{k} & \widehat{D}_s & -\widehat{Q}^{-1}
+          \end{array}
+    \!\right]\le 0,\quad \widehat{X}=\widehat{X}^T>0,
+\end{equation}
+де $i=\overline{1,\nu_a}$, $j=\overline{1,\nu_b}$, $k=\overline{1,\nu_c}$, $s=\overline{1,\nu_d}.$
+Тоді кожний динамічний регулятор {\rm(\ref{s2-2})}, {\rm(\ref{s2-4})} забезпечує асимптотичну стійкість нульового стану сім'ї систем {\rm(\ref{s2-1})}, {\rm(\ref{s2-2})}, {\rm(\ref{s2-9})}, {\rm(\ref{s2-11})}, спільну функцію Ляпунова $v(\widehat{x})=\widehat{x}^T\widehat{X}\,\widehat{x}$ і оцінку функціонала {\rm(\ref{s3-3})}.
+\end{corollary}
+
+На основі теореми \ref{the:2} та її наслідків можна сформулювати такі задачі оптимізації  системи (\ref{s2-1}) з динамічним регулятором (\ref{s2-2}) і сімей систем (\ref{s2-1}), (\ref{s2-2}), (\ref{s2-9}) та (\ref{s2-1}), (\ref{s2-2}), (\ref{s2-9}), (\ref{s2-11}):
+
+\begin{description}
+  \item[\rm 1)] \emph{мінімізувати $\omega>0$ при обмеженнях {\rm (\ref{s3-4})}, {\rm (\ref{s3-5})} і
+  {\rm (\ref{s3-6})}};\\[-6mm]
+  \item[\rm 2)] \emph{мінімізувати $\omega>0$ при обмеженнях {\rm (\ref{s3-4})}, {\rm (\ref{s3-5})} і
+  {\rm \ref{s3-7})}};\\[-6mm]
+  \item[\rm 3)] \emph{мінімізувати $\omega>0$ при обмеженнях {\rm (\ref{s3-8})}}.
+\end{description}
+
+При розв'язанні таких задач у випадку сталих матриць можна використовувати різні методи математичного програмування. Параметрами оптимізації можуть бути додатно визначені матриці квадратичної функції Ляпунова ($\widehat{X}$), еліпсоїда коефіцієнтів зворотного зв'язку ($\widehat{P}$ і $\widehat{Q}$), а також функціоналу якості ($\widehat{\Phi}$). При цьому результати розрахунків залежать від початкового вектора $\widehat{x}_0$.
+
+Зазначимо, що замість (\ref{s3-1}) можна використовувати усереднений за початковими умовами квадратичний функціонал, для якого виконується оцінка
+$$
+J_0(\widehat{u})= \int_{{\mathcal S}_0}\mu(\widehat{x}_0)\, J(\widehat{u},\widehat{x}_0)\, d\widehat{x}_0\leq {\rm tr}\,(\Sigma \,\widehat{X}(0))\leq \mu_0\,\lambda_{\max}(\widehat{X}(0)),$$
+де $\mu(\widehat{x}_0)\ge 0$ --- задана функція щільності розподілу вектора $\widehat{x}_0$ на деякій множині  ${\mathcal S}_0\subseteq {\mathbb R}^{r+n}$,
+$$
+\Sigma= \int_{{\mathcal S}_0}\mu(\widehat{x}_0)\, \widehat{x}_0\widehat{x}_0^T\, d\widehat{x}_0,\>\>\>
+\mu_0=\int_{{\mathcal S}_0}\mu(\widehat{x}_0) \|\widehat{x}_0\|^2\, d\widehat{x}_0.
+$$
+Тому в сформульованих задачах оптимізації 1) -- 3) замість першої умови (\ref{s3-4}) можна використовувати нерівності ${\rm tr}\,(\Sigma \,\widehat{X}(0))\leq \omega$ або $\mu_0\,\lambda_{\max}(\widehat{X}(0))\leq \omega$.
+
+%\begin{example} \rm
+
+\section{Робастна стабілізація робота-маніпулятора}
+Розглянемо систему керування для одноланкового робота-маніпулятора, круговий рух ланки якого навколо одного з кінців здійснюється за допомогою гнучкого з'єднання ланки і виконавчого механізму (рис. \ref{fig-1}). Між виконавчим механізмом і кінцем ланки включена лінійна торсійна пружина. Дана система описується у вигляді двох нелінійних  диференціальних рівнянь другого порядку, які відповідають за механічний баланс виконавчого механізму (валу електродвигуна) та ланки (руки робота-маніпулятора) без врахування сил тертя і зовнішніх збурень \cite{Ghorbel}:
+\begin{equation}\label{e1-1}
+\begin{cases}
+\displaystyle
+\ddot{\theta}_1=-\frac{q}{J_1}\,\sin \theta_1-\frac{k}{J_1}\,(\theta_1-\theta_2), \\[2mm]
+\displaystyle
+\ddot{\theta}_2=\frac{k}{J_2}\,(\theta_1-\theta_2)-\frac{d}{J_2}\,\dot{\theta}_2+\frac{1}{J_2}\,u,
+\end{cases}
+\end{equation}
+де $\theta_1$ і $\theta_2$ --- кутові координати відповідно ланки маніпулятора і валу двигуна, $u$ --- керуючий момент, що створює двигун, $J_1 (J_2)$ --- момент інерції ланки маніпулятора (двигуна), $k$ --- жорсткість передаточного механізму, $d$ --- коефіцієнт демпфування, $\mu$ --- маса ланки маніпулятора, $h$ --- довжина ланки маніпулятора, $g$ --- прискорення вільного падіння,  $q\sin \theta_1$ --- момент сили ваги, що діє на ланку маніпулятора, $q=\mu gh$.
+
+\begin{figure}[h!]
+  \begin{center}
+  \includegraphics[width=0.25\textwidth]{Robot}
+
+  \vspace{-1mm}
+  \caption{\small Одноланковий робот-маніпулятор.} \label{fig-1}
+  \end{center}
+\end{figure}
+
+Покладемо $x=[ \theta_1, \dot{\theta_1}, \theta_2, \dot{\theta_2}]^T$ і представимо
+систему рівнянь руху робота-маніпулятора у векторно-матричній формі
+\begin{equation}\label{e1-2}
+\dot{x}=A(x)\,x+Bu,
+\end{equation}
+де
+$$
+ A(x)=\left[\!\!\begin{array}{cccc}
+                 0 & 1 & 0 & 0 \\ \displaystyle
+                 -\frac{1}{J_1}\Big(q\, \frac{sin x_1}{x_1}+k\Big) & 0 & \displaystyle\frac{k}{J_1} & 0 \\
+                 0 & 0 & 0 & 1 \\ \displaystyle
+                 \frac{k}{J_2} & 0 & \displaystyle-\frac{k}{J_2} & \displaystyle-\frac{d}{J_2}
+               \end{array}
+    \!\right],\>\>\> B=\left[\!\begin{array}{c}
+                            0 \\
+                            0 \\
+                            0 \\
+                            \displaystyle\frac{1}{J_2}
+                          \end{array}
+    \!\right].
+$$
+
+Нехай $q=5$,  $d=0,1$, $k=100$, $J_1=1$ і $J_2=0,3$. Припустимо, що вимірюванню доступний вектор виходу
+$$
+    y=Cx+Du=\left[\!\begin{array}{c}
+                    \theta_1+0,1\,u \\
+                    \dot{\theta}_2
+                  \end{array}
+    \!\right],\> C=\left[\!\begin{array}{cccc}
+                            1 & 0 & 0 & 0 \\
+                            0 & 0 & 0 & 1
+                          \end{array}
+    \!\right],\> D=\left[\!\begin{array}{c}
+                            0,1 \\
+                            0
+                          \end{array}
+    \!\right].
+$$
+
+Керування, що стабілізує систему (\ref{e1-2}), будуємо у вигляді ДЗЗ (\ref{s1-2}) при $r=2$. Врахувавши блочну структуру матриць $\widehat{A}$, $\widehat{B}$, $\widehat{C}$ і $\widehat{D}$ в (\ref{s1-3}),  знаходимо матриці
+$$ \widehat{X}= \left[\begin{array}{rrrrrr}
+      5,4259 &  -2,5720  &  5,5419  & -1,3028   &   0   &   0\\
+     -2,5720 &  15,9692  & -2,7705  &  -0,7678  &   0   &   0\\
+      5,5419 &  -2,7705  &  5,8346  & -2,7266   &   0   &   0\\
+    -1,3028  & -0,7678   & -2,7266  & 19,7167   &   1   &   1\\
+         0   &      0    &     0    &  1        &  10   &   0\\
+         0   &      0    &     0    &  1        &   0   &   10
+\end{array}
+\right]>0,
+$$
+$$
+\widehat{K}=\left[\begin{array}{cccc}
+ -11,095  & -3,6838  &  -0,5398 &  -1,5318\\
+   3,9868  & -11,095 &  -0,5398 &  -1,5318\\
+   2,2564  &   2,0263 &  -0,7031 &  -9,1372
+                   \end{array}\right],
+$$
+що задовольняють співвідношення (\ref{s1-8}) і (\ref{s1-10}) при $\alpha=-0,1$. При цьому
+$$
+\widehat{K}_*=-\mathcal{\widehat{D}}(\widehat{K})=\left[\!\begin{array}{cccc}
+                                          -10,964 &  -3,5662  & -0,5807 &  -2,0624\\
+                                            4,1178 & -10,9774  & -0,5807 &  -2,0624\\
+                                            2,427  &  2,1795  & -0,7563 & -9,8282
+                                        \end{array} \!\right]\in {\mathcal K}_{\widehat{D}},
+$$
+$i(\widehat{H})=\{4,3,0\}$ і керування $\widehat{u}=\widehat{K}_*\widehat{y}$ забезпечує асимптотичну стійкість нульового стану лінійної системи (див. лему \ref{lem:2})
+\begin{equation}\label{e1-2-1}
+\dot{\widehat{x}}=\widehat{M}_*\widehat{x},\quad \widehat{M}_*=\widehat{A}(0)+\widehat{B}\mathcal{\widehat{D}}(\widehat{K}_*)\widehat{C},
+\end{equation}
+$$\sigma(\widehat{M}_*)=\{ -0,6209; -12,418; -7,5776\pm 10,4569 i; -12,3933\pm 7,5313 i\}.
+$$
+Нульовий стан вихідної нелінійної системи (\ref{e1-2}) разом з динамічним регулятором також асимптотично стійкий. На рис. \ref{fig-2} зображена поведінка розв'язків замкненої нелінійної системи (\ref{s2-6}) з початковим вектором $\widehat{x}_0=[0,5\>\>1\>\>1,5\>\>2\>\>-0,5\>\>-1]^T$.
+
+Для ілюстрації теореми \ref{the:2} задамо блочні матриці $\widehat{S}$, $\widehat{R}$ і $\widehat{N}$ функціоналу (\ref{s3-1}) у вигляді (\ref{s3-2-1}) при $S~=~0,5\,I_4$, $R=0,2$, $N=0,1\,[1\; 0\; 0\;1]^T$. Розглянемо два випадки:
+
+  (a) $J_1$ і $J_2$ --- невизначені моменти інерції, що приймають значення на інтервалах $0,5\leq J_1 \leq 1,8$ і $0,1\leq J_2\leq 0,6$;
+
+  (b) $k$, $d$ і $q$ --- невизначені параметри, що приймають значення на інтервалах $80\leq k \leq 130$,\,\, $0,01\leq d\leq 4$ і $3\leq q\leq 35$.
+
+  \begin{figure}[ht]
+  \begin{center}
+  \includegraphics[width=0.6\textwidth]{Process}
+
+   \vspace{-4mm}
+  \caption{\small Поведінка системи з керуванням $\widehat{u}=\widehat{K}_*\widehat{y}$ $(l=2, r=2)$.} \label{fig-2}
+  \end{center}
+\end{figure}
+
+У випадку (a) система співвідношень (\ref{s3-7}) складається з чотирьох матричних нерівностей, що відповідають можливим значенням $J_1$ і $J_2$ на кінцях заданих інтервалів. Використовуючи систему {\sc Matlab}, знайдено додатно визначені матриці
+$$
+\widehat{P}=\left[\begin{array}{ccc}
+    22,5659  &  0,1916  &  0,0992\\
+    0,1916  & 21,2356 &   0,2037\\
+    0,0992 &   0,2037  & 23,4494
+    \end{array}
+\right]>0,$$
+$$\widehat{Q}=\left[\begin{array}{cccc}
+     0,2397 &  -0,0005 &  -0,0009 &   0,0013\\
+   -0,0005  &  0,2391  & -0,0007  &  0,0013\\
+   -0,0009  & -0,0007  &  0,2256  &  0,0161\\
+    0,0013  &  0,0013  &  0,0161  &  0,2215
+    \end{array}
+\right]>0,$$
+$$ \widehat{X}= \left[\begin{array}{rrrrrr}
+    4212,1  & -113,4 &  -4165,1 &  -191,1  &  66,7  &  19,2\\
+   -113,4  &  21,8  &  124,4  &  1,1 &  -8,8 &  -10,2\\
+   -4165,1  &  124,4  &  4250  &  193,5  & -59,1  & -5,6\\
+   -191,1 &   1,1  &  193,5  &  19,2  &  5,2  &  5,4\\
+    66,7  & -8,8  & -59,1  &  5,2  &  232,1  & -46,1\\
+    19,2 &  -10,2  & -5,6  &  5,4  & -46,1  &  181,6
+\end{array}
+\right]>0,
+$$
+які задовольняють вказану систему строгих нерівностей при $\varepsilon_0=0$.
+ Для всіх значень моментів інерції із заданих інтервалів і матриць
+ \begin{equation}\label{e1-4}
+   \widehat{K}=\widehat{K}_*+\widetilde{K}, \quad \widetilde{K}^T\widehat{P}\widetilde{K}\le \widehat{Q},
+ \end{equation}
+ що визначають еліпсоїдальну множину коефіцієнтів динамічного регулятора,
+рух робота-маніпулятора в околі нульового стану рівноваги асимптотично стійкий. При цьому $v(\widehat{x})=\widehat{x}^T\widehat{X}\widehat{x}$ є спільною функцією Ляпунова системи `робот -- динамічний регулятор', а значення заданого функціоналу якості не перевищує $v(\widehat{x}_0)=5753,6$.
+
+У випадку (b) система співвідношень (\ref{s3-7}) складається з восьми матричних нерівностей, що відповідають усім можливим значенням параметрів $k$, $d$ і $q$ на кінцях заданих інтервалів.
+Використовуючи систему {\sc Matlab}, знайдено додатно визначені матриці
+$$
+\widehat{P}=\left[\begin{array}{ccc}
+9,7612 &   0,1239  &  0,0518\\
+    0,1239  &  9,7596 &   0,0086\\
+    0,0518  &  0,0086  &  9,9692
+    \end{array}
+\right],$$
+$$\widehat{Q}=\left[\begin{array}{cccc}
+0,2216 &  -0,0012  & -0,0004 &   0,0012\\
+   -0,0012 &   0,2197  & -0,0000 &   0,0013\\
+   -0,0004 &  -0,0000 &   0,2076  &  0,0060\\
+    0,0012  &  0,0013 &   0,0060  &  0,2067
+ \end{array}
+\right],$$
+$${\widehat{X}\!\!=\!\!\left[\!\!\begin{array}{rrrrrr}
+391,1327 & \!\!-11,8391& \!\!-368,5722 &  \!\!-8,0809 & \!\! -3,3290 &   1,0377\\
+  -11,8391&    3,9551 &  22,9472  &  0,5287  &  0,3956 &   0,2964\\
+ \!\!-368,5722 &  22,9472 & 492,5069  & 11,2335  &  5,8904  &  0,5692\\
+   -8,0809  &  0,5287 &  11,2335  &  0,9488  &  0,5909  &  0,3985\\
+   -3,3290 &   0,3956 &   5,8904   & 0,5909  & 14,5623  & \!\!-3,5012\\
+    1,0377  &  0,2964  &  0,5692  &  0,3985  & \!\!-3,5012  & 10,1013\\
+\end{array}
+\!\!\right]\!,}
+$$
+які задовольняють вказану систему строгих нерівностей при $\varepsilon_0=0$.
+ Для всіх значень параметрів $k$, $d$ та $q$ із заданих інтервалів
+і матриць (\ref{e1-4}), що визначають еліпсоїдальну множину коефіцієнтів динамічного регулятора,
+рух робота-маніпулятора в околі нульового стану рівноваги асимптотично стійкий. При цьому $v(\widehat{x})=\widehat{x}^T\widehat{X}\widehat{x}$ є спільною функцією Ляпунова системи `робот -- динамічний регулятор', а значення заданого функціоналу якості не перевищує $v(\widehat{x}_0)=767,7325$.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%----------------------------------------------------------------
+
+\medskip
+
+Припустимо, що системі (\ref{e1-2}) вимірюванню доступна величина
+$$y=Cx+Du=\left[\!\begin{array}{c}
+                    \dot{\theta}_2+0,1\,\,\,u
+                \end{array}
+    \!\right],\> C=\left[\!\begin{array}{cccc}
+                            0 & 0 & 0 & 1
+                          \end{array}
+    \!\right],\> D=\left[\!\begin{array}{c}
+                            0,1
+                        \end{array}
+    \!\right].
+$$
+В цьому випадку побудуємо стабілізуюче керування у вигляді динамічного регулятора повного порядку $r=n=4$, розв'язавши систему співвідношень відносно $\widehat{X}=\widehat{X}^T>0$ і $\widehat{K}$ при $\alpha=-0,1$.
+%$$ \widehat{X}= \left[\begin{array}{rrrrrrrr}
+%5,4259 & -2,5720 & 5,5419 & -1,3028 & 0 & 0 & 0 & 0 \\
+%-2,5720 & 15,9692 & -2,7705 & -0,7678 & 0 & 0 & 0 & 0\\
+%5,5419 & -2,7705 & 5,8346 & -2,7266 & 0 & 0 & 0 & 0\\
+%-1,3028 & -0,7678 & -2,7266 & 19,7167 & 0,5 & 0,5 & 0,5 & 0,5\\
+%0 & 0 & 0 & 0,5 & 10 & 0 & 0 & 0\\
+%0 & 0 & 0 & 0,5 & 0 & 10 & 0 & 0\\
+%0 & 0 & 0 & 0,5 & 0 & 0 & 10 & 0\\
+%0 & 0 & 0 & 0,5 & 0 & 0 & 0 & 10
+%\end{array}
+%\right]>0,
+%$$
+%$$
+%\widehat{K}=\left[\begin{array}{ccccc}
+%-4,2481 & 26,0307 & 26,4636 & 30,45 & 0,1392\\
+%-26,0453 & -4,2481 & 1,5846 & -1,8407 & 0,1392\\
+%-26,4782 & -1,5992 & -4,2481 & -4,1309 & 0,1392\\
+%-30,4646 & 1,8261 & 4,1163 & -4,2481 & 0,1392\\
+%-0,8042 & 0,8345 & 0,9231 & 0,8078 & -9.23
+%                  \end{array}\right],
+%$$
+При цьому
+$$
+\widehat{K}_*\!=\!-\mathcal{\widehat{D}}(\widehat{K})\!=\!\left[\!\begin{array}{ccccc}
+-4,1027 & \!25,8798 & \!26,2967 & 30,304 & 1,8078\\
+-25,8999 & \!-4,3989 & 1,4177 & \!\!-1,9868 & 1,8078\\
+-26,3328 & \!-1,7501 & -4,415 & \!\!-4,2769 & 1,8078\\
+-30,3193 & 1,6753 & 3,9494 & \!\!-4,3941 & 1,8078\\
+-10,4439 & 10,8384 & 11,9892 & 10,4918 & \!\!\!-119,8742
+\end{array}\!\right]\!,
+$$
+$\widehat{K}_* \in {\mathcal K}_{\widehat{D}}$, $i(\widehat{H})=\{5,5,0\}$ і керування $\widehat{u}=\widehat{K}_*\widehat{y}$ забезпечує асимптотичну стійкість лінійної системи (\ref{e1-2-1}) (див. лему \ref{lem:2}), спектр якої
+$\sigma(\widehat{M}_*)=\{ -0,5489; -4,2406\pm 0,2145 i; -7,2319\pm 11,6669 i; -16,12;$ $ -4,2393\pm 48,262 i\}.
+$
+Нульовий стан вихідної нелінійної системи (\ref{e1-2}) разом з динамічним регулятором також асимптотично стійкий. На рис. \ref{fig-3} зображена поведінка розв'язків замкненої нелінійної системи (\ref{s2-6}) з початковим вектором\\
+$\widehat{x}_0=[0,5\>\>1\>\>1,5\>\>2\>\>-0,5\>\>-1\>\>-1,5\>\>-2]^T$.
+
+
+Наведемо аналогічні результати розрахунків у розглянутих випадках (a) і (b) невизначеності параметрів системи з тими ж матрицями функціоналу (\ref{s3-1}), що і у попередньому варіанті.
+
+     \begin{figure}[ht]
+  \begin{center}
+  \includegraphics[width=0.6\textwidth]{Process_n}
+
+   \vspace{-4mm}
+  \caption{\small Поведінка системи з керуванням $\widehat{u}=\widehat{K}_*\widehat{y}$ $(l=1, r=4)$.} \label{fig-3}
+  \end{center}
+\end{figure}
+
+У випадку (a) додатно визначені матриці
+$$
+\widehat{P}=\left[\begin{array}{ccccc}
+138,9143 & -0,0906 & -0,8891 & 0,8471 & 0,0699\\
+-0,0906 & 130,4898 & 3,4543 & 4,2867 & 0,1607\\
+-0,8891 & 3,4543 & 130,5692 & 4,3979 & 0,1386\\
+0,8471 & 4,2867 & 4,3979 & 131,5409 & 0,3647\\
+0,0699 & 0,1607 & 0,1386 & 0,3647 & 123,2942
+    \end{array}
+\right],$$
+$$\widehat{Q}=\left[\begin{array}{ccccc}
+0,024 & 0 & 0 & 0 & 0\\
+0 & 0,024 & 0 & 0 & 0\\
+0 & 0 & 0,024 & 0 & 0\\
+0 & 0 & 0 & 0,024 & 0\\
+0 & 0 & 0 & 0 & 0,024
+    \end{array}
+\right],$$
+$$ \widehat{X}\!= \!\left[\begin{array}{rrrrrrrr}
+1834,2 & \!\!-39,4 & \!\!-1795,5 & \!\!-62 & \!\!-11,9 & -7,2 & -7,4 & -4\\
+-39,4 & 9,4 & 41,5 & -1 & 0,7 & 0,4 & 0,5 & -0,6\\
+\!\!\!-1795,5 & 41,5 & \!\!1766,9 & 61 & 12,3 & 6,8 & 6,8 & 5,2\\
+-62 & -1 & 61 & 5,2 & \!\!\!-1,7 & 1,5 & 1,8 & 1,2\\
+-11,9 & 0,7 & 12,3 & \!\!-1,7 & 573,2 & -2,2 & -2,6 & 3,6\\
+-7,2 & 0,4 & 6,8 & 1,5 & -2,2 & 576,6 & \!\!-16,4 & 9,8\\
+-7,4 & 0,5 & 6,8 & 1,8 & -2,6 & \!\!-16,4 & \!\!564,3 & 20,1\\
+-4 & -0,6 & 5,2 & 1,2 & 3,6 & 9,8 & 20,1 & \!\!545,8
+\end{array}
+\right]\!,
+$$
+задовольняють систему строгих нерівностей (\ref{s3-7}) при $\varepsilon_0=0$.
+ Для всіх значень моментів інерції $J_1$ і $J_2$ із заданих інтервалів і матриць $\widehat{K}$
+ що визначають еліпсоїдальну множину коефіцієнтів (\ref{e1-4}) динамічного регулятора,
+рух робота-маніпулятора в околі нульового стану рівноваги асимптотично стійкий. При цьому $v(\widehat{x})=\widehat{x}^T\widehat{X}\widehat{x}$ є спільною функцією Ляпунова системи, а значення заданого функціоналу якості не перевищує $v(\widehat{x}_0)=6286,5$.
+
+У випадку (b) матриці додатно визначені матриці
+$$
+\widehat{P}=\left[\begin{array}{ccccc}
+139,6246 & -0,0579 & -0,6031 & 0,5661 & 0,1813\\
+-0,0579 & 133,8658 & 2,4128 & 2,8851 & 0,1823\\
+-0,6031 & 2,4128 & 133,9549 & 2,9319 & 0,1724\\
+0,5661 & 2,8851 & 2,9319 & 134,6888 & 0,25\\
+0,1813 & 0,1823 & 0,1724 & 0,25 & 125,7135
+    \end{array}
+\right],$$
+$$\widehat{Q}=\left[\begin{array}{ccccc}
+0,022 & 0 & 0 & 0 & 0\\
+0 & 0,022 & 0 & 0 & 0\\
+0 & 0 & 0,022 & 0 & 0\\
+0 & 0 & 0 & 0,022 & 0\\
+0 & 0 & 0 & 0 & 0,022
+ \end{array}
+\right],$$
+$$ \widehat{X}= \left[\begin{array}{rrrrr}
+334,6812 & -10,8539 & -315,8285 & -6,7508 & -12,6088     \\
+-10,8539 & 3,539 & 20,4582 & 0,5119 & 0,3484            \\
+-315,8285 & 20,4582 & 418,8241 & 9,4635 & 11,7803        \\
+-6,7508 & 0,5119 & 9,4635 & 0,777 & -1,8269             \\
+-12,6088 & 0,3484 & 11,7803 & -1,8269 & 551,6656        \\
+-5,9544 & 0,1809 & 5,3233 & 1,3361 & -2.081             \\
+-5,7255 & 0,3652 & 4,9185 & 1,4952 & -6,7576            \\
+-4,8031 & -0,768 & 5,27 & 1,3844 & 7,214
+\end{array}
+\right.
+$$
+$$ \left. \begin{array}{rrr}
+       -5,9544 & -5,7255 & -4,8031\\
+               0,1809 & 0,3652 & -0,768\\
+        5,3233 & 4,9185 & 5,27\\
+             1,3361 & 1,4952 & 1,3844\\
+         -2.081 & -6,7576 & 7,214\\
+              508.8325 & 6,1446 & 29,8012\\
+             6,1446 & 499,3528 & 38,8969\\
+                29,8012 & 38,8969 & 490,055
+\end{array}
+\right],
+$$
+задовольняють систему строгих нерівностей (\ref{s3-7}) при $\varepsilon_0=0$.
+ Для всіх значень параметрів $k$, $d$ та $q$ із заданих інтервалів
+і матриць $\widehat{K}$, що визначають еліпсоїдальну множину коефіцієнтів (\ref{e1-4}) динамічного регулятора,
+рух робота-маніпулятора в околі нульового стану рівноваги асимптотично стійкий. При цьому $v(\widehat{x})=\widehat{x}^T\widehat{X}\widehat{x}$ є спільною функцією Ляпунова системи, а значення заданого функціоналу якості не перевищує $v(\widehat{x}_0)=5409,3$.
+
+%--------------------------------------------------------------
+%Продемонструємо тепер методику леми \ref{lem:3} для пошуку керування, що стабілізує систему (\ref{e1-2}), побудувавши його у вигляді ДЗЗ (\ref{s1-2}) при $r=n=4$ при тому ж векторі виходу, що і в попередньому варіанті.
+%
+%Розв'язавши дві ЛМН (\ref{s1-19}) знаходимо матриці $X$ і $Y$:
+%$$X=\left[\begin{array}{cccc}
+%0,417 & -0,1088 & 0,4195 & -0,0979\\
+%-0,1088 & 1,8136 & -0,1197 & 0,804\\
+%0,4195 & -0,1197 & 0,4324 & -0,1316\\
+%0,0979 & 0,804 & -0,1316 & 4,2435
+% \end{array}
+%\right]>0,$$
+%$$Y=\left[\begin{array}{cccc}
+%2,5408 & -0,2689 & -0,117 & -0,0863\\
+%-0,2689 & 0,5338 & 0,4437 & 0,1601\\
+%-0,117 & 0,4437 & 1,3287 & 0.1347\\
+%-0,0863 & 0,1601 & 0,1347 & 0,0515
+%\end{array}
+%\right]>0.$$
+%
+%Поклавши у співвідношеннях (\ref{s1-18}) $K=0$, знаходимо матриці $U$ і $F$, а з (\ref{s1-15}) --- матриці $Z$ та $V$. Отже, отримуємо, що
+%$$
+%\widehat{K}=\left[\begin{array}{ccccc}
+%-0,1654 & 0,974 & 0,1721 & -0,643 & 0,7048\\
+%-84,8469 & 3,1634 & 79,0308 & 78,3444 & -85,8747\\
+%0,13 & 0,0204 & -0,1353 & 1,5056 & -0,5541\\
+%273,3298 & -9,4187 & -270,9001 & -266,9281 & 289,0154\\
+%2,3468 & 0,3684 & -2,4418 & -0,8769 & 0
+%                  \end{array}\right].
+%$$
+%При цьому
+%$$
+%\widehat{K}_*=-\mathcal{\widehat{D}}(\widehat{K})=\left[\!\begin{array}{ccccc}
+%0 & 1 & 0 & -0,7048 & 0,7048\\
+%-105 & 0 & 100 & 85,8747 & -85,8747\\
+%0 & 0 & 0 & 1,5541 & -0,5541\\
+%341,156 & 1,2279 & -341,4728 & -292,2717 & 289,0154\\
+%2,3468 & 0,3684 & -2,4418 & -0,8769 & 0
+%\end{array} \!\right]\in {\mathcal K}_{\widehat{D}},
+%$$
+%і керування $\widehat{u}=\widehat{K}_*\widehat{y}$ забезпечує асимптотичну стійкість нульового стану системи \ref{s1-2}. На рис. \ref{fig-4} зображена поведінка розв'язків замкненої нелінійної системи (\ref{s2-2}) з початковим вектором $\widehat{x}_0~=~[0,5\>\>1\>\>1,5\>\>2\>\>-~0,5\>\>-~1\>\>-1,5\>\>-2]^T$.
+%
+%Для ілюстрації теореми \ref{the:2} задамо блочні матриці $\widehat{S}$, $\widehat{R}$ і $\widehat{N}$ функціоналу (\ref{s3-1}) у вигляді (\ref{s3-2-1}) при тих же самих значеннях, як і у попередньому варіанті. Також розглянемо два випадки зміни параметрів:
+%
+%  (a) $J_1$ і $J_2$ --- невизначені моменти інерції, що приймають значення на інтервалах $0,99 \leq J_1 \leq 1,03$ і $0,2\leq J_2\leq 0,5$;
+%
+% (b) $k$, $d$ і $q$ --- невизначені параметри, що приймають значення на інтервалах $99\leq k \leq 101$,\,\, $0,05\leq d\leq 0,2$ і $4\leq q\leq 6$.
+%
+%     \begin{figure}[h!]
+%  \begin{center}
+%  \includegraphics[width=0.6\textwidth]{Process_s}
+%
+%   \vspace{-4mm}
+%  \caption{\small Поведінка системи з керуванням $\widehat{u}=\widehat{K}_*\widehat{y}$.} \label{fig-4}
+%  \end{center}
+%\end{figure}
+%
+%У випадку (a) система співвідношень (\ref{s3-7}) складається з чотирьох матричних нерівностей, що відповідають можливим значенням $J_1$ і $J_2$ на кінцях заданих інтервалів. Використовуючи систему {\sc Matlab}, знайдено додатно визначені матриці
+%$$
+%\widehat{P}=\left[\begin{array}{ccccc}
+%957,7013 & -8,3454 & 6,6341 & -3,2026 & 0,4243\\
+%-8,3454 & 893,8336 & 22,2302 & 17,9093 & -2,0183\\
+%6,6341 & 22,2302 & 919,3079 & 7,4926 & -0,7439\\
+%-3,2026 & 17,9093 & 7,4926 & 840,1426 & 1,7368\\
+%0,4243 & -2,0183 & -0,7439 & 1,7368 & 993,5286
+%\end{array}
+%\right]>0,$$
+%$$\widehat{Q}=\left[\begin{array}{ccccc}
+%0,0015 & 0 & 0 & 0 & 0\\
+%0 & 0,0015 & 0 & 0 & 0\\
+%0 & 0 & 0,0015 & 0 & 0\\
+%0 & 0 & 0 & 0,0015 & 0\\
+%0 & 0 & 0 & 0 & 0,0015
+%    \end{array}
+%\right]>0,$$
+%$$ \widehat{X}= \left[\begin{array}{rrrrrrrr}
+%50539 & -190 & -49189 & -396 & -579 & 254 & 213 & 146\\
+%-190 & 350 & 365 & -47 & 115 & -157 & -306 & -44\\
+%-49189 & 365 & 49423 & 452 & 221 & -376 & -923 & -189\\
+%-396 & -47 & 452 & 549 & 510 & -55 & -572 & -415\\
+%-579 & 115 & 221 & 510 & 1524 & -169 & -1231 & -510\\
+%254 & -157 & -376 & -55 & -169 & 160 & 326 & 54\\
+%213 & -306 & -923 & -572 & -1231 & 326 & 2016 & 564\\
+%146 & -44 & -189 & -415 & -510 & 54 & 564 & 404
+%\end{array}
+%\right]>0,
+%$$
+%які задовольняють вказану систему строгих нерівностей при $\varepsilon_0=0$.
+% Для всіх значень моментів інерції із заданих інтервалів і матриць
+% \begin{equation}\label{e1-4}
+%   \widehat{K}=\widehat{K}_*+\widetilde{K}, \quad \widetilde{K}^T\widehat{P}\widetilde{K}\le \widehat{Q},
+% \end{equation}
+% що визначають еліпсоїдальну множину коефіцієнтів динамічного регулятора,
+%рух робота-маніпулятора в околі нульового стану рівноваги асимптотично стійкий. При цьому $v(\widehat{x})=\widehat{x}^T\widehat{X}\widehat{x}$ є спільною функцією Ляпунова системи `робот -- динамічний регулятор', а значення заданого функціоналу якості не перевищує $v(\widehat{x}_0)=76221$.
+%
+%У випадку (b) система співвідношень (\ref{s3-7}) складається з восьми матричних нерівностей, що відповідають усім можливим значенням параметрів $k$, $d$ і $q$ на кінцях заданих інтервалів.
+%Використовуючи систему {\sc Matlab}, знайдено додатно визначені матриці
+%$$
+%\widehat{P}=\left[\begin{array}{ccccc}
+%1190,4 & -7,8 & 15,5 & -2,9 & 1,2\\
+%-7,8 & 1163,8 & 23,7 & 27,9 & -1,5\\
+%15,5 & 23,7 & 1143,8 & 7,4 & -0,6\\
+%-2,9 & 27,9 & 7,4 & 178 & 0,9\\
+%1,2 & -1,5 & -0,6 & 0,9 & 1191,9
+%\end{array}
+%\right]>0,$$
+%$$\widehat{Q}=\left[\begin{array}{ccccc}
+%0,0011 & 0 & 0 & 0 & 0\\
+%0 & 0,0011 & 0 & 0 & 0\\
+%0 & 0 & 0,0011 & 0 & 0\\
+%0 & 0 & 0 & 0,0011 & 0\\
+%0 & 0 & 0 & 0 & 0,0011
+% \end{array}
+%\right]>0,$$
+%$$ \widehat{X}= \left[\begin{array}{rrrrrrrr}
+%49430 & -385 & -48839 & -503 & -589 & 375 & 729 & 272\\
+%-385 & 245 & 522 & -76 & 141 & -105 & -293 & -24\\
+%-48839 & 522 & 49117 & 545 & 611 & -478 & -1408 & -308\\
+%-503 & -76 & 545 & 607 & 609 & -38 & -658 & -483\\
+%-589 & 141 & 611 & 609 & 1538 & -194 & -1432 & -604\\
+%375 & -105 & -478 & -38 & -194 & 142 & 335 & 46\\
+%729 & -293 & -1408 & -658 & -1432 & 335 & 2225 & 651\\
+%272 & -24 & -308 & -483 & -604 & 46 & 651 & 475
+%\end{array}
+%\right]>0,
+%$$
+%які задовольняють вказану систему строгих нерівностей при $\varepsilon_0=0$.
+% Для всіх значень параметрів $k$, $d$ та $q$ із заданих інтервалів
+%і матриць (\ref{e1-4}), що визначають еліпсоїдальну множину коефіцієнтів динамічного регулятора,
+%рух робота-маніпулятора в околі нульового стану рівноваги асимптотично стійкий. При цьому $v(\widehat{x})=\widehat{x}^T\widehat{X}\widehat{x}$ є спільною функцією Ляпунова системи `робот -- динамічний регулятор', а значення заданого функціоналу якості не перевищує $v(\widehat{x}_0)=47291$.
+
+%---------------------------------------------------------------
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Зазначимо, що при умовах існування стабілізуючого СЗЗ з матрицею $K_*$ матрицю ДЗЗ $\widehat{K}_*$ можна вибирати у вигляді
+ $$\widehat{K}_*=\left[\!\begin{array}{cc}
+              Z_* & 0_{r\times l} \\
+              0_{m\times r} & K_*
+            \end{array} \!\right],$$
+де $Z_*\in {\mathbb R}^{r\times r}$ --- довільна матриця зі спектром у лівій напівплощині $\{\lambda\in {\mathbb C}^1:\,{\rm Re} \lambda <0\}$.
+
+\section{Висновок}
+
+В роботі отримано нові методи аналізу робастної стійкості станів рівноваги і оптимізації нелінійних систем керування з динамічним зворотним зв'язком по виходу. При цьому значення невизначених матричних коефіцієнтів можуть належати заданим політопам, зокрема, матричним інтервалам або афінним множинам, а можливі значення матриці коефіцієнтів динамічного регулятора описують еліпсоїдальну множину. Задачі стабілізації і оптимізації з динамічним регулятором довільного порядку зведено до аналогічних задач зі статичним зворотним зв'язком з матрицями більших розмірів.
+
+Практична реалізація запропонованих методів базується на розв'язанні диференціальних або алгебраїчних ЛМН. Для знаходження розв'язків алгебраїчних ЛМН може бути застосована достатньо ефективна процедура в системі {\sc Matlab}. Відмінною особливістю побудованих ЛМН від відомих є можливість побудови еліпсоїда матриць динамічного зворотного зв'язку, спільної квадратичної функції Ляпунова, а також оцінки квадратичного функціоналу якості для нелінійної системи керування з невизначеними матричними коефіцієнтами.
+
+{\small
+
+\renewcommand\refname{}
+
+\begin{thebibliography}{99}
+
+\bibitem{Polyak-Scherbakov} \emph{Поляк Б.Т., Щербаков П.С.}  Робастная устойчивость и управление. --- М.: Наука, 2002. --- 303 с.
+
+\bibitem{Zhou-Doyle-Glover} \emph{Zhou K., Doyle J.C., Glover K.}  Robust and optimal
+control. --- Englewood: Prentice-Hall, Inc., 1996. --- 586 p.
+
+\bibitem{Kuncevich} \emph{Кунцевич В.М.} Управление в условиях неопределенности: гарантированные результаты в задачах управления и идентификации. --- Киев: Наук. думка, 2006. --- 264 с.
+
+\bibitem{Polyak-Scherbakov-1} \emph{Поляк Б.Т., Щербаков П.С.}  Трудные задачи линейной теории управления. Некоторые подходы к решению // Автоматика и телемеханика. --- 2005. --- № 5. --- С. 7--46.
+
+\bibitem{Aliev-Larin} \emph{Алиев Ф.А., Ларин В.Б.}  Задачи стабилизации системы с обратной связью по выходной переменной (обзор) // Прикладная механика. --- 2011. --- Т. 47, № 3. --- С. 3--49.
+
+\bibitem{Mazko-2008} \emph{Mazko A.G.}  Matrix Equations, Spectral Problems and Stability of Dynamic Systems.
+ An international book series ``Stability, Oscillations and Optimization of Systems''. A.A. Martynyuk, P. Borne and C. Cruz-Hernandez, eds. V. 2. --- Cambridge: Cambridge Scientific Publishers Ltd, 2008. --- XX+270 p.
+
+ \bibitem{Mazko-2011} \emph{Mazko A.G.} Cone inequalities and stability of dynamical systems //  Nonlinear Dynamics and Systems Theory. --- 2011. --- V. 11, №~3. --- P. 303--318.
+
+\bibitem{Balandin-Kogan} \emph{Баландин Д.В., Коган М.М.}  Синтез законов управления на основе линейных матричных неравенств. --- М.: Физматлит, 2007. --- 280 c.
+
+\bibitem{Maz-Shram-2011} \emph{Мазко А.Г., Шрам В.В.} Устойчивость и стабилизация семейства псевдолинейных дифференциальных систем // Нелинейные колебания. --- 2011. --- Т. 14, № 2. --- C.~227--237.
+
+\bibitem{Mazko-2011-IM}  \emph{Мазко А.Г.} Робастная устойчивость и оценка качества семейства нелинейных систем управления // Проблеми динаміки та стійкості багатовимірних систем: Збірник праць Ін-ту математики  НАН України. --- 2011.~--- Т. 8, № 2. --- С. 174--186.
+
+\bibitem{Maz-Bog-2012} \emph{Мазко О.Г., Богданович Л. В. }
+ Робастна стійкість і оптимізація нелінійних систем керування // Аналітична механіка та її застосування: Збірник праць Iн-ту математики НАН України. --- 2012. --- Т. 9, № 1. --- С. 200--218.
+
+ \bibitem{Gu-Petkov-Konstantinov} \emph{Gu D.-W., Petkov P. Hr.  and Konstantinov M. M.}
+\emph{Robust Control Design with MATLAB}. --- Springer-Verlag London Limited, 2005. --- 389 p.
+
+ \bibitem{El-Ghaoui-Gahinet-1993} \emph{El-Ghaoui L., Gahinet P.} Rank minimization under LMI constraints: a framework for output feedback problems. In: Proc. Eur. Control Conf. Groningen, The Netherlands, 1993. --- P. 1176--1179.
+
+\bibitem{Petersen} \emph{Petersen I.} A stabilization algorithm for a class of uncertain linear systems // Systems Control Lett. --- 1987. --- V. 8, № 4. --- P. 351--357.
+
+\bibitem{Ghorbel}\emph{Ghorbel F., Hung J.Y., Spong M.W.} Adaptive control of flexible-joint manipulators // IEEE Control Systems Mag.--– 1989.--– № 9.--– P. 9–13.
+
+\end{thebibliography}
+}
+%\label{Mazko-Kupriyanchyk:LastPage}
+
+%\newpage
+\end{document}
