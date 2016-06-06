@@ -5,8 +5,8 @@
 \usepackage[cp1251]{inputenc}
 \usepackage[russian,ukrainian,english]{babel}
 \usepackage{import}
-%\usepackage[breaklinks,backref=page]%
-%{hyperref}
+\usepackage[breaklinks,backref=page]%
+{hyperref}
 
 \usepackage[breakall]{truncate}
 %\usepackage[stable]{footmisc}
@@ -24,8 +24,9 @@
 \setlength{\topmargin}{-1cm}
 \setlength{\parindent}{5.0mm}
 
-\usepackage{showkeys}
-\sloppy
+%\usepackage{showkeys}
+%\sloppy
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -54,6 +55,7 @@
 \def\metadata@issue@vol{11}
 \def\metadata@issue@number{1}
 \def\metadata@issue@year{2014}
+
 
 %\newcommand{\Vykh}[2]{\thispagestyle{empty}
 %\newpage\noindent\raisebox{12pt}[0pt][0pt] {\makebox[\textwidth]
@@ -142,12 +144,15 @@
 	\LetLtxMacro{\ltx@label}{\label}%
 }
 
+%Article unique ID
+\gdef\article@tag{\roman{work}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%           End of issue related definitions                  %%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+%Article unique ID
+%\gdef\article@tag{}
 
 \newcommand{\UDC}[1]{\vspace{-24pt}
 \begin{flushleft}
@@ -240,11 +245,11 @@
    \def\work@front@header{\makebox[\textwidth]%
  	{%
  		\foreignlanguage{ukrainian}{\protect\small\sf Збірник праць Iнституту математики НАН України \hfill  \metadata@issue@year, т.\,\metadata@issue@vol, №\,\metadata@issue@number,
-		\old@pageref{\roman{work}:firstpage}--\old@pageref{\roman{work}:lastpage}%
+		\old@pageref{\article@tag:firstpage}--\old@pageref{\article@tag:lastpage}%
 	 	}
  	}%
 %		\pageref{firstpage}--\pageref{lastpage}
-% 	\TheRealPageref{\roman{work}:firstpage}--\TheRealPageref{\roman{work}:lastpage}%
+% 	\TheRealPageref{\article@tag:firstpage}--\TheRealPageref{\article@tag:lastpage}%
    }   
    \noindent\raisebox{36pt}[0pt][0pt] {\work@front@header}\par%
    \vspace*{-2.5em}
