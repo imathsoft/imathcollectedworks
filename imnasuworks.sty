@@ -3,11 +3,14 @@
 \usepackage{cite}
 \usepackage[T2A]{fontenc}
 \usepackage[cp1251]{inputenc}
-\usepackage[russian,ukrainian,english]{babel}
+\usepackage[russian,english,ukrainian]{babel}
 \usepackage{import}
 \usepackage[breaklinks,backref=page]%
 {hyperref}
-
+%This package makes some handy float enchansments, such as float styles, etc
+\usepackage{float}
+%This one allows to force the placement of pending floats by issuing \FloatBarrier command inside the document
+\usepackage{placeins}
 \usepackage[breakall]{truncate}
 %\usepackage[stable]{footmisc}
 %Subcations for subfigures
@@ -32,7 +35,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%                  Issue related definitions                  %%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+\selectlanguage{ukrainian}
 %Used to define the counter correspondence 
 %We use the work counter to count the number of article in the issue.
 %Next package provide the command to attach every local paper counter 
@@ -44,6 +47,7 @@
 %Define new counter which is used to count articles 
 %and reset per article counter in a single command
 \newcounter{work}
+%\setcounter{work}{0}
 \counterwithin*{section}{work}
 \counterwithin*{figure}{work}
 \counterwithin*{table}{work}
@@ -51,25 +55,21 @@
 %set to 0 automatically if the article do not contain sections
 \counterwithin*{equation}{work}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Metadata for the issue and and article 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 %Metadata for the issue
 \def\metadata@issue@vol{11}
 \def\metadata@issue@number{1}
-\def\metadata@issue@year{2014}
+\def\metadata@issue@year{2016}
 
+%Metadata for the article 
+%Article unique ID
+\def\article@tag{\roman{work}}
+\def\article@language{ukrainian}
+\def\fl@env#1{\foreignlanguage{\article@language}{#1}}
 
-%\newcommand{\Vykh}[2]{\thispagestyle{empty}
-%\newpage\noindent\raisebox{12pt}[0pt][0pt] {\makebox[\textwidth]
-%{\foreignlanguage{ukrainian}{\protect\small\sf Збірник праць Iнституту математики НАН України \hfill \metadata@issue@year, т.\,\metadata@issue@vol, №\,\metadata@issue@number,
-% \pageref{#1}--\pageref{#2}}}}}
-
-%Redefine the subimport to reset all local paper counters
-%\renewcommand{\subimport}[2]{%
-%\refstepcounter{work} %
-%\clearpage
-%\begingroup
-%\old@subimport{#1}{#2}
-%\endgroup
-%}
 %We need to retain the original definitions of the label, pageref
 \let\old@label\label
 \let\old@ref\ref%
@@ -88,6 +88,7 @@
 		\label{firstpage}
 		\old@subimport{#1}{#2}
 		\label{lastpage}
+		\FloatBarrier
 		\clearpage
 	\endgroup
 }
@@ -128,76 +129,66 @@
 %    \LetLtxMacro{\@old@citex}{\@citex}%the bib
 %    \LetLtxMacro{\@old@cite}{\@cite}%the bib
 	% redefining \label, \ref, \pageref (\renewcommand or \DeclareRobustCommand)
-	\gdef\label#1{\TheRealLabel{\roman{work}:#1}}
-	\gdef\ref#1{\TheRealRef{\roman{work}:#1}}
-	\gdef\pageref#1{\TheRealPageref{\roman{work}:#1}}
-	\gdef\@bibitem#1{\@old@bibitem{\roman{work}:#1}}
-	\gdef\@lbibitem[#1]#2{\@old@lbibitem[#1]{\roman{work}:#2}}
+	\gdef\label#1{\TheRealLabel{\article@tag:#1}}
+	\gdef\ref#1{\TheRealRef{\article@tag:#1}}
+	\gdef\pageref#1{\TheRealPageref{\article@tag:#1}}
+	\gdef\@bibitem#1{\@old@bibitem{\article@tag:#1}}
+	\gdef\@lbibitem[#1]#2{\@old@lbibitem[#1]{\article@tag:#2}}
 	%In order to modify the citation tag writen to the aux file by cite package 
 	%we need to redefine the following command 
 	%(Need to be used with \usepackage{cite})
-	\gdef\@cite@ignsp@#1,#2{\roman{work}:#1\ifx\:#2\@empty\expandafter\@gobblethree
+	\gdef\@cite@ignsp@#1,#2{\article@tag:#1\ifx\:#2\@empty\expandafter\@gobblethree
 	\else,\expandafter\@cite@ignsp@\fi #2}
     %For the ordinary latex citations one might want to look into the redefinition of \@nocite, or \@cite 
-%	\gdef\@nocite[#1]#2{\@old@citex[#1]{\roman{work}:#2}}
-%	\gdef\@cite#1#2{\@old@cite{\roman{work}:#1}{\roman{work}:#2}}
+%	\gdef\@nocite[#1]#2{\@old@citex[#1]{\article@tag:#2}}
+%	\gdef\@cite#1#2{\@old@cite{\article@tag:#1}{\article@tag:#2}}
 	\LetLtxMacro{\ltx@label}{\label}%
 }
 
-%Article unique ID
-\gdef\article@tag{\roman{work}}
-
+%Open new file for the table of contents of the issue
+\newwrite\lowfile
+%\immediate\openout\lowfile=\jobname.low
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%           End of issue related definitions                  %%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Article unique ID
-%\gdef\article@tag{}
-
-\newcommand{\UDC}[1]{\vspace{-24pt}
-\begin{flushleft}
-\foreignlanguage{ukrainian}{\tt #1}
-\end{flushleft}}
-
-\newcommand{\Title}[1]{\begin{flushleft}\LARGE \bfseries #1\end{flushleft}}
-\newcommand{\Author}[1]{\begin{flushleft}\bfseries\itshape #1\end{flushleft}}
-\newcommand{\Address}[1]{\begin{flushleft}\it #1 \end{flushleft}}
-
-\newcommand{\Abstract}[1]{\begin{flushright}\begin{minipage}{105mm}\small #1\end{minipage}\end{flushright}}
-
-\def\ehkol{Author}
-\def\ohkol{\truncate{5cm}{Title}}
+\def\ehkol{\foreignlanguage{ukrainian}{Автор}}
+\def\ohkol{\foreignlanguage{ukrainian}{\truncate{0.95\textwidth}{Назва статті}}}
 
 \renewcommand{\@evenhead}{%
 	\hspace*{-3pt}\raisebox{-15pt}[\headheight][0pt]{%
-		\vbox{\hbox to \textwidth{\thepage \hfil \ehkol}\vskip3pt \hrule}}}
+		\vbox{\hbox to \textwidth{
+				\thepage \hfil \fl@env{\ehkol}}%
+			\vskip3pt \hrule}}}
 \renewcommand{\@oddhead}{%
 	\hspace*{-3pt}\raisebox{-15pt}[\headheight][0pt]{
-		\vbox{\hbox to \textwidth{\ohkol \hfil \thepage}\vskip3pt\hrule}}}
+		\vbox{\hbox to \textwidth{%
+				\fl@env{\ohkol} \hfil \thepage}%
+			\vskip3pt\hrule}}}
 \renewcommand{\@evenfoot}{}
 \renewcommand{\@oddfoot}{}
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%% Maketitle related commands and definitons
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %We would like to have an optional argument for \title and \author commands. 
 %This short version is needed to keep the text only version of title or author's text 
 %free of the non-robust commands (like \thanks for example).
 %To achieve that we borrow a trick from the \chapter command's definition.
+%\def\@stitle{\@empty}
 \renewcommand{\title}{\@dblarg{\settitle}}
-\gdef\settitle[#1]#2{\gdef\@stitle{#1}\gdef\@title{#2}}
+\def\settitle[#1]#2{\gdef\@stitle{#1}\gdef\@title{#2}}
+%\def\@sauthor{\@empty}
 \renewcommand{\author}{\@dblarg{\setauthor}}
-\gdef\setauthor[#1]#2{\gdef\@sauthor{#1}\gdef\@author{#2}}
+\def\setauthor[#1]#2{\gdef\@sauthor{#1}\gdef\@author{#2}}
 \def\@udc{\vphantom{\CYRU\CYRD\CYRK}}
 %\def\@udc{\@empty}
 \newcommand{\udc}[1]{\gdef\@udc{#1}}
 \def\@address{\@empty}
 \newcommand{\address}[1]{\gdef\@address{#1}}
 %Commands to typeset abstract
-\gdef\@tsabstract#1{\begin{flushright}\begin{minipage}{105mm}\small #1\end{minipage}\end{flushright}}
+\def\@tsabstract#1{\begin{flushright}\begin{minipage}{105mm}\small #1\end{minipage}\end{flushright}}
 \def\@abstractua{\@empty}
 \newcommand{\abstractua}[1]{\gdef\@abstractua{\foreignlanguage{ukrainian}{#1}}}
-\def\@abstractru{\@empty}
-\newcommand{\abstractru}[1]{\gdef\@abstractru{\foreignlanguage{russian}{#1}}}
+\def\@abstractru{\@empty}\newcommand{\abstractru}[1]{\gdef\@abstractru{\foreignlanguage{russian}{#1}}}
 \def\@abstracten{\@empty}
 \newcommand{\abstracten}[1]{\gdef\@abstracten{\foreignlanguage{english}{#1}}}
 
@@ -213,12 +204,17 @@
     \thispagestyle{empty}
     \@thanks
     \let\thefootnote\relax
-    \footnotetext{\hfill\copyright \ \ {\bf \@author, \metadata@issue@year}}
-    %Dfine headers and footers
-    \xdef\ehkol{\@sauthor}
-    \xdef\ohkol{\noexpand\truncate{0.95\textwidth}{\@stitle}}
+    \let\thanks\@gobble
+    \footnotetext{\hfill\copyright \ \ {\bf \@sauthor, \metadata@issue@year}}
+    \edef\article@language{\languagename}
+    %Define headers and footers
+    \xdef\ehkol{\noexpand\fl@env{\@sauthor}}
+    \xdef\ohkol{\noexpand\fl@env{\noexpand\truncate{0.95\textwidth}{\@stitle}}}
   \endgroup
   \setcounter{footnote}{0}%
+  %Here is the place to write the article info into the list of papers file (.low)
+%  \edef\@conline{\noexpand\contentsline{section}{\@stitle}{}{}{}}
+  \@writelow
 %  \global\let\thanks\relax
 %  \global\let\maketitle\relax
 %  \global\let\@maketitle\relax
@@ -231,17 +227,11 @@
   \global\let\@abstractua\@empty
   \global\let\@abstractru\@empty
   \global\let\@abstracten\@empty
-%  \global\let\udc\relax
-%  \global\let\title\relax
-%  \global\let\author\relax
-%  \global\let\address\relax
-%  \global\let\date\relax
-%  \global\let\and\relax
 }
 \def\@maketitle{%
 %  \newpage
 %  \null
-   \let \footnote \thanks
+   \let\footnote\thanks
    \def\work@front@header{\makebox[\textwidth]%
  	{%
  		\foreignlanguage{ukrainian}{\protect\small\sf Збірник праць Iнституту математики НАН України \hfill  \metadata@issue@year, т.\,\metadata@issue@vol, №\,\metadata@issue@number,
@@ -251,20 +241,28 @@
 %		\pageref{firstpage}--\pageref{lastpage}
 % 	\TheRealPageref{\article@tag:firstpage}--\TheRealPageref{\article@tag:lastpage}%
    }   
-   \noindent\raisebox{36pt}[0pt][0pt] {\work@front@header}\par%
-   \vspace*{-2.5em}
+   \noindent\raisebox{26pt}[0pt][0pt] {\work@front@header}\par%
+   \vspace*{-1.5em}
    \noindent\foreignlanguage{ukrainian}{\texttt{УДК \@udc}}\par%
    \vspace*{-0.5em}
-   \begin{flushleft}\LARGE \bf \@title\end{flushleft}\par%
+%   \article@language
+   \begin{flushleft}\LARGE\bfseries\@title\end{flushleft}\par%
 %   \vspace*{-2em}
-   \begin{flushleft}\bfseries\itshape \@author\end{flushleft}\par%
+   \begin{flushleft}\bfseries\itshape \fl@env{\@author}\end{flushleft}\par%
    \vspace*{-1.5em}
-   \begin{flushleft}\itshape \@address \end{flushleft}\par%
+   \begin{flushleft}\itshape\fl@env{\@address}\end{flushleft}\par%
    \@tsabstract{\@abstracten}
    \@tsabstract{\@abstractua}
    \@tsabstract{\@abstractru}
    \vskip 1.5em
    }
+%Next command write the contents line with the name of authors and title of the work into low file
+%to be used later for the generation of issue's table of contents 
+\def\@writelow{%
+	%	\immediate\write\lowfile{\unexpanded{\vspace*{-1mm}}}
+	\immediate\write\lowfile{\string\contentsentry{\@sauthor}%
+		{\@stitle}{\string\TheRealPageRef{\article@tag:firstpage}}}
+}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \renewcommand{\section}{\@startsection{section}{1}{\z@}%
@@ -339,7 +337,7 @@
 \newtheorem{corollary}{\protect\corollaryname}[section]
 \newtheorem{proposition}{\protect\propositionname}[section]
 \newtheorem{remark}{\protect\remarkname}[section]
-\newtheorem{algorithm}{\protect\algorithname}[section]
+\newtheorem{algorithm}{\protect\algorithmname}[section]
 \newtheorem{example}{\protect\examplename}[section]
 \newcommand{\theoremname}{}
 \newcommand{\lemmaname}{}
@@ -350,7 +348,7 @@
 \newcommand{\corollaryname}{}
 \newcommand{\propositionname}{}
 \newcommand{\remarkname}{}
-\newcommand{\algorithname}{}
+\newcommand{\algorithmname}{}
 \newcommand{\examplename}{}
 \providecommand{\bbljan}{}
 \providecommand{\bblfeb}{}
@@ -377,8 +375,8 @@
 	\renewcommand{\corollaryname}{Corollary}
 	\renewcommand{\propositionname}{Proposition}
 	\renewcommand{\remarkname}{Remark}
-	\renewcommand{\algorithname}{Algorithm}
-	\renewcommand{\algorithname}{Proof}
+	\renewcommand{\algorithmname}{Algorithm}
+	\renewcommand{\proofname}{Proof}
 	\renewcommand{\thesubfigure}{\asbuk{subfigure}.}
 	\renewcommand{\tablename}{Table}
 	\renewcommand{\refname}{}
@@ -408,7 +406,7 @@
 	\renewcommand{\corollaryname}{Следствие}
 	\renewcommand{\propositionname}{Предложение}
 	\renewcommand{\remarkname}{Замечание}
-	\renewcommand{\algorithname}{Алгоритм}
+	\renewcommand{\algorithmname}{Алгоритм}
 	\renewcommand{\proofname}{Доказательство}
 	\renewcommand{\figurename}{Рис}
 	\renewcommand{\thesubfigure}{\asbuk{subfigure}.}
@@ -431,48 +429,53 @@
 \addto\captionsukrainian{%
 	\renewcommand{\theoremname}{Теорема}%
 	\renewcommand{\lemmaname}{Лема}%
-	\renewcommand{\definitionname}{Означення} %
+	\renewcommand{\definitionname}{Означення}%
 	\renewcommand{\examplename}{Приклад}%
-	\renewcommand{\problemname}{Задача} %
+	\renewcommand{\problemname}{Задача}%
 	\renewcommand{\conjecturename}{Гіпотеза}%
 	\renewcommand{\assumptionname}{Припущення}%
 	\renewcommand{\corollaryname}{Наслідок}%
 	\renewcommand{\propositionname}{Твердження}%
 	\renewcommand{\remarkname}{Зауваження}%
-	\renewcommand{\algorithname}{Алгоритм}%
+	\renewcommand{\algorithmname}{Алгоритм}%
 	\renewcommand{\proofname}{Доведення}%
-	\renewcommand{\figurename}{Рис}
-	\renewcommand{\thesubfigure}{\asbuk{subfigure}.}
-	\renewcommand{\tablename}{Таблиця}
-	\renewcommand{\refname}{}
-	\renewcommand{\bbljan}{січ}
-	\renewcommand{\bblfeb}{лют}
-	\renewcommand{\bblmar}{бер}
-	\renewcommand{\bblapr}{квіт}
-	\renewcommand{\bblmay}{трав}
-	\renewcommand{\bbljun}{черв}
-	\renewcommand{\bbljul}{лип}
-	\renewcommand{\bblaug}{серп}
-	\renewcommand{\bblsep}{верес}
-	\renewcommand{\bbloct}{жовт}
-	\renewcommand{\bblnov}{листоп}
-	\renewcommand{\bbldec}{груд}
+	\renewcommand{\figurename}{Рис}%
+	\renewcommand{\thesubfigure}{\asbuk{subfigure}.}%
+	\renewcommand{\tablename}{Таблиця}%
+	\renewcommand{\refname}{}%
+	\renewcommand{\bbljan}{січ}%
+	\renewcommand{\bblfeb}{лют}%
+	\renewcommand{\bblmar}{бер}%
+	\renewcommand{\bblapr}{квіт}%
+	\renewcommand{\bblmay}{трав}%
+	\renewcommand{\bbljun}{черв}%
+	\renewcommand{\bbljul}{лип}%
+	\renewcommand{\bblaug}{серп}%
+	\renewcommand{\bblsep}{верес}%
+	\renewcommand{\bbloct}{жовт}%
+	\renewcommand{\bblnov}{листоп}%
+	\renewcommand{\bbldec}{груд}%
 }
 
-% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
-%Support for obsolete features
-%Will be removed in the next revision!!!
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newcommand{\AbsEng}[1]{\foreignlanguage{english}{\Abstract{#1}}}
-\newcommand{\AbsUkr}[1]{\foreignlanguage{ukrainian}{\Abstract{#1}}}
-\newcommand{\AbsRus}[1]{\foreignlanguage{russian}{\Abstract{#1}}}
-
-\renewcommand{\proof}[1]{\hspace{\parindent}\textbf{\textit{\proofname}} #1}
-%\newcommand{\proof}[1]{\hspace{\parindent}\textbf{\textit{Proof.}} #1}
-%\newcommand{\proofru}[1]{\hspace{\parindent}\textbf{\textit{Доказательство.}} #1}
-%\newcommand{\proofuk}[1]{\hspace{\parindent}\textbf{\textit{Доведення.}} #1}
-
-%\renewcommand{\fnum@figure}{\normalfont\small\bfseries{Рис.~\thefigure}\normalfont\small}
-%\renewcommand{\fnum@table}{\normalfont\small\bfseries{Таб.~\thetable}\normalfont\small}
+%Redefinition of thebibliography command 
+\renewenvironment{thebibliography}[1]
+{\section*{\refname}%
+	\small%
+	\list{\@biblabel{\@arabic\c@enumiv}}%
+	{\settowidth\labelwidth{\@biblabel{#1}}%
+		\leftmargin\labelwidth
+		\advance\leftmargin\labelsep
+		\@openbib@code
+		\usecounter{enumiv}%
+		\let\p@enumiv\@empty
+		\renewcommand\theenumiv{\@arabic\c@enumiv}}%
+	\sloppy
+	\clubpenalty4000
+	\@clubpenalty \clubpenalty
+	\widowpenalty4000%
+	\sfcode`\.\@m}
+{\def\@noitemerr
+	{\@latex@warning{Empty `thebibliography' environment}}%
+	\endlist}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

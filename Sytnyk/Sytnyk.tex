@@ -1,6 +1,15 @@
 % !TeX spellcheck = uk_UA
 % !TeX encoding = windows-1251
+\documentclass[10pt,twoside]{article}
+\usepackage{imnasuworks}
 %Some usefull shortcuts
+%\DeclareMathOperator{\Hol}{Hol}
+%\DeclareMathOperator{\Arg}{Arg}
+%\DeclareMathOperator{\Ker}{Ker}
+%\DeclareMathOperator{\Res}{Res}
+%\DeclareMathOperator{\sinc}{sinc}
+
+
 \def\R{\mathbb R}
 \def\C{\mathbb C}
 \def\N{\mathbb N}
@@ -30,40 +39,12 @@
 \newcommand{\cd}[1]{\textcolor{red}{#1}}
 \newcommand{\addnew}[1]{\textcolor{green}{#1}}
 \newcommand{\cor}[1]{\textcolor{red}{#1}}
-
-%\thispagestyle{empty}
-
-%\renewcommand{\ehkol}{\foreignlanguage{ukrainian}{Д.О.~Ситник}}
-%\renewcommand{\ohkol}{\foreignlanguage{ukrainian}{Ефективне використання попередньо обчислених даних \ldots }}
-%\Vykh{Sytnyk:FirstPage}{Sytnyk:LastPage}
-%%\renewcommand{\ehkol}{О.Г.~Мазко, Л.В. Купріянчик}
-%%\renewcommand{\ohkol}{Системи стабілізації з невизначеними коефіцієнтами \dots}
-%%\Vykh{Mazko-Kupriyanchyk:FirstPage}{Mazko-Kupriyanchyk:LastPage}
-%%
-%%
-%\renewcommand{\thefootnote}{}
-%\footnote{\hfill\copyright \ \ {\bf Д.О.~Ситник, 2014}}
-%
-%\UDC{УДК 517.983.27}
-%
-%
-%
-%\vspace*{-3mm}
-%\Title{Ефективне використання попередньо обчислених даних у схемі ітеративної  Sinc--апроксимації \label{Sytnyk:FirstPage}}
-%
-%\Author{\large Д.О.~Ситник}
-%
-%\Address{Інститут математики НАН України, Київ; sytnik@imath.kiev.ua}
-%
-%\AbsEng{We study the problem on how to reuse the previously calculated values of  approximated function in the scheme of iteratively refining sequence of Sinc approximations. The proposed method is based upon the collocation of a current step Sinc approximation to the given function on the set of points 
-%where the function values are already known from the Sinc approximations calculated in the previous steps. Theoretical considerations are supported by several numerical examples.
-%}
-%\AbsRus{В статье изучается проблема повторного использования ранее вычисленных значений аппроксимируемой функции для нахождения ее более точных приближений в схеме итеративно уточняющейся последовательности Sinc--аппроксимаций. Предложен метод решения этой проблемы который основан на принципе коллокации текущего Sinc--аппроксиманта  некоторой функции в точках где значения этой функции уже известны в результате Sinc--аппроксимаций вычисленных во время предыдущих шагов. Теоретические выкладки подтверждены численными экспериментами.}
+\begin{document}
 
 \udc{517.983.27}
-\title{Ефективне використання попередньо обчислених даних у схемі ітеративної  Sinc--апроксимації}
+\title[Title Sytnyk]{Ефективне використання попередньо обчислених даних у схемі ітеративної  Sinc--апроксимації}
 
-\author{Д.О.~Ситник}
+\author[Sytnyk]{Д.О.~Ситник}
 
 \address{Інститут математики НАН України, Київ; sytnik@imath.kiev.ua}
 
@@ -110,7 +91,7 @@ p h = h_0, \quad p\geq2,  p \in \Z.
 %Саме тому відшукання можливості використання попередньо обчислених наближень розв'язку для обчислення його більш точних наближень з мінімізацією додаткових розрахунків є актуальною у контексті застосування Sinc-методів проблемою. 
 Саме тому відшукання можливості повторного використання раніше обчислених значень функції під час побудови більш точного наближення цієї функції на щільнішій сітці з мінімізацією додаткових розрахунків є актуальною у контексті застосування Sinc-методів проблемою. Ми пропонуємо один з варіантів розв'язку цієї проблеми для випадку Sinc--апроксимації функцій. 
 
-Більш детальні відомості з теорії Sinc--методів та, зокрема, теорії Sinc--апроксимації представлені у пунккті \ref{sec_sinc_basics}. 
+Більш детальні відомості з теорії Sinc--методів та, зокрема, теорії Sinc--апроксимації представлені у пункті \ref{sec_sinc_basics}. 
 Загальна ідея методу знаходження невідомих значень апроксимованої функції використовуючи її відомі значення обчислені в точках відмінних від точок апроксимації сформульована в \ref{sec_col_between_grid} пункті. Деталям застосування цієї ідеї до Sinc--апроксимації присвячений пункт \ref{sec_main_part}. Теоретичні міркування підтвердженні чисельними експериментами. 
 %для важливого випадку узгодження прикладів  
 % 
@@ -445,16 +426,6 @@ $
 %\newpage
 %\newpage
 %\addtocounter{page}{3}
-{\small
-\newcommand*{\BibUrl}[1]{\foreignlanguage{ukrainian}{[Електронний ресурс]: Режим доступу:} \url{#1}}
-	\providecommand*{\href}[2]{{\small #2}}
-	\providecommand*{\url}[1]{{\small #1}}
-	\providecommand*{\BibUrl}[1]{\url{#1}}
-	\providecommand{\BibAnnote}[1]{}
-	\providecommand*{\BibEmph}[1]{\emph{#1}}
-	\ProvideTextCommandDefault{\cyrdash}{\hbox to.8em{--\hss--}}
-	\providecommand*{\BibDash}{\ifdim\lastskip>0pt\unskip\nobreak\hskip.2em\fi
-		\cyrdash\hskip.2em\ignorespaces}
 
 %\bibliographystyle{gost2008s}
 %\renewcommand{\bibname}{}
@@ -469,7 +440,6 @@ $
 %	\bibpath/comp_math,%
 %	\bibpath/matan,%
 %	\bibpath/algebra}
-
 
 \begin{thebibliography}{10}
 \def\selectlanguageifdefined#1{\selectlanguage{#1}}
@@ -603,4 +573,5 @@ On the {LambertW} function~/ R.M.~Corless, G.H.~Gonnet, D.E.G.~Hare et~al.~//{Ad
 \newblock 131~{\cyr\cyrs.}
 
 \end{thebibliography}
-}
+
+\end{document}
