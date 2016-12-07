@@ -1,0 +1,72 @@
+\documentclass[10pt,twoside,final]{article}
+\usepackage{imnasuworks}
+%For Veselovska
+\usepackage{multirow,hhline}
+%\usepackage{layout}
+%\usepackage{standalone}
+%\usepackage{cmbright}
+%\usepackage[T1]{fontenc}
+\usepackage{hologo}
+
+%\newcommand{\pbf}[1]{\mbox{\mathversion{bold}$#1$}}
+
+\DeclareMathOperator{\Hol}{Hol}
+\DeclareMathOperator{\Arg}{Arg}
+\DeclareMathOperator{\Ker}{Ker}
+\DeclareMathOperator{\Res}{Res}
+\DeclareMathOperator{\sinc}{sinc}
+
+%\let\textcircled\oldtextcircled
+%\newcommand{\textcircled}[1]{\text{\oldtextcircled{#1}}}
+
+
+%\renewcommand\bibliographytypesize{\small}
+%\renewcommand{\bibfont}{\small}
+\def\bibfont{\footnotesize}
+\begin{document}
+	\let\oldenddocument\enddocument
+	\let\document=\empty
+	\let\enddocument=\empty
+	\def\documentclass[#1]#2{\relax}
+	\def\usepackage#1{\relax}
+
+	%Show the page's layout 
+	%\layout
+	\selectlanguage{ukrainian} 
+	
+	
+	%\graphicspath{./}{./ }
+	\input{P1-4}
+	\input{contents}
+%	\setcounter{page}{1}
+	
+%	\subimportwork{template/}{template_ua}
+	\subimportwork{Bilenko/}{Bilenko}
+	\subimportwork{Veselovska/}{article_4}
+	\subimportwork{Grushkovskaya/}{grushkovskaya}
+	\subimportwork{Dzyubenko/}{Dzyubenko}
+	\subimportwork{Konstantinov/}{instructions_ua}
+	\subimportwork{Mazko_Kusiy/}{Mazko-Kusii-2016}
+	\subimportwork{Maslova/}{maslova}
+	\subimportwork{Chuykov/}{Chuikov}
+	\subimportwork{Novickiy_Zinchuk_Kolomiychuk_Teteryatnyk/}{Teteryatnik}
+	\subimportwork{Osaulenko/}{OsaulenkoR}
+	\subimportwork{Slynko/}{slynko_kravchuk_1}
+	\subimportwork{Solodun/}{Solodun}
+	\subimportwork{Sytnyk/}{Sytnyk}
+	\subimportwork{sosn16d/}{Sosnitskii}
+	\subimportwork{Sosnytskii-2/}{Sosnytskii-2}
+	\subimportwork{Chernecka/}{Chernecka}
+	\subimportwork{Makarov-Sytnyk-Vasylyk/}{MakVasSyt_2016}
+	\subimportwork{Timokha1/}{TIMOKHA1}
+	\subimportwork{Shlepakov/}{Shlepakov}
+	\subimportwork{Shydlich/}{Shidlich}
+	\subimportwork{Pustovoitov/}{Pustovoitov}
+	\subimportwork{Storozenko/}{Storozenko}
+	
+	%\subimport{}{}
+	%\subimport{}{}
+	%\subimport{}{}
+	
+	\def\enddocument{\oldenddocument}
+\end{document}

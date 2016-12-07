@@ -3,11 +3,20 @@
 \documentclass[10pt,twoside]{article}
 \usepackage{imnasuworks}
 %Some usefull shortcuts
-%\DeclareMathOperator{\Hol}{Hol}
-%\DeclareMathOperator{\Arg}{Arg}
-%\DeclareMathOperator{\Ker}{Ker}
-%\DeclareMathOperator{\Res}{Res}
-%\DeclareMathOperator{\sinc}{sinc}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Дялі йдуть специфічні тільки для цієї статті визначення.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% ПРИ ВИКОРИСТАННІ ЦЬОГО ФАЙЛУ ЯК ШАБЛОНУ 
+%% ВИДАЛИТИ ТЕКСТ ДО НАСТУПНОГО ПОДІБНОГО КОМЕНТАРЮ!!! 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\DeclareMathOperator{\Hol}{Hol}
+\DeclareMathOperator{\Arg}{Arg}
+\DeclareMathOperator{\Ker}{Ker}
+\DeclareMathOperator{\Res}{Res}
+\DeclareMathOperator{\sinc}{sinc}
 
 
 \def\R{\mathbb R}
@@ -39,6 +48,10 @@
 \newcommand{\cd}[1]{\textcolor{red}{#1}}
 \newcommand{\addnew}[1]{\textcolor{green}{#1}}
 \newcommand{\cor}[1]{\textcolor{red}{#1}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Кінець специфічних тільки для цієї статті визначень
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \begin{document}
 
 \udc{517.983.27}
@@ -424,14 +437,10 @@ $
 \end{table}
 Аналіз представлених у таблиці даних показує, що при послідовному знаходженні семи апроксимантів загальна кількість безпосередніх обчислень $f(x)$ склала $s_7=\suml_{i=1}^7 d_i + 1 = 523$ в той  час, як застосування звичайної апроксимації потребувало б $\suml_{i=1}^7 m_i + 1 = 765$ безпосередніх обчислень $f(x)$ у найкращому випадку. Варто також зазначити, що зменшення кількості прямих обчислень $f(x)$ досягнуто без втрати точності апроксимації (див. порівняння $\Eg_{alg}$ та  $\Eg_{N_k}$ у таблиці)
 \end{example}
-%\newpage
-%\newpage
-%\newpage
-%\addtocounter{page}{3}
 
 %\bibliographystyle{gost2008s}
 %\renewcommand{\bibname}{}
-%\def\bibpath{../../../bib}
+%\def\bibpath{../../../../bib}
 %\bibliography{%
 %	\bibpath/sinc_refinement,%
 %	\bibpath/AbstractCauchy,%
@@ -444,136 +453,146 @@ $
 %	\bibpath/algebra}
 
 \begin{thebibliography}{10}
-\def\selectlanguageifdefined#1{\selectlanguage{#1}}
-\providecommand*{\href}[2]{{\small #2}}
-\providecommand*{\url}[1]{{\small #1}}
-\providecommand*{\BibUrl}[1]{\url{#1}}
-\providecommand{\BibAnnote}[1]{}
-\providecommand*{\BibEmph}[1]{#1}
-\ProvideTextCommandDefault{\cyrdash}{\hbox to.8em{--\hss--}}
-\providecommand*{\BibDash}{\ifdim\lastskip>0pt\unskip\nobreak\hskip.2em\fi
-\cyrdash\hskip.2em\ignorespaces}
-
-\bibitem{fftBrigham1988}
-\selectlanguageifdefined{english}
-\BibEmph{Brigham~E.} The Fast Fourier Transform and Its Applications. \BibDash
-\newblock Prentice Hall, 1988. \BibDash
-\newblock ~463 p.
-
-\bibitem{Davis1953}
-\selectlanguageifdefined{english}
-\BibEmph{Davis~P.} Errors of numerical approximation for analytic functions~//
-  {Journal of Rational Mechanics and Analysis}. \BibDash
-\newblock 1953. \BibDash
-\newblock Vol.~2, no.~3. \BibDash
-\newblock P.~303--313.
-
-\bibitem{bgmv}
-\selectlanguageifdefined{english}
-Exponentially convergent duhamel-like algorithms for differential equations
-  with an operator coefficient possessing a variable domain in a banach space~/
-  ~T.Ju.Bohonova, ~I.P.Gavrilyuk, ~V.L.Makarov, ~V.B.Vasylyk~// {SIAM
-  J. Numer. Anal.} \BibDash
-\newblock 2007/08. \BibDash
-\newblock Vol.~46, no.~5. \BibDash
-\newblock P.~365--396.
-
-\bibitem{Gavrilyuk2010}
-\selectlanguageifdefined{english}
-Exponentially convergent method for the m-point nonlocal problem for a first
-  order differential equation in banach space~/ I.~P.~Gavrilyuk, V.~L.~Makarov,
-  D.~O.~Sytnyk, V.~B.~Vasylyk~// {Numerical Functional Analysis and
-  Optimization}. \BibDash
-\newblock 2010. \BibDash
-\newblock Vol.~31, no.~1. \BibDash
-\newblock P.~1--21.
-
-\bibitem{gm5}
-\selectlanguageifdefined{english}
-\BibEmph{Gavrilyuk~I., Makarov~V.} Exponentially convergent algorithms for the
-  operator exponential with applications to inhomogeneous problems in {B}anach
-  spaces~// {{S}{I}{A}{M} {J}ournal on Numerical Analysis}. \BibDash
-\newblock 2005. \BibDash
-\newblock Vol.~43, no.~5. \BibDash
-\newblock P.~2144--2171.
-
-\bibitem{Gil2003}
-\selectlanguageifdefined{english}
-\BibEmph{Gil’~M.~I.} {Operator functions and localization of spectra}. Lecture
-  Notes in Mathematics. \BibDash
-\newblock Berlin~: Springer, 2003. \BibDash
-\newblock 260 p.
-
-\bibitem{bLund1992}
-\selectlanguageifdefined{english}
-\BibEmph{Lund~J., Bowers~K.} Sinc Methods for Quadrature and Differential
-  Equations. \BibDash
-\newblock SIAM, Philadelphia, 1992.
-
-\bibitem{Corless1996}
-\selectlanguageifdefined{english}
-On the {LambertW} function~/ R.M.~Corless, G.H.~Gonnet, D.E.G.~Hare et~al.~//{Advances in
-  Computational Mathematics}. \BibDash
-\newblock 1996. \BibDash
-\newblock Vol.~5, no.~1. \BibDash
-\newblock P.~329--359.
-
-\bibitem{bStenger1993}
-\selectlanguageifdefined{english}
-\BibEmph{Stenger~F.} Numerical methods based on {Sinc} and analytic functions.
-  \BibDash
-\newblock Springer, New York, 1993. \BibDash
-\newblock 580~p.
-
-\bibitem{Stenger2000}
-\selectlanguageifdefined{english}
-\BibEmph{Stenger~F.} Summary of sinc numerical methods~//
-{{J. Comput. Appl. Math.}} \BibDash
-\newblock 2000. \BibDash
-\newblock Vol. 121. \BibDash
-\newblock P.~379--420.
-
-\bibitem{bStenger2011}
-\selectlanguageifdefined{english}
-\BibEmph{Stenger~F.}
-  {Handbook of Sinc  Numerical Methods}. Chapman and Hall/CRC numerical analysis and scientific
-  computation series. \BibDash
-\newblock USA~: CRC Press, 2011. \BibDash
-\newblock 483~p.
-
-\bibitem{Trefethen1997}
-\selectlanguageifdefined{english}
-\BibEmph{Trefethen~L., Bau~D.} Numerical linear algebra. \BibDash
-\newblock SIAM, 1997. \BibDash
-\newblock P.~376. \BibDash
-
-\bibitem{TrefethenSIAM2014}
-\selectlanguageifdefined{english}
-\BibEmph{Trefethen~L.~N., Weideman~J.} The exponentially convergent trapezoidal
-  rule~// \BibEmph{SIAM Review}. \BibDash
-\newblock 2014. \BibDash
-\newblock Vol.~56, no.~3. \BibDash
-\newblock P.~385--458.
-
-\bibitem{fvpVasylyk2014}
-\selectlanguageifdefined{english}
-\BibEmph{Vasylyk~V.} Exponentially convergent method for the final value
-  problem for the first order differential equation in banach space~//
-  {{Proceedings of the Institute of Mathematics of the NAS of Ukraine
-  }}. \BibDash
-\newblock 2014. \BibDash
-\newblock Vol.~11, no.~4. \BibDash
-\newblock P.~509--523.
-
-\bibitem{PhdThSytnykUA}
-\selectlanguageifdefined{ukrainian}
-\BibEmph{Ситник~Д.~О.} Експоненціально збіжні методи для нелокальної
-  абстрактної задачі Коші та нелінійних крайових задач~: Дисертація на здобуття
-  наукового ступеня кандидата фізико-математичних наук~: 01.01.07~/
-  Дмитро~Олексійович~Ситник~; Ін-т математики НАН України. \BibDash
-\newblock Київ, 2012. \BibDash
-\newblock 131~{\cyr\cyrs.}
-
+	\def\selectlanguageifdefined#1{
+		\expandafter\ifx\csname date#1\endcsname\relax
+		\else\selectlanguage{#1}\fi}
+	\providecommand*{\href}[2]{{\small #2}}
+	\providecommand*{\url}[1]{{\small #1}}
+	\providecommand*{\BibUrl}[1]{\url{#1}}
+	\providecommand{\BibAnnote}[1]{}
+	\providecommand*{\BibEmph}[1]{#1}
+	\ProvideTextCommandDefault{\cyrdash}{\hbox to.8em{--\hss--}}
+	\providecommand*{\BibDash}{\ifdim\lastskip>0pt\unskip\nobreak\hskip.2em\fi
+		\cyrdash\hskip.2em\ignorespaces}
+	
+	\bibitem{fftBrigham1988}
+	\selectlanguageifdefined{english}
+	\BibEmph{Brigham~E.} The Fast Fourier Transform and Its Applications. \BibDash
+	\newblock Prentice Hall, 1988. \BibDash
+	\newblock P.~463.
+	
+	\bibitem{Davis1953}
+	\selectlanguageifdefined{english}
+	\BibEmph{Davis~P.} Errors of numerical approximation for analytic functions~//
+	\BibEmph{Journal of Rational Mechanics and Analysis}. \BibDash
+	\newblock 1953. \BibDash
+	\newblock Vol.~2, no.~3. \BibDash
+	\newblock P.~303--313.
+	
+	\bibitem{bgmv}
+	\selectlanguageifdefined{english}
+	Exponentially convergent duhamel-like algorithms for differential equations
+	with an operator coefficient possessing a variable domain in a banach space~/
+	~T.Ju.Bohonova, ~I.P.Gavrilyuk, ~V.L.Makarov, ~V.B.Vasylyk~// \BibEmph{SIAM
+		J. Numer. Anal.} \BibDash
+	\newblock 2007/08. \BibDash
+	\newblock Vol.~46, no.~5. \BibDash
+	\newblock P.~365--396.
+	
+	\bibitem{Gavrilyuk2010}
+	\selectlanguageifdefined{english}
+	Exponentially convergent method for the m-point nonlocal problem for a first
+	order differential equation in banach space~/ I.~P.~Gavrilyuk, V.~L.~Makarov,
+	D.~O.~Sytnyk, V.~B.~Vasylyk~//
+	\href{http://dx.doi.org/10.1080/01630560903499019}{\BibEmph{{Numerical
+				Functional Analysis and Optimization}}}. \BibDash
+	\newblock 2010. \BibDash
+	\newblock Vol.~31, no.~1. \BibDash
+	\newblock P.~1--21. \BibDash
+	\newblock URL: \BibUrl{http://www.informaworld.com/10.1080/01630560903499019}.
+	
+	\bibitem{gm5}
+	\selectlanguageifdefined{english}
+	\BibEmph{Gavrilyuk~I., Makarov~V.} Exponentially convergent algorithms for the
+	operator exponential with applications to inhomogeneous problems in {B}anach
+	spaces~// \BibEmph{{S}{I}{A}{M} {J}ournal on Numerical Analysis}. \BibDash
+	\newblock 2005. \BibDash
+	\newblock Vol.~43, no.~5. \BibDash
+	\newblock P.~2144--2171.
+	
+	\bibitem{Gil2003}
+	\selectlanguageifdefined{english}
+	\BibEmph{Gil’~M.~I.} {Operator functions and localization of spectra}. Lecture
+	Notes in Mathematics. \BibDash
+	\newblock Berlin~: Springer, 2003. \BibDash
+	\newblock P.~260.
+	
+	\bibitem{bLund1992}
+	\selectlanguageifdefined{english}
+	\BibEmph{Lund~J., Bowers~K.} Sinc Methods for Quadrature and Differential
+	Equations. \BibDash
+	\newblock SIAM, Philadelphia, 1992.
+	
+	\bibitem{Corless1996}
+	\selectlanguageifdefined{english}
+	On the {LambertW} function~/ R.M.~Corless, G.H.~Gonnet, D.E.G.~Hare et~al.~//
+	\href{http://dx.doi.org/10.1007/BF02124750}{\BibEmph{Advances in
+			Computational Mathematics}}. \BibDash
+	\newblock 1996. \BibDash
+	\newblock Vol.~5, no.~1. \BibDash
+	\newblock P.~329--359. \BibDash
+	\newblock URL: \BibUrl{http://dx.doi.org/10.1007/BF02124750}.
+	
+	\bibitem{bStenger1993}
+	\selectlanguageifdefined{english}
+	\BibEmph{Stenger~F.} Numerical methods based on {Sinc} and analytic functions.
+	\BibDash
+	\newblock Springer, New York, 1993. \BibDash
+	\newblock P.~580.
+	
+	\bibitem{Stenger2000}
+	\selectlanguageifdefined{english}
+	\BibEmph{Stenger~F.} Summary of sinc numerical methods~//
+	\href{http://dx.doi.org/10.1016/S0377-0427(00)00348-4}{\BibEmph{J. Comput.
+			Appl. Math.}} \BibDash
+	\newblock 2000. \BibDash
+	\newblock Vol. 121. \BibDash
+	\newblock P.~379--420.
+	
+	\bibitem{bStenger2011}
+	\selectlanguageifdefined{english}
+	\BibEmph{Stenger~F.}
+	\href{http://dx.doi.org/http://dx.doi.org/10.1201/b10375}{Handbook of Sinc
+		Numerical Methods}. Chapman and Hall/CRC numerical analysis and scientific
+	computation series. \BibDash
+	\newblock USA~: CRC Press, 2011. \BibDash
+	\newblock P.~483.
+	
+	\bibitem{Trefethen1997}
+	\selectlanguageifdefined{english}
+	\BibEmph{Trefethen~L., Bau~D.} Numerical linear algebra. \BibDash
+	\newblock SIAM, 1997. \BibDash
+	\newblock P.~376. \BibDash
+	\newblock
+	ISBN:~\href{http://isbndb.com/search-all.html?kw=0898713617}{0898713617}.
+	
+	\bibitem{TrefethenSIAM2014}
+	\selectlanguageifdefined{english}
+	\BibEmph{Trefethen~L.~N., Weideman~J.} The exponentially convergent trapezoidal
+	rule~// \BibEmph{SIAM Review}. \BibDash
+	\newblock 2014. \BibDash
+	\newblock Vol.~56, no.~3. \BibDash
+	\newblock P.~385--458.
+	
+	\bibitem{fvpVasylyk2014}
+	\selectlanguageifdefined{english}
+	\BibEmph{Vasylyk~V.} Exponentially convergent method for the final value
+	problem for the first order differential equation in banach space~//
+	\BibEmph{{Proceedings of the Institute of Mathematics of the NAS of Ukraine
+	}}. \BibDash
+	\newblock 2014. \BibDash
+	\newblock Vol.~11, no.~4. \BibDash
+	\newblock P.~509--523.
+	
+	\bibitem{PhdThSytnykUA}
+	\selectlanguageifdefined{ukrainian}
+	\BibEmph{Ситник~Д.~О.} Експоненціально збіжні методи для нелокальної
+	абстрактної задачі Коші та нелінійних крайових задач~: Дисертація на здобуття
+	наукового ступеня кандидата фізико-математичних наук~: 01.01.07~/
+	Дмитро~Олексійович~Ситник~; Ін-т математики НАН України. \BibDash
+	\newblock Київ, 2012. \BibDash
+	\newblock 131~{\cyr\cyrs.}
+	
 \end{thebibliography}
 
 \end{document}
