@@ -146,7 +146,7 @@
 }
 
 %Open new file for the table of contents of the issue
-\newwrite\lowfile
+%\newwrite\lowfile
 %\immediate\openout\lowfile=\jobname.low
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%           End of issue related definitions                  %%%%%%
@@ -259,9 +259,22 @@
 %Next command write the contents line with the name of authors and title of the work into low file
 %to be used later for the generation of issue's table of contents 
 \def\@writelow{%
-	%	\immediate\write\lowfile{\unexpanded{\vspace*{-1mm}}}
-	\immediate\write\lowfile{\string\contentsentry{\@sauthor}%
-		{\@stitle}{\string\TheRealPageRef{\article@tag:firstpage}}}
+%	\immediate\write\lowfile{\string\contentsentry{\@sauthor}%
+%		{\@stitle}{\string\TheRealPageRef{\article@tag:firstpage}}}
+ \protected@write\@auxout
+	{\let\label\@gobble \let\index\@gobble \let\glossary\@gobble \let\thanks\@gobble}%
+	{\string\@writefile{low}{\string\contentsentry{\@sauthor}%
+		{\@stitle}{\string\TheRealPageRef{\article@tag:firstpage}}}}
+}
+\newcommand{\listofworksname}{Çì³ñò}
+\newcommand{\listofworks}{%
+%	\section*{\listofworksname
+%		\@mkboth{\listofworksname}{\contentsname}}%
+	\renewcommand{\ehkol}{Çì³ñò}
+	\renewcommand{\ohkol}{Çì³ñò}
+	\vspace*{1mm}
+	\centerline{\Large \bf Çì³ñò}
+	\@starttoc{low}%
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
