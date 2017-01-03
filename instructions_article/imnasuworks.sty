@@ -33,7 +33,7 @@
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%% 			Metadata for the issue and and article 			  %%%%%
+%%%%	Metadata for the issue and and article 			  %%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %Metadata for the issue
@@ -350,6 +350,45 @@
 	\renewcommand{\bbloct}{жовт}%
 	\renewcommand{\bblnov}{листоп}%
 	\renewcommand{\bbldec}{груд}%
+}
+%Reset the numbering correspondense for the sectionless articles 
+\newcommand{\nosectioncounters}{%
+\counterwithout{theorem}{section}%
+\counterwithout{lemma}{section}%
+\counterwithout{definition}{section}%
+\counterwithout{problem}{section}%
+\counterwithout{conjecture}{section}%
+\counterwithout{assumption}{section}%
+\counterwithout{corollary}{section}%
+\counterwithout{proposition}{section}%
+\counterwithout{remark}{section}%
+\counterwithout{algorithm}{section}%
+\counterwithout{example}{section}%
+\setcounter{theorem}{0}%
+\setcounter{lemma}{0}%
+\setcounter{definition}{0}%
+\setcounter{problem}{0}%
+\setcounter{conjecture}{0}%
+\setcounter{assumption}{0}%
+\setcounter{corollary}{0}%
+\setcounter{proposition}{0}%
+\setcounter{remark}{0}%
+\setcounter{algorithm}{0}%
+\setcounter{example}{0}%
+}
+
+\newcommand{\addsectioncounters}{%
+	\counterwithin{theorem}{section}%
+	\counterwithin{lemma}{section}%
+	\counterwithin{definition}{section}%
+	\counterwithin{problem}{section}%
+	\counterwithin{conjecture}{section}%
+	\counterwithin{assumption}{section}%
+	\counterwithin{corollary}{section}%
+	\counterwithin{proposition}{section}%
+	\counterwithin{remark}{section}%
+	\counterwithin{algorithm}{section}%
+	\counterwithin{example}{section}%
 }
 
 %Redefinition of thebibliography command 
