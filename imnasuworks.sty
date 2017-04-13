@@ -5,13 +5,16 @@
 \usepackage[cp1251]{inputenc}
 \usepackage[russian,english,ukrainian]{babel}
 \usepackage{import}
-\usepackage[breaklinks,backref=page]%
+\usepackage[%
+	breaklinks%
+%	,backref=page%
+	]%
 {hyperref}
 %This package makes some handy float enchansments, such as float styles, etc
 \usepackage{float}
 %This one allows to force the placement of pending floats by issuing \FloatBarrier command inside the document
 \usepackage{placeins}
-\usepackage[breakall]{truncate}
+\usepackage[breakwords]{truncate}
 %\usepackage[stable]{footmisc}
 %Subcations for subfigures
 \usepackage{caption,subcaption}
@@ -39,8 +42,8 @@
 %Used to define the counter correspondence 
 %We use the work counter to count the number of article in the issue.
 %Next package provide the command to attach every local paper counter 
-%to the counter work and reset all them in one \refstepcounter command in 
-%the redefinition of subimport 
+%to the counter work and reset all them in one \refstepcounter command (which is done in 
+%the of subimportwork command) 
 \usepackage{chngcntr}
 
 
@@ -60,8 +63,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %Metadata for the issue
-\def\metadata@issue@vol{11}
-\def\metadata@issue@number{1}
+\def\metadata@issue@vol{13}
+\def\metadata@issue@number{3}
 \def\metadata@issue@year{2016}
 
 %Metadata for the article 
@@ -79,7 +82,7 @@
 %It handles:
 % 1. Local article counter reset.
 % 2. The definition of two labels for the first and last page of the article.
-% 3. Insulate local definitions from the main file and other articles 
+% 3. Provide isolation of the per-article local definitions 
 \let\old@subimport\subimport
 \newcommand{\subimportwork}[2]{%
 	\refstepcounter{work}%
@@ -144,30 +147,26 @@
 %	\gdef\@cite#1#2{\@old@cite{\article@tag:#1}{\article@tag:#2}}
 	\LetLtxMacro{\ltx@label}{\label}%
 }
-
-%Open new file for the table of contents of the issue
-%\newwrite\lowfile
-%\immediate\openout\lowfile=\jobname.low
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%           End of issue related definitions                  %%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\def\ehkol{\foreignlanguage{ukrainian}{Автор}}
-\def\ohkol{\foreignlanguage{ukrainian}{\truncate{0.95\textwidth}{Назва статті}}}
+\def\ehkol{\foreignlanguage{ukrainian}{\truncate{0.94\textwidth}{Автор статті}}}
+\def\ohkol{\foreignlanguage{ukrainian}{\truncate{0.94\textwidth}{Назва статті}}}
 
 \renewcommand{\@evenhead}{%
 	\hspace*{-3pt}\raisebox{-15pt}[\headheight][0pt]{%
-		\vbox{\hbox to \textwidth{
-				\thepage \hfil \fl@env{\ehkol}}%
+		\vbox{\hbox{\hspace*{3pt}\hbox to \textwidth{%
+				\thepage \hfil \fl@env{\ehkol}}}%
 			\vskip3pt \hrule}}}
 \renewcommand{\@oddhead}{%
 	\hspace*{-3pt}\raisebox{-15pt}[\headheight][0pt]{
-		\vbox{\hbox to \textwidth{%
-				\fl@env{\ohkol} \hfil \thepage}%
+		\vbox{\hbox{\hbox to \textwidth{%
+				\fl@env{\ohkol} \hfil \thepage}\hspace*{3pt}}%
 			\vskip3pt\hrule}}}
 \renewcommand{\@evenfoot}{}
 \renewcommand{\@oddfoot}{}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%% Maketitle related commands and definitons
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%      Maketitle related commands and definitons              %%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %We would like to have an optional argument for \title and \author commands. 
 %This short version is needed to keep the text only version of title or author's text 
@@ -185,10 +184,18 @@
 \def\@address{\@empty}
 \newcommand{\address}[1]{\gdef\@address{#1}}
 %Commands to typeset abstract
-\def\@tsabstract#1{\begin{flushright}\begin{minipage}{105mm}\small #1\end{minipage}\end{flushright}}
+\def\@tsabstract#1{% 
+%	\def\tmp{#1}  
+%	\ifx\tmp\@empty 
+%		\meaning\tmp 
+%	\else%
+\vspace*{-1.3em}
+\begin{flushright}\begin{minipage}{105mm}\small #1\end{minipage}\end{flushright}%
+}
 \def\@abstractua{\@empty}
 \newcommand{\abstractua}[1]{\gdef\@abstractua{\foreignlanguage{ukrainian}{#1}}}
-\def\@abstractru{\@empty}\newcommand{\abstractru}[1]{\gdef\@abstractru{\foreignlanguage{russian}{#1}}}
+\def\@abstractru{\@empty}
+\newcommand{\abstractru}[1]{\gdef\@abstractru{\foreignlanguage{russian}{#1}}}
 \def\@abstracten{\@empty}
 \newcommand{\abstracten}[1]{\gdef\@abstracten{\foreignlanguage{english}{#1}}}
 
@@ -200,17 +207,22 @@
             \hb@xt@1.8em{%
                 \hss\@textsuperscript{\normalfont\@thefnmark}}##1}%
     \global\@topnum\z@   % Prevents figures from going at top of page.
+    %Next command adds a bookmark to PDF table of contents panel
+    %it relies on the hyperref package
+    \pdfbookmark[0]{\thework. \@sauthor}{Work \article@tag}
     \@maketitle
     \thispagestyle{empty}
     \@thanks
     \let\thefootnote\relax
     \let\thanks\@gobble
-    \footnotetext{\hfill\copyright \ \ {\bf \@sauthor, \metadata@issue@year}}
+    \footnotetext{\hfill\copyright \ \ {\bfseries \@sauthor, \metadata@issue@year}}
     \edef\article@language{\languagename}
     %Define headers and footers
-    \xdef\ehkol{\noexpand\fl@env{\@sauthor}}
-    \xdef\ohkol{\noexpand\fl@env{\noexpand\truncate{0.95\textwidth}{\@stitle}}}
+%    \xdef\ehkol{\noexpand\fl@env{\noexpand\truncate{0.94\textwidth}{\@sauthor}}}
+    \xdef\ehkol{\@sauthor}
+    \xdef\ohkol{\noexpand\fl@env{\noexpand\truncate{0.94\textwidth}{\@stitle}}}
   \endgroup
+  \vskip\z@
   \setcounter{footnote}{0}%
   %Here is the place to write the article info into the list of papers file (.low)
 %  \edef\@conline{\noexpand\contentsline{section}{\@stitle}{}{}{}}
@@ -249,12 +261,15 @@
    \begin{flushleft}\LARGE\bfseries\@title\end{flushleft}\par%
 %   \vspace*{-2em}
    \begin{flushleft}\bfseries\itshape \fl@env{\@author}\end{flushleft}\par%
-   \vspace*{-1.5em}
+   \vspace*{-1.2em}
    \begin{flushleft}\itshape\fl@env{\@address}\end{flushleft}\par%
+%   \vspace*{1em}\vspace{\z@}
    \@tsabstract{\@abstracten}
    \@tsabstract{\@abstractua}
    \@tsabstract{\@abstractru}
-   \vskip 1.5em
+%   \vspace{0.1em}
+%   \vspace{\z@}
+%	\vspace{-2em}
    }
 %Next command write the contents line with the name of authors and title of the work into low file
 %to be used later for the generation of issue's table of contents 
@@ -264,7 +279,7 @@
  \protected@write\@auxout
 	{\let\label\@gobble \let\index\@gobble \let\glossary\@gobble \let\thanks\@gobble}%
 	{\string\@writefile{low}{\string\contentsentry{\@sauthor}%
-		{\@stitle}{\string\TheRealPageRef{\article@tag:firstpage}}}}
+		{\@title}{\string\TheRealPageRef{\article@tag:firstpage}}}}
 }
 \newcommand{\listofworksname}{Зміст}
 \newcommand{\listofworks}{%
@@ -273,13 +288,14 @@
 	\renewcommand{\ehkol}{Зміст}
 	\renewcommand{\ohkol}{Зміст}
 	\vspace*{1mm}
-	\centerline{\Large \bf Зміст}
+	\centerline{\Large \bfseries Зміст}
+%	\noindent
 	\@starttoc{low}%
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \renewcommand{\section}{\@startsection{section}{1}{\z@}%
-                                 {-3.35ex \@plus -1ex \@minus -.2ex}%
+                                 {-3.25ex \@plus -1ex \@minus -.2ex}%
                                  {2.0ex \@plus .2ex}%
                                  {\normalfont\large\bfseries}}
 \renewcommand{\subsection}{\@startsection{subsection}{2}{\z@}%
@@ -469,10 +485,51 @@
 	\renewcommand{\bblnov}{листоп}%
 	\renewcommand{\bbldec}{груд}%
 }
+%Reset label and counter correspondense for the sectionless articles 
+\newcommand{\nosectioncounters}{%
+	\counterwithout{theorem}{section}%
+	\counterwithout{lemma}{section}%
+	\counterwithout{definition}{section}%
+	\counterwithout{problem}{section}%
+	\counterwithout{conjecture}{section}%
+	\counterwithout{assumption}{section}%
+	\counterwithout{corollary}{section}%
+	\counterwithout{proposition}{section}%
+	\counterwithout{remark}{section}%
+	\counterwithout{algorithm}{section}%
+	\counterwithout{example}{section}%
+	\setcounter{theorem}{0}%
+	\setcounter{lemma}{0}%
+	\setcounter{definition}{0}%
+	\setcounter{problem}{0}%
+	\setcounter{conjecture}{0}%
+	\setcounter{assumption}{0}%
+	\setcounter{corollary}{0}%
+	\setcounter{proposition}{0}%
+	\setcounter{remark}{0}%
+	\setcounter{algorithm}{0}%
+	\setcounter{example}{0}%
+}
+
+%Restore label and counter correspondense for the articles with sectioning
+\newcommand{\addsectioncounters}{%
+	\counterwithin{theorem}{section}%
+	\counterwithin{lemma}{section}%
+	\counterwithin{definition}{section}%
+	\counterwithin{problem}{section}%
+	\counterwithin{conjecture}{section}%
+	\counterwithin{assumption}{section}%
+	\counterwithin{corollary}{section}%
+	\counterwithin{proposition}{section}%
+	\counterwithin{remark}{section}%
+	\counterwithin{algorithm}{section}%
+	\counterwithin{example}{section}%
+}
 
 %Redefinition of thebibliography command 
 \renewenvironment{thebibliography}[1]
 {\section*{\refname}%
+	\vspace{-2.6em}
 	\small%
 	\list{\@biblabel{\@arabic\c@enumiv}}%
 	{\settowidth\labelwidth{\@biblabel{#1}}%
@@ -492,3 +549,4 @@
 	\endlist}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
