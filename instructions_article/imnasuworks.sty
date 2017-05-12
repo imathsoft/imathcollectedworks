@@ -1,6 +1,8 @@
 \usepackage{latexsym,amsfonts,amssymb,amsmath,amsthm}
 \usepackage{graphics,graphicx,longtable,array,euscript,epsfig}
 \usepackage{cite}
+%Next package make pdf file searcheable and copiable for cyrylic letters
+\usepackage[noTeX]{mmap}
 \usepackage[T2A]{fontenc}
 \usepackage[cp1251]{inputenc}
 \usepackage[russian,english,ukrainian]{babel}
@@ -15,7 +17,7 @@
 %\usepackage[stable]{footmisc}
 %Subcations for subfigures
 \usepackage{caption,subcaption}
-
+\usepackage{epstopdf}
 \setlength{\textwidth}{111.0mm}\setlength{\textheight}{166.0mm}
 \setlength{\oddsidemargin}{0in}\setlength{\evensidemargin}{0in}
 \setlength{\topmargin}{-1cm}
@@ -43,7 +45,7 @@
 
 %Metadata for the article 
 %Article unique ID
-\def\article@tag{}
+\def\article@tag{article}
 \def\article@language{ukrainian}
 \def\fl@env#1{\foreignlanguage{\article@language}{#1}}
 

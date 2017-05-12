@@ -1,12 +1,22 @@
 \usepackage{latexsym,amsfonts,amssymb,amsmath,amsthm}
 \usepackage{graphics,graphicx,longtable,array,euscript,epsfig}
 \usepackage{cite}
+
+%Next package make pdf file searcheable and copiable for cyrylic letters
+\usepackage[noTeX]{mmap}
+%\usepackage{cmap}: accepted preloaded fonts without reloading.
+%\usepackage[resetfonts]{cmap}: as you can read in the README of cmap this forces the reloading of preloaded fonts (Computer Modern).
+%\usepackage[useTeX]{mmap} and \usepackage{mmap}: does everything cmap does plus correcting mathematical symbols in your pdf; uses new -m.cmap files ("uses ascii strings for the macro-names").
+%\usepackage[noTeX]{mmap}: does everything cmap does plus correcting mathematical symbols in your pdf; uses the cmap files (unicode).
+
 \usepackage[T2A]{fontenc}
 \usepackage[cp1251]{inputenc}
 \usepackage[russian,english,ukrainian]{babel}
 \usepackage{import}
 \usepackage[%
-	breaklinks%
+	breaklinks,%
+	unicode,%
+%	pdftex,%
 %	,backref=page%
 	]%
 {hyperref}
