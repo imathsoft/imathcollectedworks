@@ -1,7 +1,8 @@
 \usepackage{latexsym,amsfonts,amssymb,amsmath,amsthm}
 \usepackage{graphics,graphicx,longtable,array,euscript,epsfig}
+\usepackage{epstopdf}
 \usepackage{cite}
-
+\usepackage{hyphenat}
 %Next package make pdf file searcheable and copiable for cyrylic letters
 \usepackage[noTeX]{mmap}
 %\usepackage{cmap}: accepted preloaded fonts without reloading.
@@ -24,7 +25,8 @@
 \usepackage{float}
 %This one allows to force the placement of pending floats by issuing \FloatBarrier command inside the document
 \usepackage{placeins}
-\usepackage[breakwords]{truncate}
+%\sepackage[breakwords]{truncate}
+\usepackage{truncate}
 %\usepackage[stable]{footmisc}
 %Subcations for subfigures
 \usepackage{caption,subcaption}
@@ -194,10 +196,10 @@
 \def\@address{\@empty}
 \newcommand{\address}[1]{\gdef\@address{#1}}
 %Commands to typeset abstract
-\def\@tsabstract#1{% 
-%	\def\tmp{#1}  
-%	\ifx\tmp\@empty 
-%		\meaning\tmp 
+\def\@tsabstract#1{%
+%	\def\tmp{#1}
+%	\ifx\tmp\@empty
+%		\meaning\tmp
 %	\else%
 \vspace*{-1.3em}
 \begin{flushright}\begin{minipage}{105mm}\small #1\end{minipage}\end{flushright}%
@@ -237,6 +239,7 @@
   %Here is the place to write the article info into the list of papers file (.low)
 %  \edef\@conline{\noexpand\contentsline{section}{\@stitle}{}{}{}}
   \@writelow
+  \@writenbu
 %  \global\let\thanks\relax
 %  \global\let\maketitle\relax
 %  \global\let\@maketitle\relax
@@ -262,7 +265,7 @@
  	}%
 %		\pageref{firstpage}--\pageref{lastpage}
 % 	\TheRealPageref{\article@tag:firstpage}--\TheRealPageref{\article@tag:lastpage}%
-   }   
+   }
    \noindent\raisebox{26pt}[0pt][0pt] {\work@front@header}\par%
    \vspace*{-1.5em}
    \noindent\foreignlanguage{ukrainian}{\texttt{УДК \@udc}}\par%
@@ -282,7 +285,7 @@
 %	\vspace{-2em}
    }
 %Next command write the contents line with the name of authors and title of the work into low file
-%to be used later for the generation of issue's table of contents 
+%to be used later for the generation of issue's table of contents
 \def\@writelow{%
 %	\immediate\write\lowfile{\string\contentsentry{\@sauthor}%
 %		{\@stitle}{\string\TheRealPageRef{\article@tag:firstpage}}}
@@ -291,6 +294,14 @@
 	{\string\@writefile{low}{\string\contentsentry{\@sauthor}%
 		{\@title}{\string\TheRealPageRef{\article@tag:firstpage}}}}
 }
+\def\@writenbu{%
+	%	\immediate\write\lowfile{\string\contentsentry{\@sauthor}%
+	%		{\@stitle}{\string\TheRealPageRef{\article@tag:firstpage}}}
+	\protected@write\@auxout
+	{\let\label\@gobble \let\index\@gobble \let\glossary\@gobble \let\thanks\@gobble}%
+	{\string\@writefile{nbu}{\string\nohyphens{\@sauthor\ \string[\@title\string] {} \string\TheRealPageRef{\article@tag:firstpage}-\string\TheRealPageRef{\article@tag:lastpage}\#}}}%
+}
+
 \newcommand{\listofworksname}{Зміст}
 \newcommand{\listofworks}{%
 %	\section*{\listofworksname
@@ -301,6 +312,31 @@
 	\centerline{\Large \bfseries Зміст}
 %	\noindent
 	\@starttoc{low}%
+}
+
+\newcommand{\nbulistofworks}{%
+	%	\section*{\listofworksname
+	%		\@mkboth{\listofworksname}{\contentsname}}%
+	\clearpage%
+	\thispagestyle{empty}%
+%	\textwidth=100cm
+	\selectlanguage{ukrainian}
+%	\begin{verbatim}
+%	[Титул]\{Tittle\}
+%	[Зміст]\{Contents\}
+%	\end{verbatim}
+	Збірник праць Інституту математики НАН України, \metadata@issue@year, \metadata@issue@vol, №~\metadata@issue@number\#\par
+	\texttt{[Титул]\{Tittle\}}\#\par%
+	\texttt{[Зміст]\{Contents\}}\#\par
+%	test%
+	%	\noindent
+	\@starttoc{nbu}%
+	\input{\jobname.nbu}
+%	\begingroup
+%	\hyphenpenalty 10000
+%	\exhyphenpenalty 10000
+%	\input{\jobname.nbu}
+%	\endgroup
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -321,19 +357,19 @@
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 %Floats fromatting
 % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
-%If you want a caption without number but 
-%with the word figure then write 
+%If you want a caption without number but
+%with the word figure then write
 %	  \renewcommand{\thefigure}{}
-%inside the figure environment 
+%inside the figure environment
 \renewcommand{\thetable}{\arabic{table}}
 \renewcommand{\thefigure}{\arabic{figure}}
 %We intentionally move period into the definition of the number for floats.
 %The reason is that if one has a single float in the paper there is not point to print number. In that case use the reciept above to avoid that.
 \captionsetup{font={small}, labelsep={period},labelfont=bf}
 \captionsetup[subfigure]{labelformat=simple,labelfont=it}
-% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Define new theorem styles to make them independent on the changes 
+%Define new theorem styles to make them independent on the changes
 %in amsthm package
 \newtheoremstyle{plainstyle} % name
 {\topsep}                    % Space above
@@ -495,7 +531,7 @@
 	\renewcommand{\bblnov}{листоп}%
 	\renewcommand{\bbldec}{груд}%
 }
-%Reset label and counter correspondense for the sectionless articles 
+%Reset label and counter correspondense for the sectionless articles
 \newcommand{\nosectioncounters}{%
 	\counterwithout{theorem}{section}%
 	\counterwithout{lemma}{section}%
@@ -536,7 +572,7 @@
 	\counterwithin{example}{section}%
 }
 
-%Redefinition of thebibliography command 
+%Redefinition of thebibliography command
 \renewenvironment{thebibliography}[1]
 {\section*{\refname}%
 	\vspace{-2.6em}
@@ -557,6 +593,8 @@
 {\def\@noitemerr
 	{\@latex@warning{Empty `thebibliography' environment}}%
 	\endlist}
+
+\def\bibfont{\footnotesize}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
