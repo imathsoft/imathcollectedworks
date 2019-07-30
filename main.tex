@@ -1,0 +1,116 @@
+\documentclass[10pt,twoside,final]{article}
+\usepackage{imnasuworks}
+\usepackage{overpic}
+%\usepackage[author={Dima}]{fixme}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% У випадку якщо якісь із статей авторів використовують додаткові 
+% пакети, окрім тих які підключені у стильовому файлі, 
+% їх потрібно підключити тут.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ 
+%For Veselovska
+\usepackage{multirow,hhline}
+%\usepackage{layout}
+%\usepackage{standalone}
+%\usepackage{cmbright}
+%\usepackage[T1]{fontenc}
+\usepackage{hologo}
+%For Chernecka
+\usepackage{mathrsfs}
+
+%\newcommand{\pbf}[1]{\mbox{\mathversion{bold}$#1$}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Якщо у статтях авторів використовуються команда
+% \DeclareMathOperator то їх потрібно скопіювати сюди у головний файл.
+%
+% Інші команди типу \def \newcommand чи інші переносити у основний файл 
+% не має необхідності (і не рекомендовано для уникнення конфліктів).
+% Всі локальні (зроблені у окремій статті) декларації команд 
+% є ізолованими  від інших статей. Це означає, що дві команди 
+% або мітки \label \bibitem з однаковими назвами можуть співіснувати 
+% у різних статтях і не викликати конфліктів після того 
+% як статті підключені у основний файл.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%From MakVasSyt_2016
+\DeclareMathOperator{\sech}{sech}
+\DeclareMathOperator{\csch}{csch}
+\DeclareMathOperator{\arcsec}{arcsec}
+\DeclareMathOperator{\arccot}{arccot}
+\DeclareMathOperator{\arccsc}{arccsc}
+\DeclareMathOperator{\arccosh}{arccosh}
+\DeclareMathOperator{\arcsinh}{arcsinh}
+\DeclareMathOperator{\arctanh}{arctanh}
+\DeclareMathOperator{\arcsech}{arcsech}
+\DeclareMathOperator{\arccsch}{arccsch}
+\DeclareMathOperator{\arccoth}{arccoth} 
+
+\DeclareMathOperator{\Hol}{Hol}
+\DeclareMathOperator{\Arg}{Arg}
+\DeclareMathOperator{\Ker}{Ker}
+\DeclareMathOperator{\Res}{Res}
+\DeclareMathOperator{\sinc}{sinc}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\const}{const}
+
+\begin{document}
+	\let\oldenddocument\enddocument
+	\let\document=\empty
+	\let\enddocument=\empty
+	\def\documentclass[#1]#2{\relax}
+	\def\usepackage#1{\relax}
+	\let\DeclareMathOperator\OldDeclareMathOperator
+	\def\DeclareMathOperator#1#2{\relax}
+	%Show the page's layout 
+	%\layout
+	\selectlanguage{ukrainian} 
+	
+	
+	%\graphicspath{./}{./ }
+    % Титульні сторінки та зміст
+    % Зміст збірнику генерауєтсья автоматично на базі даних 
+    % які зазначені авторами у титульній частині роботи.
+	\input{P1-4}
+	\input{contents}
+	%Якщо збірник містить статтю присвяту то фото підключається тут
+	\input{Foto_Mak}
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	% Стаття присвята
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	\subimportwork{Makarov_75/}{Makarov_75}
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	% Далі йдуть звичайні наукові статті 
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	\subimportwork{Mazko_Kusiy/}{Mazko-Kusii-2016}
+	\subimportwork{Sytnyk/}{Sytnyk}
+	
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	% Далі йдуть роботи з історичними нарисами у яких 
+	% заголовок статей формується у ручному режимі.
+	% 
+	% Автоматичне форматування заголовків історичних статей 
+	% знаходиться на стадії розробки.
+	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	\addcontentsline{low}{section}{\textit{ІСТОРИЧНІ НАРИСИ}}
+	\clearpage
+	\thispagestyle{empty}
+	\vspace*{5cm}
+	\begin{center}
+		\LARGE
+		ІСТОРИЧНІ НАРИСИ
+	\end{center}
+%	\vspace{-4mm} 
+	\hrule \vskip 1mm \hrule
+	\subimportwork{Pustovoitov/}{Pustovoitov}
+	
+	\input{Page_os}
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % Наступна команда потрібна для генерації списку статей у форматі 
+    % сумісному з вимогами Національної Бібліотеки України.
+    % Не розкоментовувати без потреби.
+	%\nbulistofworks
+	
+	\def\enddocument{\oldenddocument}
+\end{document}

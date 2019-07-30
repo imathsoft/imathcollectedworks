@@ -1,0 +1,21 @@
+% !TeX encoding = windows-1251
+\newcommand{\contentsentry}[3]{%	
+%\long\def\contentsentry#1#2#3{%
+	\vspace*{-1mm}%
+%	\contentsline{section}{#1 #2}{#3}{}{}
+\contentsline{section}{ $\mbox{$\>\>$}$\ \noindent
+{\large\textbf{\textit{#1}}}\\
+\noindent\hangindent=0.0cm\hangafter=1 \hspace{0.0mm} #2{\normalfont\normalsize\dotfill }
+}{#3}{}
+}
+
+\setcounter{page}{5}
+%Old implementation
+%\thispagestyle{plain}
+%\renewcommand{\ehkol}{Çì³ñò}
+%\renewcommand{\ohkol}{Çì³ñò}
+%\vspace*{1mm}
+%\centerline{\Large \bf Çì³ñò}\label{Zmist:FirstPage}
+%\input{\jobname.low}
+\listofworks
+\clearpage 
