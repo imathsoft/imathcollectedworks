@@ -1,0 +1,766 @@
+% !TeX spellcheck = uk_UA
+% !TeX encoding = windows-1251
+%\documentclass[10pt,twoside,draft]{article}
+\documentclass[10pt,twoside]{article}
+\usepackage{imnasuworks}
+%Місце для визначення користувацьких команд
+%\usepackage{hologo}
+
+\begin{document}
+\selectlanguage{ukrainian}
+
+\udc{517.93;\,519.711}
+
+\title{Робастна стабілізація та гасіння зовнішніх збурень у системах з керованими і спостережуваними виходами\,\thanks{Робота виконана за частковою підтримкою НДР №~0112U001015.}}
+
+\author[Мазко~О.\,Г., Кусій~С.\,М.]{%
+	О.\,Г.~Мазко\,${}^{1}$,~
+	С.\,М.~Кусій\,${}^{2}$\\
+	    	}
+\address{%
+	${}^{1}$~Інститут математики НАН України, Київ; mazko@imath.kiev.ua,\\
+	${}^{2}$~Інститут математики НАН України, Київ; sergii.kusii@gmail.com
+	}
+
+\abstracten{Methods for construction of control laws providing a robust stability and specified evaluation of the weighted damping level of input signals and initial perturbations are proposed for a class of systems with controllable and observable outputs. Realization of the methods using the static state feedback or the full order dynamic regulators reduces to solving the systems of linear matrix inequalities.
+The results are illustrated by an example for a stabilization system of a linear damped oscillator.}
+\abstractru{Для класса систем с управляемыми и наблюдаемыми выходами предложены методы построения законов управления, обеспечивающих робастную устойчивость и заданную оценку взвешенного уровня гашения входных сигналов и начальных возмущений. Реализация данных методов с использованием статической обратной связи по состоянию или динамического регулятора полного порядка сводится к решению систем линейных матричных неравенств. Полученные результаты продемонстрированы на примере системы стабилизации линейного осциллятора с демпфированием.}
+%
+\maketitle
+
+\vspace*{-3ex}
+
+\section{Вступ}
+
+При дослідженні складних динамічних систем використовуються математичні моделі у вигляді рівнянь руху з невизначеними елементами (параметрами, зовнішніми збуреннями тощо). Для таких систем першочерговими є задачі побудови статичних або динамічних регуляторів, що забезпечують робастну стійкість станів рівноваги та зниження впливу зовнішніх збурень на динаміку керованих об'єктів. Ці задачі можуть бути розв'язані методами теорії $H_\infty$-оптимізації, а також методами інваріантних еліпсоїдів (див., наприклад, \cite{Polyak-Scherbakov,Kuncevich,Dullerud-Paganini,Balandin-Kogan,Balandin-Kogan-1,Larin-Tunik,Nazin-Polyak-Topunov}).
+
+Слід зазначити, що практичні застосування багатьох методів синтезу систем керування базуються на розв'язуванні лінійних матричних нерівностей (ЛМН). Для цього створені достатньо ефективні засоби LMI Toolbox комп'ютерної системи Matlab \cite{Gahinet-Nemirovski-Laub-Chilali}.
+
+У даній роботі для деякого класу систем з керованими і спостережуваними виходами розробляються алгоритми побудови динамічних регуляторів, що забезпечують верхню оцінку зваженого рівня гасіння вхідних сигналів та початкових збурень, а також робастну стабілізацію відносно заданої множини невизначеностей. При цьому використовуються критерії якості, що є аналогами $H_\infty$-норми передатної матричної функції системи керування \cite{Mazko-2016,Mazko-Kusii-NO,Mazko-Kusii-2015}.
+
+Будемо використовувати такі позначення:
+
+\noindent $\bullet$\, $I_n$ --- одинична матриця порядку $n$;
+
+\noindent $\bullet$\,  $0_{n\times m}$ --- нульова матриця розмірів $n\times m$;
+
+\noindent $\bullet$\,  $X=X^T>0$ $(\ge 0)$ --- додатно (невід'ємно) визначена матриця $X$;
+
+\noindent $\bullet$\,  ${\rm i}(X)=\{{\rm i}_+,{\rm i}_-,{\rm i}_0\}$ --- інерція симетричної матриці $X$, яку утворюють кількості її додатних, від'ємних і нульових власних значень, враховуючи кратності;
+
+\noindent $\bullet$\, $\sigma(A)$ --- спектр матриці $A$;
+
+\noindent $\bullet$\,  $B^{\bot}$ ($C^{\bot}$) --- ортогональне доповнення матриці $B\in{\mathbb R}^{n\times m}$ ($C\in{\mathbb R}^{l\times n}$) повного рангу $m$ ($l$), що визначається співвідношеннями \\$B^TB^{\bot}=0$, $\det\big[B,B^{\bot}\big]\ne 0$ ($C^{\bot}C^T=0$, $\det \big[C^T,C^{\bot T}\big] \neq 0$);
+
+\noindent $\bullet$\,  ${\rm Ker}\, A$ --- ядро матриці $A$;
+
+\noindent $\bullet$\,  $W_A$ --- матриця, стовпці якої утворюють базис ядра матриці $A$;
+
+\noindent $\bullet$\,  ${\rm Co}\{A_1,\dots,A_\nu\}$ --- опуклий многогранник (політоп) з вершинами $A_1,\dots,A_\nu$ у просторі матриць.
+
+\noindent $\bullet$\,  $\|x\|$ --- евклідова норма вектора $x$;
+
+\noindent $\bullet$\,  $\|x\|_Q$ --- зважена $L_2$-норма вектор-функції $x(t)$.
+
+\section{Допоміжні твердження}
+
+При дослідженні матричних нерівностей з блочно-матричними виразами типу
+$$M=\left[\begin{array}{cc}
+                                A & B^T \\
+                                B & C \\
+                              \end{array}\right]$$
+ часто використовують наступне твердження.
+
+ \begin{lemma}\label{l1-1} {\rm (лема Шура \cite{Gantmaher})}.
+ Якщо діагональний блок $A$ $(C)$ матриці $M$ невироджений, то $M\le 0$ тоді і лише тоді, коли
+$$A<0,\;\; M_A=C-BA^{-1}B^T\le 0 \;\;\big(C<0,\;\; M_C=A-B^TC^{-1}B\le 0\big).$$
+При цьому $M<0\;\Longleftrightarrow\;A<0,\;M_A< 0\;\Longleftrightarrow\;C<0,\;M_C< 0.$
+ \end{lemma}
+
+\begin{lemma}\label{l1-2} {\rm \cite{Gahinet-Apkarian}}
+Лінійна матрична нерівність
+\begin{equation}\label{f1-1}
+  A^TXB+B^TX^TA<C,
+\end{equation}
+де $A\in {\mathbb R}^{p\times n}$, $B\in {\mathbb R}^{q\times n}$ і $C=C^*\in {\mathbb R}^{n\times n}$, має розв'язок $X\in {\mathbb R}^{p\times q}$ тоді і лише тоді, коли виконується одна із умов:
+
+{\rm (a)} ${\rm rank}\,A=n$, ${\rm rank}\,B=n$;
+
+{\rm (b)} ${\rm rank}\,A<n$, ${\rm rank}\,B=n$, $W_A^TCW_A>0$;
+
+{\rm (c)} ${\rm rank}\,B<n$, ${\rm rank}\,A=n$, $W_B^TCW_B>0$;
+
+{\rm (d)} ${\rm rank}\,A<n$, ${\rm rank}\,B<n$, $W_A^TCW_A>0$, $W_B^TCW_B>0$;
+
+\noindent де $W_A$ і $W_B$ --- матриці, стовпці яких складають базиси відповідних ядер ${\rm ker\,A}$ і ${\rm ker\,B}$.
+\end{lemma}
+
+В \cite{Balandin-Kogan-2010} за умов леми \ref{l1-2} наведено загальний розв'язок матричної нерівності (\ref{f1-1}) в параметричній формі.
+
+\medskip
+Розглянемо динамічну систему без керування
+\begin{equation}\label{f1-2}
+  \dot{x}=Ax+Bw,\quad z=Cx+Dw,\quad x(0)=x_0,
+\end{equation}
+де $x\in {\mathbb R}^n$, $w\in {\mathbb R}^{s}$ і $z\in {\mathbb R}^{k}$ --- вектори відповідно стану, зовнішніх збурень і виходу системи, $A$, $B$, $C$ і $D$ --- сталі матриці відповідних розмірів.
+\begin{definition}{\rm \cite{Mazko-2016}}\label{d1-1} \rm
+Система (\ref{f1-2}) називається \emph{неекспансивною}, якщо її вектор виходу при довільному $T>0$ задовольняє нерівність
+\begin{equation*}
+  \int_0^T z^TQzdt \le \int_0^T w^TPw dt+x_0^TX_0x_0,
+\end{equation*}
+$Q=Q^T>0$, $P=P^T>0$ і $X_0=X_0^T>0$ --- деякі матриці.
+\end{definition}
+
+Введемо критерії якості системи (\ref{f1-2}) відносно її вектора виходу:
+\begin{equation}\label{f1-3}
+   J_0=\sup_{0<\|w\|_P<\infty} \varphi_0(w),\quad \varphi_0(w)= \frac{\|z\|_Q}{\|w\|_P},
+\end{equation}
+\begin{equation}\label{f1-4}
+   J=\sup_{0<\|w\|_P^2+x_0^TX_0x_0<\infty} \varphi(w,x_0),\quad \varphi(w,x_0)= \frac{\|z\|_Q}{\sqrt{\|w\|_P^2+x_0^TX_0x_0}},
+\end{equation}
+де
+$$
+\|z\|_Q^2=\int_0^\infty z^TQz\, dt,\quad \|w\|_P^2=\int_0^\infty w^TPw\, dt.
+$$
+
+Значення $J$ характеризує зважений рівень гасіння зовнішніх і початкових збурень у системі (\ref{f1-2}). Даний критерій якості відомий у випадку вагових матриць $P=I_s$, $Q=I_k$ і $X_0=\rho^2 I_n$ \cite{Balandin-Kogan-1}. Характеристику системи $J_0$ використовуємо у випадку нульового початкового вектора $x_0$. Очевидно, що $J_0\le  J$, оскільки $\varphi(w,0)=\varphi_0(w)$, тобто $ J_0$ і $ J$ при $x_0=0$ співпадають. Якщо система (\ref{f1-2}) неекспансивна, то $ J\le 1$. Зворотне твердження для лінійних систем (\ref{f1-2}) також має міс\-це  \cite{Mazko-Kusii-2015}.
+
+\begin{lemma} \label{l1-3}
+Нехай матриця $A$ гурвіцева. Тоді оцінка $ J_0<\gamma$ виконується у тому і лише у тому випадку, коли ЛМН
+\begin{equation}\label{f1-5}
+\Phi_\gamma= \left[\begin{array}{ccc}
+       A^TX+XA+C^TQC & XB+C^TQD \\
+       B^TX+D^TQC & D^TQD-\gamma^2 P
+       \end{array}\right]<0
+\end{equation}
+має розв'язок $X=X^T>0$. Для виконання оцінки $ J<\gamma$ необхідно і достатньо, щоб була сумісною система ЛМН {\rm (\ref{f1-5})} і
+\begin{equation}\label{f1-6}
+0<X< \gamma^2X_0.
+\end{equation}
+\end{lemma}
+\begin{proof} \emph{Достатність.}
+Побудуємо для системи (\ref{f1-2}) квадратичну функцію Ляпунова $v(x)=x^TXx$ і обчислимо вираз
+$$
+\dot{v}(x)+z^TQz-\gamma^2w^TPw=\widetilde{x}^T\Phi_\gamma \widetilde{x},\quad \widetilde{x}^T=[x^T, w^T],
+$$
+де $\dot{v}(x)$ --- похідна даної функції у силу системи (\ref{f1-2}). Після інтегрування даного виразу, враховуючи співвідношення (\ref{f1-5}) і (\ref{f1-6}), отримаємо $\|z\|_Q^2\le \gamma^2 (\|w\|_P^2+x_0^TX_0x_0)$ і $\varphi(w,x_0)\le \gamma$. Більше того, $\varphi(w,x_0)\le \gamma-\varepsilon$ для деякого $\varepsilon>0$. Остання нерівність також є наслідком строгих мат\-ричних нерівностей (\ref{f1-5}) і (\ref{f1-6}), які виконуються при зменшенні $\gamma$ на достатньо мале $\varepsilon$. Отже, $J<\gamma$ і, зокрема, $J_0<\gamma$ у випадку $x_0=0$.
+
+\emph{Необхідність.} Використаємо розклади додатно визначених матриць $Q=\widetilde{Q}^T\widetilde{Q}$, $P=\widetilde{P}^T\widetilde{P}$, $X_0=\widetilde{X}_0^T\widetilde{X}_0$ і перетворимо систему (\ref{f1-2}):
+\begin{equation} \label{f1-2-1}
+    \dot{\widetilde{x}}=\widetilde{A}\widetilde{x}+\widetilde{B}\widetilde{w},\quad \widetilde{z}=\widetilde{C}\widetilde{x}+\widetilde{D}\widetilde{w},\quad \widetilde{x}(0)=\widetilde{x}_0,
+\end{equation}
+де $\widetilde{x}=\widetilde{X}_0x$, $\widetilde{z}=\widetilde{Q}z$, $\widetilde{w}=\widetilde{P}w$, $\widetilde{A}=\widetilde{X}_0A\widetilde{X}_0^{-1}$, $\widetilde{B}=\widetilde{X}_0B\widetilde{P}^{-1}$,\\
+$\widetilde{C}=\widetilde{Q}C\widetilde{X}_0^{-1}$ і $\widetilde{D}=\widetilde{Q}D\widetilde{P}^{-1}$.
+При цьому критерій якості (\ref{f1-4}) для системи (\ref{f1-2-1}) набуває вигляду
+$$
+  \widetilde{J}=\sup_{0<\|\widetilde{w}\|_{I_m}^2+\widetilde{x}_0^T\widetilde{x}_0<\infty} \frac{\|\widetilde{z}\|_{I_l}}{\sqrt{\|\widetilde{w}\|_{I_m}^2+\widetilde{x}_0^T\widetilde{x}_0}}.
+$$
+Якщо $\widetilde{J}< \gamma$, то для деякої матриці $\widetilde{X}=\widetilde{X}^T$ (див. \cite[теорема 1]{Balandin-Kogan-1})
+$$
+ 0<\widetilde{X}< \gamma^2 I_n,\quad \widetilde{\Omega}=\left[\begin{array}{ccc}
+                         \widetilde{A}^T\widetilde{X}+\widetilde{X}\widetilde{A} & \widetilde{X}\widetilde{B} & \widetilde{C}^T \\
+                         \widetilde{B}^T\widetilde{X} & - \gamma^2I_m & \widetilde{D}^T \\
+                         \widetilde{C} & \widetilde{D} & - I_l \\
+                       \end{array}
+                     \right]< 0,
+$$
+або за законом інерції
+$$
+ 0<X< \gamma^2 X_0,\>\>\> \Omega=S^T\widetilde{\Omega} S=\left[\!\begin{array}{ccc}
+                         A^TX+XA & XB & C^T \\
+                         B^TX & -\gamma^2 P & D^T \\
+                         C & D & - Q^{-1} \\
+                       \end{array}
+                     \!\right]< 0,
+$$
+де $X=\widetilde{X}_0^T\widetilde{X}\widetilde{X}_0$, $S={\rm diag}\,\big\{\widetilde{X}_0,\widetilde{P},\widetilde{Q}^{-1T}\big\}$. Останнє співвідношення за лемою Шура еквівалентне матричній нерівності (\ref{f1-5}).
+
+Лему доведено.
+\end{proof}
+
+\begin{remark}\label{r1-1}\rm
+Якщо $\Phi_\gamma < 0$ для деякої матриці $X=X^T>0$, то система (\ref{f1-2}) з невизначеністю
+\begin{equation}\label{f1-7}
+  w=\frac{1}{\gamma}\Theta z,\quad \Theta^TP\Theta\le Q,
+\end{equation}
+робастно стійка і має спільну квадратичну функцію Ляпунова $v(x)=x^TXx$. Це твердження є наслідком леми \ref{l1-3} і теореми 1 \cite{Mazko-AiT}.
+На множині функцій (\ref{f1-7}) функціонали $\varphi_0(w)$ і $\varphi(w,x_0)$  в (\ref{f1-3}) і (\ref{f1-4}) приймають мінімальні значення, якщо виконується рівність $\Theta^TP\Theta= Q$. Зокрема, у випадку $k\le s$ маємо $\varphi_0(w)=\gamma$ при
+$$
+\Theta=(\sqrt{P})^{-1}E\sqrt{Q}, \quad E=\left\{\begin{array}{cc}
+                                                    I_k, & k=s, \\[1mm]
+                                                    \big[I_k,0_{k\times s-k}\big]^T, & k<s.
+                                                  \end{array}
+ \right.
+$$
+%$$
+%\Theta=(\sqrt{P})^{-1}E\sqrt{Q}, \quad E=\left\{\begin{array}{cc}
+%                                                    I_s, & s=k, \\[1mm]
+%                                                    \big[I_s,0_{s\times k-s}\big], & s<k, \\[1mm]
+%                                                    \big[I_k,0_{k\times s-k}\big]^T, & s>k.
+%                                                  \end{array}
+% \right.
+%$$
+\end{remark}
+
+Із леми \ref{l1-3} також випливає, що критерії якості (\ref{f1-3}) і (\ref{f1-4}) системи (\ref{f1-2}) можна обчислити як розв'язки відповідних оптимізаційних задач:
+ \begin{equation}\label{f1-5-1}
+ J_0=\inf \big\{\gamma: \Phi_\gamma<0,\;X>0\big\},\quad J=\inf \big\{\gamma: \Phi_\gamma<0,\;0<X< \gamma^2 X_0\big\}.
+ \end{equation}
+Якщо в лемі \ref{l1-3} замість (\ref{f1-5}) використати нерівність $\Phi_\gamma\le 0$, то отримаємо критерії виконання нестрогих оцінок $ J_0\le \gamma$ і $ J\le \gamma$.
+
+Узагальнимо систему (\ref{f1-2}) у вигляді
+\begin{equation}\label{f1-2-2}
+  \dot{x}=A(x)x+B(x)w,\quad z=C(x)x+D(x)w,\quad x(0)=x_0,
+\end{equation}
+де $A(x)$, $B(x)$, $C(x)$ і $D(x)$ --- матричні коефіцієнти, неперервно залежні від $x$ у деякому околі ${\mathcal S}_0$ стану рівноваги $x\equiv 0$. Повторюючи доведення достатності леми \ref{l1-3} для системи (\ref{f1-2-2}), отримаємо наступне твердження.
+
+\begin{lemma} \label{l1-3-1}
+Для системи {\rm (\ref{f1-2-2})} виконується оцінка $J_0\le \gamma$, якщо існує матриця $X=X^T>0$ така, що
+\begin{equation}\label{f1-5-3}
+\left[\begin{array}{ccc}
+       A^T(x)X+XA(x)+C^T(x)QC(x) & XB(x)+C^T(x)QD(x) \\
+       B^T(x)X+D^T(x)QC(x) & D^T(x)QD(x)-\gamma^2 P
+       \end{array}\right]<0
+\end{equation}
+при $x\in {\mathcal S}_0$. Якщо до того ж $0<X\le\gamma^2X_0$, то $J<\gamma$. При цьому нульовий стан системи {\rm (\ref{f1-2-2})} з невизначеністю {\rm (\ref{f1-7})} робастно стійкий зі спільною функцією Ляпунова $v(x)=x^TXx$.
+\end{lemma}
+
+Наведемо допоміжне твердження, яке відоме у випадку $\gamma=1$ \cite{Balandin-Kogan-1}.
+\begin{lemma}\label{l3-1}
+ Для заданих матриць $X>0$, $Y>0$ і числа $\gamma>0$ існують матриці $X_1\in \mathbb{R}^{r\times n}$, $X_2\in \mathbb{R}^{r\times r}$, $Y_1\in \mathbb{R}^{r\times n}$ і $Y_2\in \mathbb{R}^{r\times r}$, що задовольняють співвідношення
+\begin{equation}\label{f51-22}
+\widehat{X}=\left[\!\begin{array}{cc}
+                  X & \!X_1^T \\
+                  X_1 & \!X_2 \\
+                  \end{array}
+                  \!\right]>0,\quad  \widehat{Y}=\left[\!\begin{array}{cc}
+                  Y & \!Y_1^T \\
+                  Y_1 & \!Y_2 \\
+                  \end{array}
+                  \!\right]>0,\quad \widehat{X}\widehat{Y}=\gamma^2I_{n+r},
+\end{equation}
+тоді і лише тоді, коли
+ \begin{equation}\label{f51-23}
+   W=\left[\begin{array}{cc}
+        X & \gamma I_n \\
+        \gamma I_n & Y
+      \end{array}
+\right]\ge 0,\quad {\rm rank}\,W\le n+r.
+ \end{equation}
+\end{lemma}
+\begin{proof}
+Із леми Шура і формули для рангу блочних матриць випливає еквівалентність співвідношень (\ref{f51-23}) і
+\begin{equation}\label{f51-23-1}
+  Z=Y-\gamma^2X^{-1}\ge 0,\quad {\rm rank}\,Z\le r.
+\end{equation}
+Застосуємо формулу Фробеніуса \cite{Gantmaher} для обернення блочної матриці $\widehat{X}$ в (\ref{f51-22}):
+$$
+\frac{1}{\gamma^2}\left[\!\begin{array}{cc}
+                  Y & \!Y_1^T \\
+                  Y_1 & \!Y_2 \\
+                  \end{array}
+                  \!\right]= \left[\begin{array}{cc}
+                      X^{-1}+X^{-1}X_1^TH^{-1}X_1X^{-1} & -X^{-1}X_1^TH^{-1} \\
+                      -H^{-1}X_1X^{-1} & H^{-1} \\
+                    \end{array}
+                  \right],
+$$
+де $H=X_2-X_1X^{-1}X_1^T$. Звідси маємо $Z=\gamma^2 X^{-1}X_1^TH^{-1}X_1X^{-1}\ge 0$. Це означає, що (\ref{f51-23-1}) є наслідком (\ref{f51-22}).
+
+Покажемо, що (\ref{f51-22}) є наслідком (\ref{f51-23-1}), використовуючи, наприклад,
+розклад невід'ємно визначеної матриці $Z=V^TV$, де $V\in \mathbb{R}^{r\times n}$ --- довільна матриця така, що ${\rm ker}V={\rm ker}Z$. Покладемо
+\begin{equation}\label{f51-23-2}
+  X_1=\frac{1}{\gamma}VX,\;\; X_2=\frac{1}{\gamma^2}VXV^T+I_r,\;\; Y_1=-\gamma V,\;\; Y_2=\gamma^2 I_r.
+\end{equation}
+Тоді $H=I_r>0$ і виконуються співвідношення (\ref{f51-22}).
+
+Лему доведено.
+\end{proof}
+
+\section{Лінійні системи з керованими і спостережуваними виходами}
+
+Розглянемо систему керування
+\begin{equation}\label{f52-1}
+  \begin{array}{l}
+    \dot{x}=Ax+B_1w+B_2u,\quad x(0)=x_0, \\
+    z=C_1x+D_{11}w+D_{12}u, \\
+    y=C_2x+D_{21}w+D_{22}u,
+  \end{array}
+\end{equation}
+де $x\in {\mathbb R}^n$, $u\in {\mathbb R}^{m}$, $w\in {\mathbb R}^{s}$, $z\in {\mathbb R}^{k}$ і $y\in {\mathbb R}^{l}$ --- вектори відповідно стану, керування, зовнішніх збурень, керованого і спостережуваного виходів, а всі матричні коефіцієнти відповідних розмірів сталі. Нас цікавлять керування, які понижують критерії якості (\ref{f1-3}) і (\ref{f1-4}) та забезпечують умови неекспансивності замкненої системи відносно вектора керованого виходу $z$. Статичні та динамічні регулятори, які мінімізують критерій якості $J$, будемо називати $J$-\emph{оптимальними}. $J_0$-оптимальне керування у випадку одиничних вагових матриць функціоналу $\varphi_0(w)$ є $H_\infty$-оптимальним.
+
+\subsection{Статичний регулятор по вимірюваному виходу}
+Якщо керування у системі (\ref{f52-1}) шукати у вигляді статичного зворотного зв'язку
+\begin{equation}\label{f2-1}
+u=Ky,\quad \det (I_{m}-KD_{22})\ne 0,
+\end{equation}
+то замкнена система набуває вигляду
+\begin{equation}\label{f2-2}
+  \dot{x}=Mx+Nw,\quad z=Fx+Gw,\quad x(0)=x_0,
+\end{equation}
+де
+$M=A+B_2K_0C_2$,\; $N=B_1+B_2K_0D_{21}$,\; $F=C_1+D_{12}K_0C_2$, \\$G=D_{11}+D_{12}K_0D_{21}$,\; $K_0=(I_m-KD_{22})^{-1}K$. Застосуємо лему \ref{l1-3} для системи (\ref{f2-2}) і, враховуючи лему Шура, подамо критерій виконання оцінки $J_0<\gamma$ у вигляді
+\begin{equation}\label{f2-3}
+   \left[\begin{array}{ccc}
+                         M^TX+XM &  X N  &  F ^T \\
+                          N ^T X  & - \gamma^2P &  G ^T \\
+                          F  &  G  & - Q^{-1} \\
+                       \end{array}
+                     \right]<0.
+\end{equation}
+При цьому $X=X^T>0$, а матриця $M$ повинна бути гурвіцевою. Співвідношення (\ref{f2-3}) можна переписати у вигляді ЛМН відносно $K_0$:
+\begin{equation}\label{f2-4}
+    \widehat{L}^TK_0\widehat{R}+\widehat{R}^TK_0^T\widehat{L}+\Omega<0,
+\end{equation}
+де $\widehat{R}=\big[R,0_{l\times k}\,\big]$, $R=\big[\,C_2,D_{21}\,\big]$,
+ $\widehat{L}=\big[L,0_{m\times s}\,\big]\, \widetilde{X}$, $L=\big[\,B^T_2,D^T_{12}\,\big]$,
+$$\widetilde{X}=\left[\begin{array}{ccc}
+                    X & 0 & 0 \\
+                    0 & 0 & I_k \\
+                    0 & I_s & 0 \\
+                  \end{array}\right],\quad
+\Omega=\left[\begin{array}{ccc}
+          A^T X + X A  &  X B_1 &  C^T_1 \\
+          B^T_1X & -\gamma^2P& D^T_{11} \\
+         C_1 & D_{11} & -Q^{-1} \\
+         \end{array}\right].$$
+ Якщо матрична нерівність (\ref{f2-4}) сумісна, то завжди можна вибрати такий його розв'язок $K_0$, щоб $\det (I_{m}-KD_{22})\ne 0$, де
+\begin{equation}\label{f2-5}
+  K=K_0(I_l+D_{22}K_0)^{-1}.
+\end{equation}
+
+Далі застосуємо твердження (d) леми \ref{l1-2} до нерівності (\ref{f2-4}). Оскільки
+$$
+W_{\widehat{R}}=\left[\begin{array}{cc}
+                                   W_R & 0 \\
+                                   0 & I_k \\
+                                      \end{array}\right],\quad
+W_{\widehat{L}}=\widetilde{X}^{-1}\left[\begin{array}{cc}
+                                         W_L & 0 \\
+                                        0 & I_s \\
+                                      \end{array}\right],
+$$
+то існування розв'язку $K_0$ матричної нерівності (\ref{f2-4}) еквівалентне співвідношенням
+\begin{equation}\label{f2-6}
+   W_{R}^T\left[\begin{array}{cc}
+                 A^TX+XA+C_1^TQC_1 & XB_1+C_1^TQD_{11} \\
+                 B_1^TX+D_{11}^TQC_1 & D_{11}^TQD_{11}-\gamma^2P \\
+               \end{array} \right]W_{R}<0,
+\end{equation}
+\begin{equation}\label{f2-7}
+  W_{L}^T\left[\begin{array}{cc}
+                 AY+YA^T+B_1P^{-1}B_1^T & YC_1^T+B_1P^{-1}D_{11}^T \\
+                 C_1Y+D_{11}P^{-1}B_1^T & D_{11}P^{-1}D_{11}^T-\gamma^2Q^{-1} \\
+               \end{array} \right]W_{L}<0,
+\end{equation}
+де $Y=\gamma^2X^{-1}$. Таким чином, доведено таке твердження.
+ \begin{theorem}\label{t2-1}
+Для системи {\rm(\ref{f52-1})} існує статичний регулятор {\rm(\ref{f2-1})}, що забезпечує оцінку $J_0<\gamma$ $(J<\gamma)$, тоді і лише тоді, коли для деякої матриці $X=X^T>0$ виконується система співвідношень {\rm(\ref{f2-6})} і {\rm(\ref{f2-7})} {\rm \big( (\ref{f1-6}), {\rm  (\ref{f2-6}) і (\ref{f2-7})} \big)}. При цьому замкнена система {\rm (\ref{f2-2})} з невизначеністю {\rm (\ref{f1-7})}
+робастно стійка і має спільну функцію Ляпунова $v(x)=x^TXx$, а матрицю регулятора $K$ можна знайти у вигляді {\rm (\ref{f2-5})}, де $K_0$ --- розв'язок ЛМН {\rm (\ref{f2-4})}.
+ \end{theorem}
+
+Розглянемо випадок статичного зворотного зв'язку по стану: $C_2=I_n$, $D_{21}=0$ і $D_{22}=0$. Оскільки $XY=\gamma^2I_n$ і $W_R=\big[0_{s\times n}, I_s\big]^T$, то в цьому випадку співвідношення (\ref{f1-6}) і (\ref{f2-6}) набувають вигляду
+ \begin{equation}\label{f2-8}
+   \left[\begin{array}{cc}
+       X_0 & I_n \\
+       I_n & Y \\
+     \end{array}\right]> 0,
+  \end{equation}
+ \begin{equation}\label{f2-9}
+   D_{11}^TQD_{11}-\gamma^2P<0.
+ \end{equation}
+\begin{corollary}\label{c2-1}
+Для системи {\rm(\ref{f52-1})} існує статичний регулятор по стану $u=Kx$, що забезпечує оцінку $J_0<\gamma$ $(J<\gamma)$, тоді і лише тоді, коли для деякої матриці $Y=Y^T>0$ виконується система співвідношень {\rm(\ref{f2-7})} і {\rm(\ref{f2-9})}
+ {\rm \big( (\ref{f2-7}) -- (\ref{f2-9}) \big)}. При цьому замкнена система {\rm (\ref{f2-2})} з невизначеністю {\rm (\ref{f1-7})}
+робастно стійка і має спільну функцію Ляпунова $v(x)=\gamma^2x^TY^{-1}x$, а матрицю регулятора $K$ можна знайти у вигляді {\rm (\ref{f2-5})}, де $K_0$ --- розв'язок ЛМН {\rm (\ref{f2-4})}.
+ \end{corollary}
+
+
+\subsection{Динамічний регулятор}
+Побудуємо динамічний регулятор порядку $r$ з нульовим початковим вектором:
+\begin{equation}\label{f52-5}
+  \dot{\xi}=Z\xi+Vy,\quad u=U\xi+Ky,\quad \xi(0)=0,
+\end{equation}
+де $\xi\in {\mathbb R}^{r}$ --- вектор стану регулятора, $Z$, $V$, $U$ і $K$ --- невідомі матриці відповідних розмірів $r\times r$, $r\times l$, $m\times r$ і $m\times l$.
+Припустимо, що
+\begin{equation}\label{f52-6}
+\det (I_{m}-KD_{22})\ne 0.
+\end{equation}
+Тоді замкнена система (\ref{f52-1}), (\ref{f52-5}) набуває вигляду
+\begin{equation}\label{f52-7}
+  \dot{\widehat{x}}=\widehat{M}\widehat{x}+\widehat{N}w,\quad z=\widehat{F}\widehat{x}+\widehat{G}w,\quad \widehat{x}(0)=\widehat{x}_0,
+\end{equation}
+де
+$$\widehat{x}=\left[\begin{array}{c}
+      x \\
+      \xi \\
+    \end{array}\right],\quad
+ \widehat{M}=\left[\begin{array}{cc}
+                                   A+B_2K_0C_2 & B_2U_0 \\
+                                   V_0C_2 & Z_0\\
+                                 \end{array}\right]=\widehat{A}+\widehat{B}_2\widehat{K}_0\widehat{C}_2,
+$$
+$$
+\widehat{N}=\left[\begin{array}{c}
+      B_1+B_2K_0D_{21} \\
+      V_0D_{21}\\
+    \end{array}\right]=\widehat{B}_1+\widehat{B}_2\widehat{K}_0\widehat{D}_{21},$$
+$$\widehat{F}=\big[C_1+D_{12}K_0C_2, D_{12}U_0\big]=\widehat{C}_1+\widehat{D}_{12}\widehat{K}_0\widehat{C}_2,$$
+$$\widehat{G}=D_{11}+D_{12}K_0D_{21}=D_{11}+\widehat{D}_{12}\widehat{K}_0\widehat{D}_{21},$$
+$$
+\widehat{A}=\left[\!\begin{array}{cc}
+                  A & 0_{n\times r} \\
+                  0_{r\times n} & 0_{r\times r} \\
+                \end{array}\!\right],\; \widehat{B}_2=\left[\!\begin{array}{cc}
+                  B_2 & 0_{n\times r} \\
+                  0_{r\times m} & I_r \\
+                \end{array}\!\right],\;\widehat{C}_2=\left[\!\begin{array}{cc}
+                    C_2 & 0_{l\times r} \\
+                   0_{r\times n} & I_r  \\
+                \end{array}\!\right],
+$$
+$$
+\widehat{K}_0=\left[\begin{array}{cc}
+                  K_0 & U_0 \\
+                  V_0 & Z_0 \\
+                \end{array}\right],\; \widehat{B}_1=\left[\begin{array}{c}
+                                                          B_1 \\
+                                                          0_{r\times s} \\
+                                                        \end{array}\right],\;
+ \widehat{D}_{21}=\left[\begin{array}{c}
+                      D_{21} \\
+                     0_{r\times s} \\
+                     \end{array}\right],\;
+$$
+$$\widehat{C}_1=\big[C_1,0_{k\times r}\big],\quad \widehat{D}_{12}=\big[D_{12}, 0_{k\times r}\big].$$
+Тут невідомими є блоки матриці $\widehat{K}_0$
+$$K_0=(I_m-KD_{22})^{-1}K,\quad U_0=(I_m-KD_{22})^{-1}U, $$
+$$V_0=V(I_l-D_{22}K)^{-1},\quad Z_0=Z+VD_{22}(I_m-KD_{22})^{-1}U,$$
+які однозначно визначають шукані матриці динамічного регулятора
+(\ref{f52-5}):
+\begin{equation}\label{f52-8}
+  \begin{array}{c}
+    K=(I_m+K_0D_{22})^{-1}K_0,\quad U=(I_m+K_0D_{22})^{-1}U_0, \\[2mm]
+    V=V_0(I_l+D_{22}K_0)^{-1},\quad Z=Z_0-V_0D_{22}(I_m+K_0D_{22})^{-1}U_0.
+  \end{array}
+\end{equation}
+
+Застосуємо твердження леми \ref{l1-3} для системи (\ref{f52-7}) і, враховуючи лему Шура, перепишемо критерій виконання оцінки $J_0<\gamma$ у вигляді
+\begin{equation}\label{f52-9}
+   \left[\begin{array}{ccc}
+                         \widehat{M}^T\widehat{X}+\widehat{X}\widehat{M} & \widehat{X}\widehat{N} & \widehat{F}^T \\
+                         \widehat{N}^T\widehat{X} & - \gamma^2P & \widehat{G}^T \\
+                         \widehat{F} & \widehat{G} & - Q^{-1} \\
+                       \end{array}
+                     \right]<0, \quad \widehat{X}=\left[\begin{array}{cc}
+                  X & \!X_1^T \\
+                  X_1 & \!X_2 \\
+                  \end{array} \right]>0.
+\end{equation}
+При цьому матриця $\widehat{M}$ повинна бути гурвіцевою.
+Оскільки критерій якості $\widehat{J}$ типу (\ref{f1-4}) для системи (\ref{f52-7}) з початковим вектором $\widehat{x}_0=\big[x_0^T,0\big]^T$ співпадає з $ J$, де $X_0$ --- перший діагональний блок матриці $\widehat{X}_0$, то існування розв'язку системи (\ref{f52-9}) при обмеженні
+(\ref{f1-6}) еквівалентне нерівності $J<\gamma$ і у випадку $\gamma=1$ забезпечує неекспансивність системи відносно критерія якості $ J$.
+
+Враховуючи блочну структуру матриць в (\ref{f52-7}), перепишемо перше співвідношення (\ref{f52-9}) у вигляді ЛМН відносно $\widehat{K}_0$:
+\begin{equation}\label{f52-10}
+    \widehat{L}^T\widehat{K}_0\widehat{R}+\widehat{R}^T\widehat{K}_0^T\widehat{L}+\widehat{\Omega}<0,
+\end{equation}
+де
+$$
+\widehat{R}=\big[\widehat{R}_1,0_{l+r\times k}\,\big],\quad
+\widehat{R}_1=\big[\,\widehat{C}_2,\widehat{D}_{21}\,\big],$$
+$$\widehat{L}=\big[\widehat{L}_1,0_{m+r\times s}\,\big]\, \widetilde{X},\quad
+\widehat{L}_1=\big[\,\widehat{B}^T_2,\widehat{D}^T_{12}\,\big],$$
+$$\widetilde{X}=\left[\begin{array}{ccc}
+                    \widehat{X} & 0 & 0 \\
+                    0 & 0 & I_k \\
+                    0 & I_s & 0 \\
+                  \end{array}\right],\quad
+\widehat{\Omega}=\left[\begin{array}{ccc}
+         \widehat{A}^T\widehat{X}+\widehat{X}\widehat{A} & \widehat{X}\widehat{B}_1 & \widehat{C}^T_1 \\
+         \widehat{B}^T_1\widehat{X} & -\gamma^2P& D^T_{11} \\
+         \widehat{C}_1 & D_{11} & -Q^{-1} \\
+         \end{array}\right].$$
+ Якщо дана нерівність сумісна, то завжди можна вибрати такий розв'язок $\widehat{K}_0$, щоб виконувалась умова (\ref{f52-6}).
+
+Оскільки
+$$
+W_{\widehat{R}}=\left[\begin{array}{cc}
+                                   W_{\widehat{R}_1} & 0 \\
+                                   0 & I_k \\
+                                      \end{array}\right],\quad
+W_{\widehat{L}}=\widetilde{X}^{-1}\left[\begin{array}{cc}
+                                         W_{\widehat{L}_1} & 0 \\
+                                        0 & I_s \\
+                                      \end{array}\right],
+$$
+то існування розв'язку $\widehat{K}_0$ матричної нерівності (\ref{f52-10}) еквівалентне співвідношенням (див. лему \ref{l1-2})
+$$
+  W_{\widehat{R}_1}^T\left[\begin{array}{cc}
+                 \widehat{A}^T\widehat{X}+\widehat{X}\widehat{A}+\widehat{C}_1^TQ\widehat{C}_1 &
+                 \widehat{X}\widehat{B}_1+\widehat{C}_1^TQD_{11} \\
+                 \widehat{B}_1^T\widehat{X}+D_{11}^TQ\widehat{C}_1 & D_{11}^TQD_{11}-\gamma^2P \\
+               \end{array} \right]W_{\widehat{R}_1}<0,
+$$
+$$
+ W_{\widehat{L}_1}^T\left[\begin{array}{cc}
+                 \widehat{A}\widehat{Y}+\widehat{Y}\widehat{A}^T+\widehat{B}_1P^{-1}\widehat{B}_1^T & \widehat{Y}\widehat{C}_1^T+\widehat{B}_1P^{-1}D_{11}^T \\
+                 \widehat{C}_1\widehat{Y}+D_{11}P^{-1}\widehat{B}_1^T & D_{11}P^{-1}D_{11}^T-\gamma^2Q^{-1} \\
+               \end{array} \right]W_{\widehat{L}_1}<0,
+$$
+де $\widehat{Y}=\gamma^2\widehat{X}^{-1}$. Далі, використовуючи блочні вирази
+ $$
+ W_{\widehat{R}_1}=\left[\begin{array}{ccc}
+                         I_n & 0 & 0 \\
+                         0 & 0 & I_r \\
+                         0 & I_s & 0 \\
+                       \end{array}\right]\left[\begin{array}{c}
+                                           W_R \\
+                                           0_{r\,\times \,s_1}
+                                         \end{array}\right],\quad R=\big[C_2, D_{21}\big],
+ $$
+ $$
+ W_{\widehat{L}_1}=\left[\begin{array}{ccc}
+                         I_n & 0 & 0 \\
+                         0 & 0 & I_r \\
+                         0 & I_k & 0 \\
+                       \end{array}\right]\left[\begin{array}{c}
+                                           W_L \\
+                                           0_{r\,\times \,k_1}
+                                         \end{array}\right],\quad L=\big[B_2^T, D_{12}^T\big],
+ $$
+ де $s_1=n+s-\mathrm{rank}\,R$ і $k_1=n+k-\mathrm{rank}\,L$,
+отримані співвідношення набувають вигляду (\ref{f2-6}) і (\ref{f2-7}), де $X$ і $Y$ --- перші діагональні блоки матриць (\ref{f51-22}).
+
+
+Таким чином, враховуючи лему \ref{l3-1}, доведено таке твердження.
+ \begin{theorem}\label{t52-1}
+Для системи {\rm(\ref{f52-1})} існує динамічний регулятор {\rm(\ref{f52-5})}, що забезпечує оцінку $J_0<\gamma$ $(J<\gamma)$, тоді і лише тоді, коли система співвідношень {\rm(\ref{f51-23})}, {\rm(\ref{f2-6})} і {\rm(\ref{f2-7})} {\rm \big( (\ref{f1-6}), \rm(\ref{f51-23}),  {\rm(\ref{f2-6})}} і {\rm(\ref{f2-7}) \big)} сумісна відносно матриць $X=X^T>0$ і $Y=Y^T>0$. При цьому замкнена система {\rm (\ref{f52-7})} з невизначеністю {\rm (\ref{f1-7})}
+робастно стійка і має спільну функцію Ляпунова $v(\widehat{x})=\widehat{x}^T\widehat{X}\widehat{x}$, де $\widehat{X}$ --- розв'язок ЛМН {\rm(\ref{f52-9})}.
+ \end{theorem}
+
+\section{Алгоритм побудови динамічного регулятора}
+
+Наведемо алгоритм побудови динамічного регулятора (\ref{f52-5}), який забезпечує  оцінки $J_0<\gamma$ і $J<\gamma$.
+
+\begin{algorithm}\label{a3-1} \rm
+
+ 1) обчислення матриць $W_R$ і $W_L$, де $R=\big[C_2, D_{21}\big]$, $L=\big[B_2^T, D_{12}^T\big]$;
+
+ 2) знаходження матриць $X=X^T>0$ і $Y=Y^T>0$, які задовольняють систему співвідношень (\ref{f1-6}), (\ref{f51-23}), (\ref{f2-6}) і (\ref{f2-7});
+
+ 3) побудова розкладу $Z=Y-\gamma^2X^{-1}=V^TV$, де $V\in {\mathbb R}^{r\times n}$, ${\rm ker}V={\rm ker}Z$, і формування блочної матриці
+ $$\widehat{X}=\left[\begin{array}{cc}
+                  X & \!X_1^T \\
+                  X_1 & \!X_2 \\
+                  \end{array} \right]>0,\quad X_1=\dfrac{1}{\gamma}VX,\quad X_2=\dfrac{1}{\gamma^2}VXV^T+I_r;$$
+
+ 4) розв'язання ЛМН (\ref{f52-10}) відносно $\widehat{K}_0$ при обмеженні (\ref{f52-6});
+
+ 5) обчислення матриць регулятора (\ref{f52-5}) за формулами (\ref{f52-8}).
+
+\end{algorithm}
+
+Для забезпечення оцінки $J_0<\gamma$ додаткове обмеження (\ref{f1-6}) в п. 2) даного алгоритму можна не використовувати.
+При визначенні матриць $X$ і $Y$ у випадку динамічного регулятора повного порядку виконується рангове обмеження в (\ref{f51-23}) і необхідно розв'язати систему ЛМН. Всі інші блоки матриць (\ref{f51-22}) можуть бути визначені за допомогою співвідношень (\ref{f51-23-2}).
+
+Можна сформулювати аналоги теореми \ref{t52-1} і відповідні алгоритми побудови регуляторів для системи (\ref{f52-1}), в яких враховуються невизначеності поліедрального типу
+ $$A\in {\rm Co}\{A^1,\dots,A^{\nu_1}\},\;B_1\in {\rm Co}\{B_{1}^1,\dots,B_{1}^{\nu_2}\},$$
+  $$C_1\in {\rm Co}\{C_{1}^1,\dots,C_{1}^{\nu_3}\},\;D_{11}\in {\rm Co}\{D_{11}^1,\dots,D_{11}^{\nu_4}\},$$ а матриці $P$ і $Q$ разом з $X$ і $Y$ визначаються при розв'язанні системи матричних нерівностей типу (\ref{f2-6}) і (\ref{f2-7}), сформованої для всіх вершин заданих політопів.
+
+Викладені методи побудови статичних та динамічних регуляторів типу (\ref{f2-1}) і (\ref{f52-5}) можна застосувати до більш загального класу нелінійних систем з керованими і спостережуваними виходами
+\begin{equation}\label{f52-1-1}
+  \begin{array}{l}
+    \dot{x}=A(x)x+B_1(x)w+B_2(x)u,\quad x(0)=x_0, \\
+    z=C_1(x)x+D_{11}(x)w+D_{12}(x)u, \\
+    y=C_2(x)x+D_{21}(x)w+D_{22}(x)u,
+  \end{array}
+\end{equation}
+де всі матричні коефіцієнти є неперервними функціями стану $x\in {\mathcal S}_0$.
+При цьому виконується висновок про робастну стабілізацію нульового стану рівноваги відповідних замкнених нелінійних систем типу (\ref{f2-2}) і (\ref{f52-7}) з невизначеністю (\ref{f1-7}) (див. зауваження \ref{r1-1}),
+а характеристики якості $J_0$ і $J$ даних систем можна оцінити за допомогою леми \ref{l1-3-1}.
+
+Зазначимо, що для побудови наближених $J$-оптимальних законів керування для наведених класів систем можуть бути застосовані твердження теорем \ref{t2-1} і \ref{t52-1} при мінімально можливих значеннях параметра $\gamma$.
+
+\section{Приклад. Гасіння коливань лінійного осцилятора.}
+Розглянемо рівняння руху керованого лінійного осцилятора з демп\-фуванням
+\begin{equation}\label{f6-1}
+  \ddot{\varphi}+\delta \dot{\varphi} +\omega_0^2 \varphi=u+w,
+\end{equation}
+де $\delta$ і $\omega_0$ --- відповідно коефіцієнт демпфування і власна частота коливань осцилятора, $u$ --- керування, а $w$ --- обмежене зовнішнє збурення. Нехай $z=\big[\,\varphi,\,u\,\big]^T$ --- керований, а $y=\varphi$ --- спостережуваний виходи даної системи, яка подається у вигляді (\ref{f52-1}), де
+\begin{equation*}\label{f6-2}
+  A=\left[\begin{array}{cc}
+        0 & 1 \\
+        -\omega_0^2  & -\delta \\
+      \end{array}
+    \right],\;\; B_1=B_2=\left[\begin{array}{c}
+                                0 \\
+                                1 \\
+                                 \end{array} \right],\;\; C_1= \left[
+                                                                  \begin{array}{cc}
+                                                                    1 & 0 \\
+                                                                    0 & 0 \\
+                                                                  \end{array}
+                                                                \right],\;\; C_2= \big[\,1, 0\,\big],
+\end{equation*}
+$$D_{11}= \left[\begin{array}{c}
+                                0 \\
+                                0 \\
+                                 \end{array} \right],\;\; D_{12}= \left[\begin{array}{c}
+                                0 \\
+                                1 \\
+                                 \end{array} \right],\;\; D_{21}=D_{22}=0, \;\;
+                                 x =\left[\begin{array}{c}
+                                          \varphi \\
+                                          \dot{\varphi} \\
+                                \end{array}\right].
+                                  $$
+
+\begin{figure}[ht!]
+\begin{minipage}[ht]{50mm}
+\begin{center}
+\includegraphics[scale=0.42]{Jab}
+\caption{Залежність $J$ від $\delta$ і $\omega_0$.}
+\label{Fig-1}
+\end{center}
+\end{minipage}
+\hspace*{5mm}\begin{minipage}[ht]{50mm}
+\begin{center}
+\includegraphics[scale=0.42]{w}
+\caption{Область невизначеності.}
+\label{Fig-2}
+\end{center}
+\end{minipage}
+\end{figure}
+
+\begin{figure}[ht!]
+\begin{minipage}[ht]{50mm}
+\begin{center}
+\includegraphics[scale=0.42]{J0Q}
+\caption{Залежність $J_0$ від $q_1$ і $q_2$ \\(система без керування).}
+\label{Fig-3}
+\end{center}
+\end{minipage}
+\hspace*{5mm}\begin{minipage}[ht]{50mm}
+\begin{center}
+\includegraphics[scale=0.42]{J0Q_control}
+\caption{Залежність $J_0$ від $q_1$ і $q_2$ \\(замкнена система).}
+\label{Fig-4}
+\end{center}
+\end{minipage}
+\end{figure}
+
+\begin{figure}[ht!]
+\begin{minipage}[ht]{50mm}
+\begin{center}
+\includegraphics[scale=0.42]{JX0}
+\caption{Залежність $J$ від $\rho_1$ і $\rho_2$ \\(система без керування).}
+\label{Fig-5}
+\end{center}
+\end{minipage}
+\hspace*{5mm}\begin{minipage}[ht]{50mm}
+\begin{center}
+\includegraphics[scale=0.42]{JX0_control}
+\caption{Залежність $J$ від $\rho_1$ і $\rho_2$ \\(замкнена система).}
+\label{Fig-6}
+\end{center}
+\end{minipage}
+\end{figure}
+
+\begin{figure}[ht!]
+\begin{minipage}[ht]{50mm}
+\begin{center}
+\includegraphics[scale=0.42]{funopen}
+\caption{Поведінка системи без \\керування з початковим\\ вектором $x_0=[1, -2]^T$.}
+\label{Fig-7}
+\end{center}
+\end{minipage}
+\hspace*{5mm}\begin{minipage}[ht]{50mm}
+\begin{center}
+\includegraphics[scale=0.42]{funclosed}
+\caption{Поведінка замкненої \\системи з початковим вектором \\$\widehat{x}_0=[1, -2, 0, 0]^T$.}
+\label{Fig-8}
+\end{center}
+\end{minipage}
+\end{figure}
+
+Для системи без керування $(u=0)$ згідно з (\ref{f1-5-1}) знайдено відповідні характеристики $J_0=1,001$ і $J=1,289$ при таких значеннях параметрів:
+$$\delta=0,1,\quad \omega_0=1,\quad P=1,\quad Q=\left[\begin{array}{cc}
+                                           q_1 & 0 \\
+                                           0 & q_2 \\
+                                         \end{array}\right],\quad
+                                         X_0=\left[\begin{array}{cc}
+                                           \rho_1 & 0 \\
+                                           0 & \rho_2 \\
+                                         \end{array}\right],$$
+де $q_1=0,01$, $q_2=0,1$, $\rho_1=\rho_2=0,04$.
+Досліджено залежності даних характеристик від $\delta$ і $\omega_0$, а також від діагональних елементів вагових матриць $Q$ і $X_0$ (див. рис. \ref{Fig-1}, \ref{Fig-3} і \ref{Fig-5}). Рівень гасіння зовнішніх і почат\-кових збурень осцилятора зменшується при збільшенні його власної частоти коливань і майже не змінюється при збільшенні коефіцієнта демпфування (рис. \ref{Fig-1}).
+
+Далі, застосовуючи алгоритм \ref{a3-1}, проводилась мінімізація параметра $\gamma$, при якому виконується теорема \ref{t52-1}. В результаті при $\gamma=0,865$ наближено побудовано $J$-оптимальний динамічний регулятор (\ref{f52-5}) повного порядку з матрицями
+$$
+  Z=\left[\begin{array}{cc}
+         -0,06612 & -0,09307 \\
+          0,23117 & -1,05843 \\
+      \end{array}\right], \quad
+       V= \left[\begin{array}{c}
+                         -0,00037 \\
+                         0,11011 \\
+                       \end{array}\right],
+ $$
+    $$U= \big[-0,31404 \;\; 3,90247\big],\quad K= -0,23776,$$
+який забезпечує властивості робастної стійкості і неекспансивності замкненої системи (\ref{f52-7}), матриця $\widehat{M}$ якої має спектр $$\sigma(\widehat{M})=\big\{-0,16870\pm 1,01840\,i;\,-0,78994;\, -0,09722\big\}.$$
+Даний регулятор суттєво понизив рівні гасіння зовнішніх і почат\-кових збурень (див. порівняння значень функцій $J_0(q_1,q_2)$ і $J(\rho_1,\rho_2)$ для системи без керування (рис. \ref{Fig-3}, \ref{Fig-5}) і замкненої системи (рис. \ref{Fig-4}, \ref{Fig-6})). Так, для наведених значень параметрів і матриць регулятора $J_0= 0,39062< J= 0,86181<1$.
+
+Осцилятор з побудованим регулятором (\ref{f52-5}) зберігає асимптотичну стійкість при довільній функції збурення (невизначеності)
+\begin{equation}\label{f6-4}
+w(t)= \frac{1}{\gamma}\theta z(t),\; \theta=[\theta_1,\theta_2],\quad \dfrac{\theta_1^2}{q_1}+\dfrac{\theta_2^2}{q_2}\le 1,\; |w|\le \frac{1}{\gamma}\sqrt{q_1\varphi^2+q_2 u^2},
+\end{equation}
+значення якої знаходяться між двома поверхнями (див. рис. \ref{Fig-2}).
+
+На рис. \ref{Fig-7} показана поведінка розв'язків системи без керування з початковим вектором $x_0=[1, -2]^T$, а на рис. \ref{Fig-8} --- поведінка розв'язків замкненої системи (\ref{f52-7}) з регулятором (\ref{f52-5}) і початковим вектором $\widehat{x}_0=[1, -2, 0, 0]^T$.
+При цьому функція збурення $w$ задана у вигляді (\ref{f6-4}) при $\theta_1=\sqrt{q_1/2}$ і $\theta_2=\sqrt{q_2/2}$.
+
+%\vspace{-3mm}
+\section{Висновок}
+Для класу лінійних систем з керованими та спостережуваними виходами розроблено методи побудови законів керування, які забезпечують властивість неекспансивності, оцінку та оптимізацію критеріїв якості, що характеризують зважені рівні гасіння зовнішніх та початкових збурень, а також робастну стабілізацію відносно заданої множини невизначеностей. Запропонований алгоритм побудови стабілізуючих регуляторів може бути застосований до деякого класу нелінійних систем керування. Його чисельна реалізація базується на розв'язуванні систем лінійних матричних нерівностей із залученням ефективних засобів комп'ютерної системи Matlab.
+
+Основні результати роботи продемонстровано на прикладі керованого лінійного осцилятора з демпфуванням.
+
+%\vspace{-2mm}
+\begin{thebibliography}{99}
+
+\bibitem{Polyak-Scherbakov} \emph{Поляк Б.\,Т., Щербаков П.\,С.}  Робастная устойчивость и управление. --- М.: Наука, 2002. --- 303 с.
+
+\bibitem{Kuncevich} \emph{Кунцевич В.\,М.} Управление в условиях неопределенности: гарантированные результаты в задачах управления и идентификации. --- К.: Наук. думка, 2006. --- 264 с.
+
+\bibitem{Dullerud-Paganini} \emph{Dullerud G.\,E., Paganini F.\,G.}  A Course in Robust Control Theory. A Convex Approach. --- Berlin: Springer-Verlag, 2000. --- 419 p.
+
+\bibitem{Balandin-Kogan} \emph{Баландин Д.\,В., Коган М.\,М.}  Синтез законов управления на основе линейных матричных неравенств. --- М.: Физматлит, 2007.~--- 280~с.
+
+\bibitem{Balandin-Kogan-1} \emph{Баландин Д.\,В., Коган М.\,М.}  Обобщенное $H_\infty$-оптимальное управление как компромисс между $H_\infty$-оптимальным и $\gamma$-оптимальным управлениями // Автоматика и телемеханика. --- 2010. --- № 6. --- С. 20--38.
+
+\bibitem{Larin-Tunik} \emph{Ларин В.\,Б., Туник А.\,А.}  О компенсации внешних возмущений динамической обратной связью по выходной переменной // Прикладная механика.~--- 2006.~---  \textbf{42}, 5.~--- С.~132--144.
+
+\bibitem{Nazin-Polyak-Topunov} \emph{Назин С.\,А., Поляк Б.\,Т., Топунов М.\,В.}  Подавление ограниченных внешних возмущений с помощью метода инвариантных эллипсоидов // Автоматика и телемеханика. --- 2007. --- № 3. --- С. 106--125.
+
+\bibitem{Gahinet-Nemirovski-Laub-Chilali} \emph{Gahinet P., Nemirovski A., Laub A.\,J., Chilali M.} The LMI Control Toolbox. For Use with Matlab. User's Guide.~--- Natick, MA: The MathWorks, Inc., 1995. --- 138 p.
+
+\bibitem{Mazko-2016}  \emph{Мазко А.\,Г.} Робастная устойчивость и стабилизация динамических систем. Методы матричных и конусных неравенств // Праці Інституту математики НАН України. --- Київ, 2016. --- \textbf{102}. --- 332 с.
+
+%\bibitem{Mazko-2016}  \emph{Мазко А.\,Г.} Робастная устойчивость и стабилизация динамических систем. Методы матричных и конусных неравенств. --- Праці Інституту математики НАН України, Т. 102. --- Київ, 2016. --- 332 с.
+
+\bibitem{Mazko-Kusii-NO} \emph{Мазко А.\,Г., Кусий С.\,Н.}  Стабилизация по измеряемому выходу и оценка уровня гашения возмущений в системах управления // Нелінійні коливання. --- 2015. --- \textbf{18},  3. --- С. 373--387.
+
+ \bibitem{Mazko-Kusii-2015} \emph{Мазко О.\,Г., Кусій С.\,М.} Задачі стабілізації і гасіння зовнішніх збурень в системах керування // Математичні проблеми механіки та обчислювальної математики: Зб. праць Iн-ту математики НАН України.~--- 2015.~--- \textbf{12}, 5.~--- С.~90--108.
+
+ \bibitem{Gantmaher} \emph{Гантмахер Ф.\,Р.} Теория матриц.~--- М.: Наука, 1988.~--- 552~с.
+
+ \bibitem{Gahinet-Apkarian} \emph{Gahinet P., Apkarian P.} A Linear Matrix Inequality Approach to $H_\infty$ Control // Intern. J. of Robust and Nonlinear Control.~--- 1994.~--- \textbf{4}.~--- P.~421\,--\,448.
+
+\bibitem{Balandin-Kogan-2010} \emph{Баландин Д.\,В., Коган М.\,М.} Применение линейных матричных неравенств в синтезе законов управления.~--- Нижний Новгород: ННГУ, 2010.~--- 93~с.
+
+\bibitem{Mazko-AiT} \emph{Мазко А.\,Г.}  Робастная устойчивость и оценка функционала качества нелинейных систем управления // Автоматика и телемеханика.~--- 2015.~--- №~2.~--- С.~73--88.
+
+ \end{thebibliography}
+
+\end{document}

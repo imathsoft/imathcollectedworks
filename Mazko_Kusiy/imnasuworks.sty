@@ -1,0 +1,415 @@
+\usepackage{latexsym,amsfonts,amssymb,amsmath,amsthm}
+\usepackage{graphics,graphicx,longtable,array,euscript,epsfig}
+\usepackage{cite}
+\usepackage[T2A]{fontenc}
+\usepackage[cp1251]{inputenc}
+\usepackage[russian,english,ukrainian]{babel}
+\usepackage{import}
+\usepackage[breaklinks,backref=page]%
+{hyperref}
+%This package makes some handy float enchansments, such as float styles, etc
+\usepackage{float}
+%This one allows to force the placement of pending floats by issuing \FloatBarrier command inside the document
+\usepackage{placeins}
+\usepackage[breakall]{truncate}
+%\usepackage[stable]{footmisc}
+%Subcations for subfigures
+\usepackage{caption,subcaption}
+
+\setlength{\textwidth}{111.0mm}\setlength{\textheight}{166.0mm}
+\setlength{\oddsidemargin}{0in}\setlength{\evensidemargin}{0in}
+\setlength{\topmargin}{-1cm}
+\setlength{\parindent}{5.0mm}
+
+%\usepackage{showkeys}
+%\sloppy
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%                  Issue related definitions                   %%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\selectlanguage{ukrainian}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%	Metadata for the issue and and article 			  %%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%Metadata for the issue
+\def\metadata@issue@vol{13}
+\def\metadata@issue@number{2}
+\def\metadata@issue@year{2016}
+
+%Metadata for the article 
+%Article unique ID
+\def\article@tag{}
+\def\article@language{ukrainian}
+\def\fl@env#1{\foreignlanguage{\article@language}{#1}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%           End of issue related definitions                    %%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%Redefine enddocument to pul label at the last page of the work
+\let\old@enddocument\enddocument
+\renewcommand{\enddocument}{%
+	\label{\article@tag:lastpage}%
+	\clearpage
+	\old@enddocument
+}
+%Page headers
+\def\ehkol{\foreignlanguage{ukrainian}{Автор}}
+\def\ohkol{\foreignlanguage{ukrainian}{\truncate{0.95\textwidth}{Назва статті}}}
+
+\renewcommand{\@evenhead}{%
+	\hspace*{-3pt}\raisebox{-15pt}[\headheight][0pt]{%
+		\vbox{\hbox to \textwidth{
+				\thepage \hfil \fl@env{\ehkol}}%
+			\vskip3pt \hrule}}}
+\renewcommand{\@oddhead}{%
+	\hspace*{-3pt}\raisebox{-15pt}[\headheight][0pt]{
+		\vbox{\hbox to \textwidth{%
+				\fl@env{\ohkol} \hfil \thepage}%
+			\vskip3pt\hrule}}}
+\renewcommand{\@evenfoot}{}
+\renewcommand{\@oddfoot}{}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%% Maketitle related commands and definitons
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%We would like to have an optional argument for \title and \author commands. 
+%This short version is needed to keep the text only version of title or author's text 
+%free of the non-robust commands (like \thanks for example).
+%To achieve that we borrow a trick from the \chapter command's definition.
+%\def\@stitle{\@empty}
+\renewcommand{\title}{\@dblarg{\settitle}}
+\def\settitle[#1]#2{\gdef\@stitle{#1}\gdef\@title{#2}}
+%\def\@sauthor{\@empty}
+\renewcommand{\author}{\@dblarg{\setauthor}}
+\def\setauthor[#1]#2{\gdef\@sauthor{#1}\gdef\@author{#2}}
+\def\@udc{\vphantom{\CYRU\CYRD\CYRK}}
+%\def\@udc{\@empty}
+\newcommand{\udc}[1]{\gdef\@udc{#1}}
+\def\@address{\@empty}
+\newcommand{\address}[1]{\gdef\@address{#1}}
+%Commands to typeset abstract
+\def\@tsabstract#1{\begin{flushright}\begin{minipage}{105mm}\small #1\end{minipage}\end{flushright}}
+\def\@abstractua{\@empty}
+\newcommand{\abstractua}[1]{\gdef\@abstractua{\foreignlanguage{ukrainian}{#1}}}
+\def\@abstractru{\@empty}\newcommand{\abstractru}[1]{\gdef\@abstractru{\foreignlanguage{russian}{#1}}}
+\def\@abstracten{\@empty}
+\newcommand{\abstracten}[1]{\gdef\@abstracten{\foreignlanguage{english}{#1}}}
+
+\renewcommand\maketitle{\par
+  \begingroup
+    \renewcommand\thefootnote{\@fnsymbol\c@footnote}%
+    \def\@makefnmark{\rlap{\@textsuperscript{\normalfont\@thefnmark}}}%
+    \long\def\@makefntext##1{\parindent 1em\noindent
+            \hb@xt@1.8em{%
+                \hss\@textsuperscript{\normalfont\@thefnmark}}##1}%
+    \global\@topnum\z@   % Prevents figures from going at top of page.
+    \label{\article@tag:firstpage}
+    \@maketitle
+    \thispagestyle{empty}
+    \@thanks
+    \let\thefootnote\relax
+    \let\thanks\@gobble
+    \footnotetext{\hfill\copyright \ \ {\bf \@sauthor, \metadata@issue@year}}
+    \edef\article@language{\languagename}
+    %Define headers and footers
+    \xdef\ehkol{\noexpand\fl@env{\@sauthor}}
+    \xdef\ohkol{\noexpand\fl@env{\noexpand\truncate{0.95\textwidth}{\@stitle}}}
+  \endgroup
+  \setcounter{footnote}{0}%
+  \global\def\@udc{\vphantom{\CYRU\CYRD\CYRK}}%\@empty %\vphantom{\CYRU\CYRD\CYRK}
+  \global\let\@thanks\@empty
+  \global\let\@author\@empty
+  \global\let\@date\@empty
+  \global\let\@title\@empty
+  \global\let\@address\@empty
+  \global\let\@abstractua\@empty
+  \global\let\@abstractru\@empty
+  \global\let\@abstracten\@empty
+}
+\def\@maketitle{%
+   \let\footnote\thanks
+   \def\work@front@header{\makebox[\textwidth]%
+ 	{%
+ 		\foreignlanguage{ukrainian}{\protect\small\sf Збірник праць Iнституту математики НАН України \hfill  \metadata@issue@year, т.\,\metadata@issue@vol, №\,\metadata@issue@number,
+		\pageref{\article@tag:firstpage}--\pageref{\article@tag:lastpage}%
+	 	}
+ 	}%
+   }   
+   \noindent\raisebox{26pt}[0pt][0pt] {\work@front@header}\par%
+   \vspace*{-1.5em}
+   \noindent\foreignlanguage{ukrainian}{\texttt{УДК \@udc}}\par%
+   \vspace*{-0.5em}
+%   \article@language
+   \begin{flushleft}\LARGE\bfseries\@title\end{flushleft}\par%
+%   \vspace*{-2em}
+   \begin{flushleft}\bfseries\itshape \fl@env{\@author}\end{flushleft}\par%
+   \vspace*{-1.5em}
+   \begin{flushleft}\itshape\fl@env{\@address}\end{flushleft}\par%
+   \@tsabstract{\@abstracten}
+   \@tsabstract{\@abstractua}
+   \@tsabstract{\@abstractru}
+   \vskip 1.5em
+   }
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\renewcommand{\section}{\@startsection{section}{1}{\z@}%
+                                 {-3.35ex \@plus -1ex \@minus -.2ex}%
+                                 {2.0ex \@plus .2ex}%
+                                 {\normalfont\large\bfseries}}
+\renewcommand{\subsection}{\@startsection{subsection}{2}{\z@}%
+                                     {-3.25ex\@plus -1ex \@minus -.2ex}%
+                                     {1.5ex \@plus .2ex}%
+                                     {\normalfont\normalsize\bfseries}}
+\renewcommand{\subsubsection}{\@startsection{subsubsection}{3}{\z@}%
+                                     {-3.25ex\@plus -1ex \@minus -.2ex}%
+                                    {1.5ex \@plus .2ex}%
+                                     {\normalfont\normalsize\bfseries}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+%Floats fromatting
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+%If you want a caption without number but 
+%with the word figure then write 
+%	  \renewcommand{\thefigure}{}
+%inside the figure environment 
+\renewcommand{\thetable}{\arabic{table}}
+\renewcommand{\thefigure}{\arabic{figure}}
+%We intentionally move period into the definition of the number for floats.
+%The reason is that if one has a single float in the paper there is 
+%no point to print number. In that case use the reciept above to avoid that.
+\captionsetup{font={small}, labelsep={period},labelfont=bf}
+\captionsetup[subfigure]{labelformat=simple,labelfont=it}
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % % 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Define new theorem styles to make them independent on the changes 
+%in amsthm package
+\newtheoremstyle{plainstyle} % name
+{\topsep}                    % Space above
+{\topsep}                    % Space below
+{\itshape}                   % Body font
+{\parindent}                 % Indent amount
+{\bfseries}                  % Theorem head font
+{.}                          % Punctuation after theorem head
+{.5em}                       % Space after theorem head
+{}  % Theorem head spec (can be left empty, meaning ‘normal’)
+
+\newtheoremstyle{definitionstyle} % name
+{\topsep}                    % Space above
+{\topsep}                    % Space below
+{\normalfont}                % Body font
+{\parindent}                 % Indent amount
+{\bfseries}                  % Theorem head font
+{.}                          % Punctuation after theorem head
+{.5em}                       % Space after theorem head
+{}  % Theorem head spec (can be left empty, meaning ‘normal’)
+
+\newtheoremstyle{remarkstyle} % name
+{\topsep}                    % Space above
+{\topsep}                    % Space below
+{\normalfont}                % Body font
+{\parindent}                 % Indent amount
+{\bfseries}                  % Theorem head font
+{.}                          % Punctuation after theorem head
+{.5em}                       % Space after theorem head
+{}  % Theorem head spec (can be left empty, meaning ‘normal’)
+%\theoremstyle{mytheoremstyle}
+%\newtheorem{thm}{Theorem}
+
+\newtheorem{theorem}{\protect\theoremname}[section]
+\newtheorem{lemma}{\protect\lemmaname}[section]
+\newtheorem{definition}{\protect\definitionname}[section]
+\newtheorem{problem}{\protect\problemname}[section]
+\newtheorem{conjecture}{\protect\conjecturename}[section]
+\newtheorem{assumption}{\protect\assumptionname}[section]
+\newtheorem{corollary}{\protect\corollaryname}[section]
+\newtheorem{proposition}{\protect\propositionname}[section]
+\newtheorem{remark}{\protect\remarkname}[section]
+\newtheorem{algorithm}{\protect\algorithmname}[section]
+\newtheorem{example}{\protect\examplename}[section]
+\newcommand{\theoremname}{}
+\newcommand{\lemmaname}{}
+\newcommand{\definitionname}{}
+\newcommand{\problemname}{}
+\newcommand{\conjecturename}{}
+\newcommand{\assumptionname}{}
+\newcommand{\corollaryname}{}
+\newcommand{\propositionname}{}
+\newcommand{\remarkname}{}
+\newcommand{\algorithmname}{}
+\newcommand{\examplename}{}
+\providecommand{\bbljan}{}
+\providecommand{\bblfeb}{}
+\providecommand{\bblmar}{}
+\providecommand{\bblapr}{}
+\providecommand{\bblmay}{}
+\providecommand{\bbljun}{}
+\providecommand{\bbljul}{}
+\providecommand{\bblaug}{}
+\providecommand{\bblsep}{}
+\providecommand{\bbloct}{}
+\providecommand{\bblnov}{}
+\providecommand{\bbldec}{}
+%\newcommand{\proofname}{}
+
+\addto\captionsenglish{%
+	\renewcommand{\theoremname}{Theorem}%
+	\renewcommand{\lemmaname}{Lemma}
+	\renewcommand{\definitionname}{Definition}
+	\renewcommand{\examplename}{Example}%
+	\renewcommand{\problemname}{Problem}
+	\renewcommand{\conjecturename}{Conjecture}
+	\renewcommand{\assumptionname}{Assumption}
+	\renewcommand{\corollaryname}{Corollary}
+	\renewcommand{\propositionname}{Proposition}
+	\renewcommand{\remarkname}{Remark}
+	\renewcommand{\algorithmname}{Algorithm}
+	\renewcommand{\proofname}{Proof}
+	\renewcommand{\thesubfigure}{\asbuk{subfigure}.}
+	\renewcommand{\tablename}{Table}
+	\renewcommand{\refname}{}
+	\renewcommand{\bbljan}{jan}
+	\renewcommand{\bblfeb}{feb}
+	\renewcommand{\bblmar}{mar}
+	\renewcommand{\bblapr}{apr}
+	\renewcommand{\bblmay}{may}
+	\renewcommand{\bbljun}{jun}
+	\renewcommand{\bbljul}{jul}
+	\renewcommand{\bblaug}{aug}
+	\renewcommand{\bblsep}{sep}
+	\renewcommand{\bbloct}{oct}
+	\renewcommand{\bblnov}{nov}
+	\renewcommand{\bbldec}{dec}
+}
+
+
+\addto\captionsrussian{%
+	\renewcommand{\theoremname}{Теорема}%
+	\renewcommand{\lemmaname}{Лемма}
+	\renewcommand{\definitionname}{Определения}
+	\renewcommand{\examplename}{Пример}%
+	\renewcommand{\problemname}{Задача}
+	\renewcommand{\conjecturename}{Гипотеза}
+	\renewcommand{\assumptionname}{Предположение}
+	\renewcommand{\corollaryname}{Следствие}
+	\renewcommand{\propositionname}{Предложение}
+	\renewcommand{\remarkname}{Замечание}
+	\renewcommand{\algorithmname}{Алгоритм}
+	\renewcommand{\proofname}{Доказательство}
+	\renewcommand{\figurename}{Рис}
+	\renewcommand{\thesubfigure}{\asbuk{subfigure}.}
+	\renewcommand{\tablename}{Таблиця}
+	\renewcommand{\refname}{}
+	\renewcommand{\bbljan}{янв}
+	\renewcommand{\bblfeb}{фев}
+	\renewcommand{\bblmar}{март}
+	\renewcommand{\bblapr}{апр}
+	\renewcommand{\bblmay}{май}
+	\renewcommand{\bbljun}{июнь}
+	\renewcommand{\bbljul}{июль}
+	\renewcommand{\bblaug}{авг}
+	\renewcommand{\bblsep}{сент}
+	\renewcommand{\bbloct}{окт}
+	\renewcommand{\bblnov}{ноя}
+	\renewcommand{\bbldec}{дек}
+}
+
+\addto\captionsukrainian{%
+	\renewcommand{\theoremname}{Теорема}%
+	\renewcommand{\lemmaname}{Лема}%
+	\renewcommand{\definitionname}{Означення}%
+	\renewcommand{\examplename}{Приклад}%
+	\renewcommand{\problemname}{Задача}%
+	\renewcommand{\conjecturename}{Гіпотеза}%
+	\renewcommand{\assumptionname}{Припущення}%
+	\renewcommand{\corollaryname}{Наслідок}%
+	\renewcommand{\propositionname}{Твердження}%
+	\renewcommand{\remarkname}{Зауваження}%
+	\renewcommand{\algorithmname}{Алгоритм}%
+	\renewcommand{\proofname}{Доведення}%
+	\renewcommand{\figurename}{Рис}%
+	\renewcommand{\thesubfigure}{\asbuk{subfigure}.}%
+	\renewcommand{\tablename}{Таблиця}%
+	\renewcommand{\refname}{}%
+	\renewcommand{\bbljan}{січ}%
+	\renewcommand{\bblfeb}{лют}%
+	\renewcommand{\bblmar}{бер}%
+	\renewcommand{\bblapr}{квіт}%
+	\renewcommand{\bblmay}{трав}%
+	\renewcommand{\bbljun}{черв}%
+	\renewcommand{\bbljul}{лип}%
+	\renewcommand{\bblaug}{серп}%
+	\renewcommand{\bblsep}{верес}%
+	\renewcommand{\bbloct}{жовт}%
+	\renewcommand{\bblnov}{листоп}%
+	\renewcommand{\bbldec}{груд}%
+}
+%Reset the numbering correspondense for the sectionless articles 
+\newcommand{\nosectioncounters}{%
+\counterwithout{theorem}{section}%
+\counterwithout{lemma}{section}%
+\counterwithout{definition}{section}%
+\counterwithout{problem}{section}%
+\counterwithout{conjecture}{section}%
+\counterwithout{assumption}{section}%
+\counterwithout{corollary}{section}%
+\counterwithout{proposition}{section}%
+\counterwithout{remark}{section}%
+\counterwithout{algorithm}{section}%
+\counterwithout{example}{section}%
+\setcounter{theorem}{0}%
+\setcounter{lemma}{0}%
+\setcounter{definition}{0}%
+\setcounter{problem}{0}%
+\setcounter{conjecture}{0}%
+\setcounter{assumption}{0}%
+\setcounter{corollary}{0}%
+\setcounter{proposition}{0}%
+\setcounter{remark}{0}%
+\setcounter{algorithm}{0}%
+\setcounter{example}{0}%
+}
+
+\newcommand{\addsectioncounters}{%
+	\counterwithin{theorem}{section}%
+	\counterwithin{lemma}{section}%
+	\counterwithin{definition}{section}%
+	\counterwithin{problem}{section}%
+	\counterwithin{conjecture}{section}%
+	\counterwithin{assumption}{section}%
+	\counterwithin{corollary}{section}%
+	\counterwithin{proposition}{section}%
+	\counterwithin{remark}{section}%
+	\counterwithin{algorithm}{section}%
+	\counterwithin{example}{section}%
+}
+
+%Redefinition of thebibliography command 
+\renewenvironment{thebibliography}[1]
+{\section*{\refname}%
+	\small%
+	\list{\@biblabel{\@arabic\c@enumiv}}%
+	{\settowidth\labelwidth{\@biblabel{#1}}%
+		\leftmargin\labelwidth
+		\advance\leftmargin\labelsep
+		\@openbib@code
+		\usecounter{enumiv}%
+		\let\p@enumiv\@empty
+		\renewcommand\theenumiv{\@arabic\c@enumiv}}%
+	\sloppy
+	\clubpenalty4000
+	\@clubpenalty \clubpenalty
+	\widowpenalty4000%
+	\sfcode`\.\@m}
+{\def\@noitemerr
+	{\@latex@warning{Empty `thebibliography' environment}}%
+	\endlist}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
